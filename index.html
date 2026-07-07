@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EIDORA - The Embedding Space Explorer</title>
+    <meta
+      name="description"
+      content="EIDORA is an early-stage research software for exploratory visual analysis of embedding spaces."
+    >
+    <style>
+      :root {
+        color-scheme: light;
+        --page: #f8f7f3;
+        --ink: #171717;
+        --muted: #5f625e;
+        --accent: #51624f;
+        --accent-hover: #3f4f3e;
+        --focus: #9a7049;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 34rem),
+          var(--page);
+        color: var(--ink);
+        font-family:
+          ui-serif,
+          Georgia,
+          Cambria,
+          "Times New Roman",
+          Times,
+          serif;
+      }
+
+      main {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 3rem 1.25rem;
+      }
+
+      .intro {
+        width: min(100%, 44rem);
+        text-align: center;
+      }
+
+      .logo {
+        display: block;
+        width: min(100%, 25rem);
+        height: auto;
+        margin: 0 auto;
+      }
+
+      .description {
+        max-width: 36rem;
+        margin: 2.25rem auto 0;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+        line-height: 1.7;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 3rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        background: var(--accent);
+        color: #ffffff;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1;
+        padding: 0.95rem 1.35rem;
+        text-decoration: none;
+        transition:
+          background-color 180ms ease,
+          border-color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .button:hover {
+        border-color: var(--accent-hover);
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      .button:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 34rem) {
+        main {
+          align-items: start;
+          padding-top: 6rem;
+        }
+
+        .description {
+          margin-top: 1.75rem;
+          line-height: 1.65;
+        }
+
+        .button {
+          width: 100%;
+          max-width: 19rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="intro" aria-labelledby="eidora-description">
+        <img class="logo" src="EIDORA_logo.svg" alt="EIDORA">
+        <p class="description" id="eidora-description">
+          An open-source desktop software for exploratory visual analysis of embedding
+          spaces for researchers working with cultural data
+        </p>
+        <a
+          class="button"
+          href="mailto:mail@eidora.org?subject=EIDORA%20prototype%20access%20request"
+        >
+          Request prototype access
+        </a>
+      </section>
+    </main>
+  </body>
+</html>
