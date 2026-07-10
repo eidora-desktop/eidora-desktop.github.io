@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EIDORA - The Embedding Space Explorer</title>
+    <title>Request Prototype Access - EIDORA</title>
     <meta
       name="description"
-      content="EIDORA: The Embedding Space Explorer for Cultural Data"
+      content="Request access to the EIDORA early-stage prototype."
     >
     <style>
       :root {
@@ -57,29 +57,29 @@
 
       .logo {
         display: block;
-        width: min(100%, 25rem);
+        width: min(100%, 18rem);
         height: auto;
         margin: 0 auto;
       }
 
       .description {
-        max-width: 36rem;
-        margin: 2.25rem auto 0;
+        max-width: 34rem;
+        margin: 1.75rem auto 0;
         color: var(--muted);
-        font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+        font-size: clamp(1.05rem, 1rem + 0.25vw, 1.2rem);
         line-height: 1.7;
       }
 
-      .button {
+      .form-shell {
+        width: min(100%, 34rem);
+        margin: 2rem auto 0;
+        text-align: left;
+      }
+
+      .back-link {
         display: inline-flex;
-        min-height: 3rem;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
-        border: 1px solid var(--accent);
-        border-radius: 999px;
-        background: var(--accent);
-        color: #ffffff;
+        margin-top: 1.75rem;
+        color: var(--accent);
         font-family:
           ui-sans-serif,
           system-ui,
@@ -87,24 +87,17 @@
           BlinkMacSystemFont,
           "Segoe UI",
           sans-serif;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 600;
-        line-height: 1;
-        padding: 0.95rem 1.35rem;
         text-decoration: none;
-        transition:
-          background-color 180ms ease,
-          border-color 180ms ease,
-          transform 180ms ease;
       }
 
-      .button:hover {
-        border-color: var(--accent-hover);
-        background: var(--accent-hover);
-        transform: translateY(-1px);
+      .back-link:hover {
+        color: var(--accent-hover);
+        text-decoration: underline;
       }
 
-      .button:focus-visible {
+      .back-link:focus-visible {
         outline: 3px solid var(--focus);
         outline-offset: 4px;
       }
@@ -112,30 +105,31 @@
       @media (max-width: 34rem) {
         main {
           align-items: start;
-          padding-top: 6rem;
-        }
-
-        .description {
-          margin-top: 1.75rem;
-          line-height: 1.65;
-        }
-
-        .button {
-          width: 100%;
-          max-width: 19rem;
+          padding-top: 4rem;
         }
       }
     </style>
+    <script src="https://www.staticforms.dev/scripts/staticforms.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        StaticForms.render(
+          document.getElementById('my-form'),
+          'sf_de3fb9a1a2d1209f9c0a0d7a'
+        );
+      });
+    </script>
   </head>
   <body>
     <main>
-      <section class="intro" aria-labelledby="eidora-description">
+      <section class="intro" aria-labelledby="form-heading">
         <img class="logo" src="EIDORA_logo.svg" alt="EIDORA">
-        <p class="description" id="eidora-description">
-          An open-source desktop software for exploratory visual analysis of embedding
-          spaces for researchers working with cultural collection data
+        <p class="description" id="form-heading">
+          Request access to the EIDORA early-stage prototype.
         </p>
-        <a class="button" href="request-access.html">Request prototype access</a>
+        <div class="form-shell">
+          <div id="my-form"></div>
+        </div>
+        <a class="back-link" href="index.html">Back to EIDORA</a>
       </section>
     </main>
   </body>
