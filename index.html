@@ -62,12 +62,19 @@
         margin: 0 auto;
       }
 
-      .description {
-        max-width: 36rem;
-        margin: 2.25rem auto 0;
-        color: var(--muted);
-        font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
-        line-height: 1.7;
+      .subtitle {
+        margin: 3rem auto 0;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: clamp(1.65rem, 1.2rem + 2vw, 2.8rem);
+        font-weight: 500;
+        line-height: 1.12;
       }
 
       .button {
@@ -75,7 +82,7 @@
         min-height: 3rem;
         align-items: center;
         justify-content: center;
-        margin-top: 2rem;
+        margin-top: 4rem;
         border: 1px solid var(--accent);
         border-radius: 999px;
         background: var(--accent);
@@ -109,33 +116,86 @@
         outline-offset: 4px;
       }
 
+      .abstract {
+        max-width: 42rem;
+        margin: 4rem auto 0;
+        border-top: 1px solid rgba(23, 23, 23, 0.18);
+        padding-top: 1.25rem;
+        text-align: left;
+      }
+
+      .abstract-title {
+        margin: 0 0 0.7rem;
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .abstract-text {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.98rem;
+        line-height: 1.78;
+      }
+
       @media (max-width: 34rem) {
         main {
           align-items: start;
           padding-top: 6rem;
         }
 
-        .description {
-          margin-top: 1.75rem;
-          line-height: 1.65;
+        .subtitle {
+          margin-top: 1.2rem;
         }
 
         .button {
           width: 100%;
           max-width: 19rem;
         }
+
+        .abstract {
+          margin-top: 3rem;
+        }
+
+        .abstract-text {
+          line-height: 1.7;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <section class="intro" aria-labelledby="eidora-description">
+      <section class="intro" aria-labelledby="eidora-subtitle">
         <img class="logo" src="EIDORA_logo.svg" alt="EIDORA">
-        <p class="description" id="eidora-description">
-          An open-source desktop software for exploratory visual analysis of embedding
-          spaces for researchers working with cultural collection data
-        </p>
+        <p class="subtitle" id="eidora-subtitle">The Embedding Space Explorer<br>for Cultural Data</p>
         <a class="button" href="request-access.html">Request prototype access</a>
+        <section class="abstract" aria-labelledby="abstract-title">
+          <h2 class="abstract-title" id="abstract-title">Abstract</h2>
+          <p class="abstract-text" id="eidora-description">
+            EIDORA is an open-source desktop application for visual exploration of vector
+            representations. It provides a local workflow environment for embedding space analysis:
+            importing corpora, computing vector embeddings, running projection and clustering
+            algorithms, creating interactive visualizations with custom filters and annotations,
+            and producing figures for publication. The software is designed for researchers working
+            with collection data across different modalities, including image, text, audio, video,
+            3D, and multimodal combinations. In cultural collections, such media are often
+            accompanied by contextual information such as time, authorship, text labels, or other
+            rich metadata. EIDORA enables scholars to draw from their own domain expertise and
+            judgment by providing an intuitive project environment for investigating and
+            interpreting structures, patterns, trends, shifts, and anomalies in vector
+            representations, turning exploratory analysis into reproducible and reusable research
+            workflows.
+          </p>
+        </section>
       </section>
     </main>
   </body>
