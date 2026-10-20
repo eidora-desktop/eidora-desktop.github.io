@@ -40,9 +40,9 @@ class Links(HTMLParser):
 
 
 class SiteTests(unittest.TestCase):
-    def test_placeholder_and_landing_page_can_ship_independently(self):
-        placeholder = '<main><a href="/download/">Downloads</a></main>'
-        self.assertEqual(render_landing_downloads(placeholder, sample()), placeholder)
+    def test_optional_download_section_and_marker_validation(self):
+        plain_page = '<main><a href="/download/">Downloads</a></main>'
+        self.assertEqual(render_landing_downloads(plain_page, sample()), plain_page)
         landing = f'<main>{START}<p>Old download cards</p>{END}</main>'
         rendered = render_landing_downloads(landing, sample())
         self.assertNotIn("Old download cards", rendered)

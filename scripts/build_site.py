@@ -11,6 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 START = "<!-- EIDORA DOWNLOADS START -->"
 END = "<!-- EIDORA DOWNLOADS END -->"
 PROTOTYPE_NOTICE = "Prototype software. Use at your own risk. Stability and backward compatibility are not guaranteed."
+PLATFORM_REQUIREMENTS = {
+    "macos-arm64": "macOS 15 or later",
+    "macos-x86_64": "macOS 15 or later",
+    "windows-x86_64": "Windows 10 or 11",
+}
 
 
 def download_details(platform, *, checksums=False):
@@ -33,6 +38,8 @@ def platform_card(catalog, key, *, checksums=False):
     version = catalog["latest"][key]
     parts = [f'<article class="download-card" id="{key}"><h3>{PLATFORMS[key][0]}</h3>']
     if version is None:
+        if key in PLATFORM_REQUIREMENTS:
+            parts.append(f'<p class="release-meta">{escape(PLATFORM_REQUIREMENTS[key])}</p>')
         parts.append('<p class="release-meta">Public release coming soon</p><span class="download-pending">Not available yet</span>')
     else:
         release = catalog["releases"][version]
@@ -86,7 +93,7 @@ def history(catalog):
 
 
 def render_landing_downloads(index, catalog):
-    """Allow the existing placeholder and a future landing-page download section."""
+    """Replace a marked download section with catalog-generated cards, if present."""
     if START not in index and END not in index:
         return index
     if index.count(START) != 1 or index.count(END) != 1 or index.index(START) > index.index(END):

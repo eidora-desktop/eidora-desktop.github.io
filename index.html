@@ -33,7 +33,7 @@
         <div class="hero-copy">
           <h1 id="hero-title"><span class="hero-name">EIDORA <span class="visually-hidden">— </span></span>The Embedding<br>Space Explorer</h1>
           <p class="hero-lead">Open-source desktop research software for the visual exploration of embedding spaces in cultural data.</p>
-          <p class="hero-description">EIDORA supports local, project-based work with media, metadata, vector representations, projections, annotations, and figures. It is designed for researchers who need to inspect computational representations while keeping interpretation grounded in domain knowledge.</p>
+          <p class="hero-description">Import or compute vector embeddings for your collections, interactively explore their projections, and prepare figures in one local research environment. Connect computational results with source material and metadata to compare views and document your analysis.</p>
         </div>
         <div class="hero-art" aria-hidden="true">
           <img src="assets/brand/eidora_logo.svg" alt="" width="512" height="512">
@@ -49,12 +49,14 @@
         <div class="download-grid">
           <article class="download-card">
             <div class="platform-heading"><h3>macOS</h3><span class="platform-symbol" aria-hidden="true">↙</span></div>
+            <p class="release-meta">macOS 15 or later</p>
             <p class="release-meta">Version and release date to be confirmed</p>
             <div class="installer"><span class="installer-label">Apple Silicon <span>DMG</span></span><span class="download-pending">Download available at release</span></div>
             <div class="installer"><span class="installer-label">Intel <span>DMG</span></span><span class="download-pending">Download available at release</span></div>
           </article>
           <article class="download-card">
             <div class="platform-heading"><h3>Windows</h3><span class="platform-symbol" aria-hidden="true">↙</span></div>
+            <p class="release-meta">Windows 10 or 11</p>
             <p class="release-meta">Version and release date to be confirmed</p>
             <div class="installer"><span class="installer-label">x64 <span>Microsoft Store</span></span><span class="download-pending">Download available at release</span></div>
           </article>
@@ -72,7 +74,7 @@
       <section class="preview-section wrap" aria-labelledby="preview-title">
         <div class="section-heading">
           <div><p class="eyebrow">A closer look</p><h2 id="preview-title">Explore your data<br>in two dimensions.</h2></div>
-          <p class="heading-description">Navigate projections as point clouds or thumbnail maps. Inspect individual items and use metadata to explore patterns across the collection.</p>
+          <p class="heading-description">Explore projections through points and thumbnails. Inspect individual items and use metadata to investigate patterns across your collection.</p>
         </div>
         <figure class="app-preview">
           <a href="assets/images/discovery-preview.png" aria-label="Open the full-size EIDORA Discovery preview">
@@ -86,33 +88,33 @@
         <div class="wrap">
           <div class="section-heading">
             <div><p class="eyebrow">Five connected workspaces</p><h2 id="workflow-title">From data to exploration to figures.</h2></div>
-            <p class="heading-description">Five connected workspaces bring the stages of embedding space analysis together. Start with your source material, or bring existing embeddings and projections into your project.</p>
+            <p class="heading-description">Use the graphical interface from data preparation to figures, or bring your own embeddings or projection coordinates straight into visual exploration. Export results for use in other tools.</p>
           </div>
           <div class="workflow-grid">
             <article>
               <span class="workspace-label"><span aria-hidden="true">01 /</span> Project</span>
               <h3>Organize your source material</h3>
-              <p>Add media sources, link them to metadata records, and prepare thumbnail sets for visual exploration. Keep your source material connected to the items in your project.</p>
+              <p>Register media sources, link them to metadata, and prepare thumbnails. Keep collection items connected to their source material.</p>
             </article>
             <article>
               <span class="workspace-label"><span aria-hidden="true">02 /</span> Metadata</span>
               <h3>Work with the context</h3>
-              <p>Import, inspect, and edit metadata. Add items, update descriptions, and organize custom groups that you can use throughout your analysis.</p>
+              <p>Import, search, and edit metadata. Update item descriptions and organize groups for use throughout your analysis.</p>
             </article>
             <article>
               <span class="workspace-label"><span aria-hidden="true">03 /</span> Embeddings</span>
-              <h3>Create and compare representations</h3>
-              <p>Browse the Model Zoo and run compatible models locally, or import existing embeddings. Manage vector datasets and run clustering methods to investigate their structure.</p>
+              <h3>Compute or import embeddings</h3>
+              <p>Import your own vectors or compute them locally with compatible Model Zoo packages, including multimodal models. Compare embedding datasets, cluster vectors, and reuse cluster memberships as groups.</p>
             </article>
             <article>
               <span class="workspace-label"><span aria-hidden="true">04 /</span> Discovery</span>
               <h3>Navigate the embedding space</h3>
-              <p>Create projections, explore points and thumbnails, and use metadata to filter and color your view. Add annotations, move through ordered dimensions with the Slicer, and save views as snapshots.</p>
+              <p>Compute or import two-dimensional projections. Use metadata to filter and color points and thumbnails, add annotations, and save views as snapshots.</p>
             </article>
             <article>
               <span class="workspace-label"><span aria-hidden="true">05 /</span> Figures</span>
               <h3>Compose and share your findings</h3>
-              <p>Arrange snapshots into figures and animations. Adjust compositions, captions, and appearance, then export the results. Saved compositions remain available when you reopen the project.</p>
+              <p>Arrange saved views into single- or multi-panel figures. Refine captions, legends, grids, and annotations. Export figures and animations, and save compositions for revision.</p>
             </article>
           </div>
         </div>
@@ -122,14 +124,13 @@
         <div class="research-intro">
           <p class="eyebrow">From overview to individual items</p>
           <h2 id="research-title">Explore patterns<br>in context.</h2>
-          <p>Move between an overview of a collection and the individual items within it. Use metadata to investigate how patterns relate to time, categories, and other dimensions.</p>
-          <p>For cultural data, this connects visual exploration with historical descriptions, collection records, and the questions you bring to the material.</p>
-          <p class="interpretation-note">Nearby points suggest relationships within a model’s representation. Their meaning still calls for close reading, context, and your judgment.</p>
+          <p>Move between a collection overview and individual items. Investigate how patterns relate to historical periods, creators, or curatorial categories.</p>
+          <p class="interpretation-note">Two-dimensional projections can distort relationships in the embedding space. Interpret patterns alongside the model, projection settings, source material, and contextual metadata.</p>
         </div>
         <div class="research-examples">
-          <article><span class="example-mark" aria-hidden="true">01</span><div><h3>Return to an exploration</h3><p>Save a view as a snapshot, including its projection, camera position, filters, annotations, and appearance. Restore it to continue your analysis, compare views, or compose a figure.</p></div></article>
-          <article><span class="example-mark" aria-hidden="true">02</span><div><h3>Move through time and other dimensions</h3><p>Use the Slicer to explore ordered metadata through a rolling window. Set its size and step interval, then observe how different subsets occupy the same projection while the coordinates remain fixed.</p></div></article>
-          <article><span class="example-mark" aria-hidden="true">03</span><div><h3>Start at any stage</h3><p>Begin with source media, precomputed embeddings, or existing projection coordinates. Export intermediate results for work in other tools and bring them back into your project.</p></div></article>
+          <article><span class="example-mark" aria-hidden="true">01</span><div><h3>Return to an exploration</h3><p>Projects preserve metadata, source references, results, settings, and saved views. Restore snapshots to continue an analysis, compare views, or prepare a figure.</p></div></article>
+          <article><span class="example-mark" aria-hidden="true">02</span><div><h3>Explore change over time</h3><p>Use the Slicer to move through ranges of numerical metadata, such as years. The visible items change while projection coordinates remain fixed.</p></div></article>
+          <article><span class="example-mark" aria-hidden="true">03</span><div><h3>Document your analysis</h3><p>Methods reports assemble recorded model and algorithm details, parameter settings, and bibliographic references for methods descriptions and figure captions.</p></div></article>
         </div>
       </section>
 
@@ -145,10 +146,10 @@
           <div class="faq-layout">
             <h2>Good to know.</h2>
             <div class="faq-list">
-              <details><summary>Which platforms will EIDORA support?</summary><p>The release targets are macOS on Apple Silicon and Intel, Windows x64, and Linux x64. Confirmed operating-system requirements and installation instructions will accompany the public release.</p></details>
-              <details><summary>Do I need to write code?</summary><p>EIDORA provides a graphical desktop environment for importing data, computing embeddings, exploring projections, and composing figures. Choosing models and interpreting their results remains part of the research process.</p></details>
-              <details><summary>How does EIDORA work with my data?</summary><p>EIDORA organizes research in local projects, bringing together media sources, metadata, computational results, and saved exploration states. Compatible models run on your device after installation. Downloading models requires an internet connection; local analysis does not depend on a cloud service.</p></details>
-              <details><summary>What can an embedding map tell me?</summary><p>A map can help you notice neighborhoods, clusters, and unusual items worth investigating. Its shape depends on your data, model, and projection settings. Treat it as a starting point for interpretation, alongside the original material and its context.</p></details>
+              <details><summary>Which platforms will EIDORA support?</summary><p>macOS 15 or later on Apple Silicon and Intel, Windows 10 or 11 (x64), and Linux x64. Linux requirements and installation instructions will accompany the public release.</p></details>
+              <details><summary>Do I need to write code?</summary><p>No. Use the graphical interface to compute or import embeddings, explore projections, and compose figures. If you already work with other tools, import your embeddings or projection coordinates for visualization.</p></details>
+              <details><summary>How does EIDORA work with my data?</summary><p>Analyses run on your computer, so collection data do not need to be uploaded to a server. Model discovery and downloads use online services; installed models run locally.</p></details>
+              <details><summary>What can an embedding map tell me?</summary><p>A map can reveal neighborhoods, gradients, and unusual items worth investigating. These patterns reflect computational choices and can help you develop research questions through close examination of the material.</p></details>
               <details><summary>Is EIDORA open source?</summary><p>Yes. EIDORA’s source code is available under the <a href="https://github.com/eidora-desktop/EIDORA/blob/main/LICENSE">MIT license</a>. The project repository includes information for developers and contributors.</p></details>
             </div>
           </div>
