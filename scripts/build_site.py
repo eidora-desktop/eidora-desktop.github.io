@@ -1,0 +1,136 @@
+"""Build a static Pages artifact; no browser JavaScript or third-party packages."""
+import argparse
+from html import escape
+import json
+from pathlib import Path
+import shutil
+
+from catalog import MAX_CATALOG_BYTES, PLATFORMS, validate_catalog, version_tuple
+
+ROOT = Path(__file__).resolve().parents[1]
+START = "<!-- EIDORA DOWNLOADS START -->"
+END = "<!-- EIDORA DOWNLOADS END -->"
+PROTOTYPE_NOTICE = "Prototype software. Use at your own risk. Stability and backward compatibility are not guaranteed."
+
+
+def download_details(platform, *, checksums=False):
+    parts = [f'<p class="release-meta">{escape(platform["requirements"])}</p>']
+    if "store_url" in platform:
+        parts.append(f'<a class="download-link" href="{escape(platform["store_url"], quote=True)}">Get it from Microsoft Store</a>')
+    else:
+        for asset in platform["downloads"]:
+            parts.append(
+                f'<div class="installer"><a class="download-link" href="{escape(asset["url"], quote=True)}">'
+                f'Download {escape({"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"]))} · {asset["size"] / 1024**2:.1f} MiB</a>'
+            )
+            if checksums:
+                parts.append(f'<details class="checksum"><summary>SHA-256 checksum</summary><code>{asset["sha256"]}</code></details>')
+            parts.append('</div>')
+    return "".join(parts)
+
+
+def platform_card(catalog, key, *, checksums=False):
+    version = catalog["latest"][key]
+    parts = [f'<article class="download-card" id="{key}"><h3>{PLATFORMS[key][0]}</h3>']
+    if version is None:
+        parts.append('<p class="release-meta">Public release coming soon</p><span class="download-pending">Not available yet</span>')
+    else:
+        release = catalog["releases"][version]
+        parts.append(f'<p class="release-meta">Version {version} · {release["published_at"]} · {release["channel"].capitalize()}</p>')
+        parts.append(download_details(release["platforms"][key], checksums=checksums))
+        parts.append(f'<a class="download-link" href="/releases/#v{version}">Release notes</a>')
+    parts.append('</article>')
+    return "".join(parts)
+
+
+def cards(catalog, *, checksums=False):
+    return '<div class="download-grid release-grid">' + "".join(platform_card(catalog, key, checksums=checksums) for key in PLATFORMS) + '</div>'
+
+
+def page(title, content, path):
+    return f'''<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(title)} — EIDORA</title>
+<link rel="canonical" href="https://www.eidora.org/{path}/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/release-pages.css">
+</head><body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header wrap"><a class="brand" href="/" aria-label="EIDORA home">
+<img class="brand-icon" src="/assets/brand/eidora_icon.svg" alt="" width="44" height="44">
+<img class="wordmark" src="/assets/brand/eidora_wordmark.svg" alt="EIDORA" width="136" height="24"></a>
+<nav aria-label="Main navigation"><a href="/download/">Downloads</a><a href="/releases/">Releases</a></nav></header>
+<main id="main" class="wrap release-page"><h1>{escape(title)}</h1>{content}</main>
+<footer class="site-footer wrap"><p>EIDORA · The Embedding Space Explorer</p><a href="https://github.com/eidora-desktop/EIDORA">Source code</a></footer>
+</body></html>'''
+
+
+def history(catalog):
+    if not catalog["releases"]:
+        return '<p>There are no public application releases yet. Downloads and release notes will appear here after publication.</p><p><a href="/download/">View platform availability</a></p>'
+    parts = []
+    for version in sorted(catalog["releases"], key=version_tuple, reverse=True):
+        release = catalog["releases"][version]
+        parts.append(f'<article class="release-entry" id="v{version}"><h2>EIDORA {version}</h2><p>{release["published_at"]} · {release["channel"].capitalize()}</p>')
+        if release["channel"] == "prototype":
+            parts.append(f'<p>{PROTOTYPE_NOTICE}</p>')
+        parts.append(f'<p class="release-notes">{escape(release["notes"])}</p>')
+        for key, platform in release["platforms"].items():
+            parts.append(f'<section class="download-card history-platform"><h3>{PLATFORMS[key][0]}</h3>')
+            if key == "windows-x86_64":
+                parts.append('<p class="release-meta">Microsoft Store offers its current version; historical Windows packages are not hosted here.</p>')
+            parts.append(download_details(platform, checksums=True) + '</section>')
+        parts.append('</article>')
+    return "".join(parts)
+
+
+def render_landing_downloads(index, catalog):
+    """Allow the existing placeholder and a future landing-page download section."""
+    if START not in index and END not in index:
+        return index
+    if index.count(START) != 1 or index.count(END) != 1 or index.index(START) > index.index(END):
+        raise ValueError("Keep exactly one ordered pair of EIDORA DOWNLOADS markers in index.html.")
+    before, rest = index.split(START)
+    _, after = rest.split(END)
+    return before + START + cards(catalog) + '<p class="download-footnote"><a href="/download/">Installation and download details</a><a href="/releases/">Release history</a></p>' + END + after
+
+
+def build(source=ROOT):
+    source = Path(source)
+    raw = (source / "updates.json").read_bytes()
+    if len(raw) > MAX_CATALOG_BYTES:
+        raise ValueError("The update catalog must remain below 1 MiB.")
+    catalog = validate_catalog(json.loads(raw))
+    index = render_landing_downloads((source / "index.html").read_text(), catalog)
+    output = source / "_site"
+    if output.is_symlink():
+        raise ValueError("The build output must not be a symlink.")
+    if output.exists():
+        shutil.rmtree(output)
+    output.mkdir()
+    for name in ("styles.css", "release-pages.css", "CNAME", "request-access.html", "EIDORA_logo.svg"):
+        shutil.copyfile(source / name, output / name)
+    shutil.copytree(source / "assets", output / "assets", ignore=shutil.ignore_patterns(".DS_Store", "*.md"))
+    (output / "index.html").write_text(index)
+    (output / "updates.json").write_bytes(raw)
+    (output / ".nojekyll").touch()
+    content = '<p>Choose your operating system and architecture. Each platform shows the version currently available for it.</p>' + cards(catalog, checksums=True)
+    if any(record["channel"] == "prototype" for record in catalog["releases"].values()):
+        content += f'<p class="release-notice">{PROTOTYPE_NOTICE}</p>'
+    content += '''<section class="installation"><h2>Installing and updating</h2>
+<h3>Windows</h3><p>Install EIDORA from Microsoft Store when available. The Store manages subsequent updates.</p>
+<h3>macOS</h3><p>Choose Apple Silicon or Intel to match your Mac. Quit EIDORA, open the downloaded DMG, and copy EIDORA into Applications, replacing the previous application when updating.</p>
+<h3>Linux</h3><p>Use the DEB package on compatible Debian-based distributions, or the AppImage on supported Linux systems. Install a newer DEB over the previous package. For AppImage, quit EIDORA, replace the old file, and make the new file executable. Updates are downloaded manually.</p>
+<p>Keep your project folders when replacing the application. Read each release's compatibility notes before opening existing projects.</p>
+<p><a href="/releases/">Release notes and previous versions</a></p></section>'''
+    for path, title, body in (("download", "Download EIDORA", content), ("releases", "EIDORA releases", history(catalog))):
+        directory = output / path
+        directory.mkdir()
+        (directory / "index.html").write_text(page(title, body, path))
+    return output
+
+
+if __name__ == "__main__":
+    argparse.ArgumentParser(description=__doc__).parse_args()
+    print(f"Built {build()}")
