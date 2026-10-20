@@ -3,230 +3,163 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EIDORA - The Embedding Space Explorer</title>
-    <meta
-      name="description"
-      content="EIDORA: The Embedding Space Explorer for Cultural Data"
-    >
-
-    <style>
-      :root {
-        color-scheme: light;
-        --page: #f8f7f3;
-        --ink: #171717;
-        --muted: #5f625e;
-        --accent: #51624f;
-        --accent-hover: #3f4f3e;
-        --focus: #9a7049;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        min-height: 100%;
-      }
-
-      body {
-        min-height: 100vh;
-        margin: 0;
-        background:
-          radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 34rem),
-          var(--page);
-        color: var(--ink);
-        font-family:
-          ui-serif,
-          Georgia,
-          Cambria,
-          "Times New Roman",
-          Times,
-          serif;
-      }
-
-      main {
-        display: grid;
-        min-height: 100vh;
-        place-items: center;
-        padding: 3rem 1.25rem;
-      }
-
-      .intro {
-        width: min(100%, 44rem);
-        text-align: center;
-      }
-
-      .logo {
-        display: block;
-        width: min(100%, 25rem);
-        height: auto;
-        margin: 0 auto;
-      }
-
-      .subtitle {
-        margin: 3rem auto 0;
-        color: var(--ink);
-        font-family:
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-        font-size: clamp(1.65rem, 1.2rem + 2vw, 2.8rem);
-        font-weight: 500;
-        line-height: 1.12;
-      }
-
-      /* Keep the first line together */
-      .subtitle-line {
-        white-space: nowrap;
-      }
-
-      .button {
-        display: inline-flex;
-        min-height: 3rem;
-        align-items: center;
-        justify-content: center;
-        margin-top: 4rem;
-        border: 1px solid var(--accent);
-        border-radius: 999px;
-        background: var(--accent);
-        color: #ffffff;
-        font-family:
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-        font-size: 0.95rem;
-        font-weight: 600;
-        line-height: 1;
-        padding: 0.95rem 1.35rem;
-        text-decoration: none;
-        transition:
-          background-color 180ms ease,
-          border-color 180ms ease,
-          transform 180ms ease;
-      }
-
-      .button:hover {
-        border-color: var(--accent-hover);
-        background: var(--accent-hover);
-        transform: translateY(-1px);
-      }
-
-      .button:focus-visible {
-        outline: 3px solid var(--focus);
-        outline-offset: 4px;
-      }
-
-      .abstract {
-        max-width: 42rem;
-        margin: 4rem auto 0;
-        border-top: 1px solid rgba(23, 23, 23, 0.18);
-        padding-top: 1.25rem;
-        text-align: left;
-      }
-
-      .release-links {
-        margin-top: 1.5rem;
-      }
-
-      .release-links a {
-        color: var(--accent-hover);
-      }
-
-      .abstract-title {
-        margin: 0 0 0.7rem;
-        color: var(--ink);
-        font-family:
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-        font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: 0;
-        text-transform: uppercase;
-      }
-
-      .abstract-text {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.98rem;
-        line-height: 1.78;
-      }
-
-      @media (max-width: 34rem) {
-        main {
-          align-items: start;
-          padding-top: 6rem;
-        }
-
-        .subtitle {
-          margin-top: 1.2rem;
-        }
-
-        .button {
-          width: 100%;
-          max-width: 19rem;
-        }
-
-        .abstract {
-          margin-top: 3rem;
-          font-size: 1.2rem;
-        }
-
-        .abstract-text {
-          line-height: 1.7;
-        }
-      }
-
-      /* Reduce subtitle size only when needed so the first line never wraps */
-      @media (max-width: 26rem) {
-        .subtitle {
-          font-size: clamp(1.3rem, 4.8vw, 1.8rem);
-        }
-      }
-
-      @media (max-width: 22rem) {
-        .subtitle {
-          font-size: 1.15rem;
-        }
-      }
-    </style>
+    <title>EIDORA — The Embedding Space Explorer</title>
+    <meta name="description" content="EIDORA is open-source desktop research software for the visual exploration of embedding spaces in cultural data.">
+    <meta name="theme-color" content="#F5F3EB">
+    <meta property="og:title" content="EIDORA — The Embedding Space Explorer">
+    <meta property="og:description" content="Open-source desktop research software for the visual exploration of embedding spaces in cultural data.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/brand/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="release-pages.css">
   </head>
-
   <body>
-    <main>
-      <section class="intro" aria-labelledby="eidora-subtitle">
-        <img class="logo" src="EIDORA_logo.svg" alt="EIDORA">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="brand" href="#main" aria-label="EIDORA home">
+        <img class="brand-icon" src="assets/brand/eidora_icon.svg" alt="" width="44" height="44">
+        <img class="wordmark" src="assets/brand/eidora_wordmark.svg" alt="EIDORA" width="136" height="24">
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="/download/">Downloads</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#resources">Resources</a>
+      </nav>
+    </header>
 
-        <p class="subtitle" id="eidora-subtitle">
-          <span class="subtitle-line">The Embedding Space Explorer</span><br>
-          for Cultural Data
-        </p>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title"><span class="hero-name">EIDORA <span class="visually-hidden">— </span></span>The Embedding<br>Space Explorer</h1>
+          <p class="hero-lead">Open-source desktop research software for the visual exploration of embedding spaces in cultural data.</p>
+          <p class="hero-description">Import or compute vector embeddings for your collections, interactively explore their projections, and prepare figures in one local research environment. Connect computational results with source material and metadata to compare views and document your analysis.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img src="assets/brand/eidora_logo.svg" alt="" width="512" height="512">
+        </div>
+      </section>
 
-        <a class="button" href="request-access.html">
-          Request prototype access
-        </a>
+      <section class="downloads wrap" id="downloads" aria-labelledby="download-title">
+        <div class="section-heading download-heading">
+          <h2 id="download-title">Download EIDORA</h2>
+          <span class="section-note">macOS · Windows · Linux</span>
+        </div>
+        <!-- EIDORA DOWNLOADS START -->
+        <div class="download-grid">
+          <article class="download-card">
+            <div class="platform-heading"><h3>macOS</h3><span class="platform-symbol" aria-hidden="true">↙</span></div>
+            <p class="release-meta">macOS 15 or later</p>
+            <p class="release-meta">Version and release date to be confirmed</p>
+            <div class="installer"><span class="installer-label">Apple Silicon <span>DMG</span></span><span class="download-pending">Download available at release</span></div>
+            <div class="installer"><span class="installer-label">Intel <span>DMG</span></span><span class="download-pending">Download available at release</span></div>
+          </article>
+          <article class="download-card">
+            <div class="platform-heading"><h3>Windows</h3><span class="platform-symbol" aria-hidden="true">↙</span></div>
+            <p class="release-meta">Windows 10 or 11</p>
+            <p class="release-meta">Version and release date to be confirmed</p>
+            <div class="installer"><span class="installer-label">x64 <span>Microsoft Store</span></span><span class="download-pending">Download available at release</span></div>
+          </article>
+          <article class="download-card">
+            <div class="platform-heading"><h3>Linux</h3><span class="platform-symbol" aria-hidden="true">↙</span></div>
+            <p class="release-meta">Version and release date to be confirmed</p>
+            <div class="installer"><span class="installer-label">x64 <span>AppImage</span></span><span class="download-pending">Download available at release</span></div>
+            <div class="installer"><span class="installer-label">x64 <span>DEB package</span></span><span class="download-pending">Download available at release</span></div>
+          </article>
+        </div>
+        <p class="download-footnote">Installer links will appear here when the public release is available. <a href="/releases/">Release notes <span aria-hidden="true">↗</span></a></p>
+        <!-- EIDORA DOWNLOADS END -->
+      </section>
 
-        <nav class="release-links" aria-label="Downloads and releases">
-          <a href="/download/">Downloads</a> · <a href="/releases/">Release notes</a>
-        </nav>
+      <section class="preview-section wrap" aria-labelledby="preview-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">A closer look</p><h2 id="preview-title">Explore your data<br>in two dimensions.</h2></div>
+          <p class="heading-description">Explore projections through points and thumbnails. Inspect individual items and use metadata to investigate patterns across your collection.</p>
+        </div>
+        <figure class="app-preview">
+          <a href="assets/images/discovery-preview.png" aria-label="Open the full-size EIDORA Discovery preview">
+            <img src="assets/images/discovery-preview.png" alt="EIDORA’s Discovery view displaying an embedding projection of artworks, with image previews, metadata filters, a time slider, and saved snapshots." width="1900" height="1286" loading="lazy" decoding="async">
+          </a>
+          <figcaption><span><span class="caption-dot" aria-hidden="true"></span>Discovery view · Cultural collection exploration</span><span>Earlier interface preview, July 2026 · <a href="assets/images/discovery-preview.png">View full size <span aria-hidden="true">↗</span></a></span></figcaption>
+        </figure>
+      </section>
 
-        <section class="abstract" aria-labelledby="abstract-title">
-          <h2 class="abstract-title" id="abstract-title">Abstract</h2>
+      <section class="workflow-section" id="workflow" aria-labelledby="workflow-title">
+        <div class="wrap">
+          <div class="section-heading">
+            <div><p class="eyebrow">Five connected workspaces</p><h2 id="workflow-title">From data to exploration to figures.</h2></div>
+            <p class="heading-description">Use the graphical interface from data preparation to figures, or bring your own embeddings or projection coordinates straight into visual exploration. Export results for use in other tools.</p>
+          </div>
+          <div class="workflow-grid">
+            <article>
+              <span class="workspace-label"><span aria-hidden="true">01 /</span> Project</span>
+              <h3>Organize your source material</h3>
+              <p>Register media sources, link them to metadata, and prepare thumbnails. Keep collection items connected to their source material.</p>
+            </article>
+            <article>
+              <span class="workspace-label"><span aria-hidden="true">02 /</span> Metadata</span>
+              <h3>Work with the context</h3>
+              <p>Import, search, and edit metadata. Update item descriptions and organize groups for use throughout your analysis.</p>
+            </article>
+            <article>
+              <span class="workspace-label"><span aria-hidden="true">03 /</span> Embeddings</span>
+              <h3>Compute or import embeddings</h3>
+              <p>Import your own vectors or compute them locally with compatible Model Zoo packages, including multimodal models. Compare embedding datasets, cluster vectors, and reuse cluster memberships as groups.</p>
+            </article>
+            <article>
+              <span class="workspace-label"><span aria-hidden="true">04 /</span> Discovery</span>
+              <h3>Navigate the embedding space</h3>
+              <p>Compute or import two-dimensional projections. Use metadata to filter and color points and thumbnails, add annotations, and save views as snapshots.</p>
+            </article>
+            <article>
+              <span class="workspace-label"><span aria-hidden="true">05 /</span> Figures</span>
+              <h3>Compose and share your findings</h3>
+              <p>Arrange saved views into single- or multi-panel figures. Refine captions, legends, grids, and annotations. Export figures and animations, and save compositions for revision.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-          <p class="abstract-text" id="eidora-description">
-            Visual exploration of embedding spaces allows researchers to discover similarities, neighborhoods, clusters, gradients, and shifts across complex datasets. In practice, this usually relies on a patchwork of computational tools that can be difficult to set up, maintain, or even use without a graphical interface. EIDORA is an open-source desktop research software that integrates the main stages of exploratory embedding space analysis in a local, project-based environment. It supports importing and linking data sources, computing vector embeddings, running projection and clustering algorithms, exploring two-dimensional projections through navigation, filtering, and visual encoding, and producing publication-ready figures and animations. EIDORA supports multimodal data together with rich contextual metadata, as commonly found in cultural collections. Its modular architecture accommodates new models and algorithms as they emerge, while preserving data, parameters, and visual states as reusable research artifacts for reproducible analysis.
-          </p>
-        </section>
+      <section class="research-section wrap" aria-labelledby="research-title">
+        <div class="research-intro">
+          <p class="eyebrow">From overview to individual items</p>
+          <h2 id="research-title">Explore patterns<br>in context.</h2>
+          <p>Move between a collection overview and individual items. Investigate how patterns relate to historical periods, creators, or curatorial categories.</p>
+          <p class="interpretation-note">Two-dimensional projections can distort relationships in the embedding space. Interpret patterns alongside the model, projection settings, source material, and contextual metadata.</p>
+        </div>
+        <div class="research-examples">
+          <article><span class="example-mark" aria-hidden="true">01</span><div><h3>Return to an exploration</h3><p>Projects preserve metadata, source references, results, settings, and saved views. Restore snapshots to continue an analysis, compare views, or prepare a figure.</p></div></article>
+          <article><span class="example-mark" aria-hidden="true">02</span><div><h3>Explore change over time</h3><p>Use the Slicer to move through ranges of numerical metadata, such as years. The visible items change while projection coordinates remain fixed.</p></div></article>
+          <article><span class="example-mark" aria-hidden="true">03</span><div><h3>Document your analysis</h3><p>Methods reports assemble recorded model and algorithm details, parameter settings, and bibliographic references for methods descriptions and figure captions.</p></div></article>
+        </div>
+      </section>
+
+      <section class="resources-section" id="resources" aria-labelledby="resources-title">
+        <div class="wrap">
+          <div class="section-heading"><div><p class="eyebrow">An open research tool</p><h2 id="resources-title">Documentation and project resources.</h2></div><p class="heading-description">Find installation guidance, follow development, and contribute to the project.</p></div>
+          <div class="resource-grid">
+            <a class="resource-card" href="https://github.com/eidora-desktop/EIDORA"><span class="resource-label">01 / Project <span aria-hidden="true">↗</span></span><h3>Source code</h3><p>Explore the code, report an issue, or contribute on GitHub.</p><span class="resource-status">Open repository</span></a>
+            <a class="resource-card" href="/releases/"><span class="resource-label">02 / Development <span aria-hidden="true">↗</span></span><h3>Release notes</h3><p>Find published releases and the changes that accompany them.</p><span class="resource-status">View release history</span></a>
+            <article class="resource-card resource-pending"><span class="resource-label">03 / First steps</span><h3>Getting started</h3><p>A guide to installation, your first project, and exploring a collection.</p><span class="resource-status">Guide coming at release</span></article>
+            <article class="resource-card resource-pending"><span class="resource-label">04 / Research</span><h3>Citing EIDORA</h3><p>Citation details for acknowledging EIDORA in your research.</p><span class="resource-status">Citation forthcoming</span></article>
+          </div>
+          <div class="faq-layout">
+            <h2>Good to know.</h2>
+            <div class="faq-list">
+              <details><summary>Which platforms will EIDORA support?</summary><p>macOS 15 or later on Apple Silicon and Intel, Windows 10 or 11 (x64), and Linux x64. Linux requirements and installation instructions will accompany the public release.</p></details>
+              <details><summary>Do I need to write code?</summary><p>No. Use the graphical interface to compute or import embeddings, explore projections, and compose figures. If you already work with other tools, import your embeddings or projection coordinates for visualization.</p></details>
+              <details><summary>How does EIDORA work with my data?</summary><p>Analyses run on your computer, so collection data do not need to be uploaded to a server. Model discovery and downloads use online services; installed models run locally.</p></details>
+              <details><summary>What can an embedding map tell me?</summary><p>A map can reveal neighborhoods, gradients, and unusual items worth investigating. These patterns reflect computational choices and can help you develop research questions through close examination of the material.</p></details>
+              <details><summary>Is EIDORA open source?</summary><p>Yes. EIDORA’s source code is available under the <a href="https://github.com/eidora-desktop/EIDORA/blob/main/LICENSE">MIT license</a>. The project repository includes information for developers and contributors.</p></details>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
+
+    <footer class="site-footer wrap">
+      <div class="footer-identity"><img src="assets/brand/eidora_logo.svg" alt="" width="76" height="76" loading="lazy"><div><strong>EIDORA</strong><p>The Embedding Space Explorer</p></div></div>
+      <div class="footer-links"><a href="https://github.com/eidora-desktop/EIDORA">GitHub <span aria-hidden="true">↗</span></a><a href="#downloads">Back to downloads <span aria-hidden="true">↑</span></a></div>
+    </footer>
   </body>
 </html>

@@ -1,8 +1,4 @@
-"""Prepare a Mac/Linux catalog entry from a published, public GitHub release.
-
-This edits updates.json locally for review; it does not commit or deploy.
-Windows Store availability must be confirmed separately (see RELEASES.md).
-"""
+"""Import Mac/Linux installer metadata from a public GitHub release into updates.json."""
 import argparse
 from datetime import datetime
 import json
@@ -67,7 +63,7 @@ def main():
     temporary = path.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
     temporary.replace(path)
-    print("Prepared updates.json. Review the diff and run the site tests/build before committing.")
+    print("Updated updates.json.")
 
 
 if __name__ == "__main__":
