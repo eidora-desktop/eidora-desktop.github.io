@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "latest": {
+    "macos-arm64": null,
+    "macos-x86_64": null,
+    "windows-x86_64": null,
+    "linux-x86_64": null
+  },
+  "releases": {}
+}
