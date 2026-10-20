@@ -1,0 +1,25 @@
+/* Shared download catalog additions; the landing-page design stays in styles.css. */
+.release-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.release-grid .download-card { min-width: 0; scroll-margin-top: 2rem; }
+.release-grid .download-card:target { outline: 3px solid var(--gold); outline-offset: 4px; }
+.release-page { padding-block: 3rem; }
+.release-page h1 { font-family: var(--serif); font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.15; }
+.release-page > p { margin-block: 1.5rem; max-width: 48rem; }
+.release-page .release-grid { margin-block: 2rem; }
+.checksum { font-size: .75rem; margin-block: .5rem; }
+.checksum summary { cursor: pointer; color: var(--porcelain); }
+.checksum summary:hover, .checksum summary::after { color: var(--gold); }
+.checksum code { display: block; overflow-wrap: anywhere; margin-top: .5rem; }
+.checksum summary:focus-visible { outline-color: var(--gold); }
+.installation { max-width: 48rem; margin-top: 3rem; }
+.installation h3 { margin-top: 1.5rem; }
+.installation p { margin-top: .65rem; }
+.release-entry { border-top: 1px solid var(--rule); margin-top: 2rem; padding-block: 2rem; }
+.release-entry > p { margin-top: 1rem; }
+.release-notes { white-space: pre-wrap; overflow-wrap: anywhere; }
+.history-platform { margin-top: 1rem; max-width: 48rem; }
+@media (max-width: 1000px) { .release-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .release-grid { grid-template-columns: 1fr; }
+  .release-page { padding-block: 2rem; }
+}
