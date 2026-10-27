@@ -81,10 +81,12 @@ def cards(catalog, *, checksums=False, experimental=False):
 def experimental_downloads(catalog):
     """Group choices by operating system, with technical information out of the way."""
     versions = {version for version in catalog["latest"].values() if version is not None}
-    shared_version = next(iter(versions)) if len(versions) == 1 else None
+    series = {version_tuple(version)[:2] for version in versions}
     parts = ['<div class="prototype-downloads">']
-    if shared_version:
-        parts.append(f'<p class="prototype-version"><span class="prototype-badge">Experimental</span>Version {shared_version}<a href="/experimental/#v{shared_version}">Release notes</a></p>')
+    if len(series) == 1:
+        major, minor = next(iter(series))
+        latest_version = max(versions, key=version_tuple)
+        parts.append(f'<p class="prototype-version"><span class="prototype-badge">Experimental</span>{major}.{minor} series<a href="/experimental/#v{latest_version}">Release notes</a></p>')
     else:
         parts.append('<p class="prototype-version"><span class="prototype-badge">Experimental</span>Choose a download for your computer.</p>')
     parts.append('<p class="prototype-warning">This is untested prototype software. Use copies of your projects.</p>')
@@ -99,8 +101,7 @@ def experimental_downloads(catalog):
         meta = escape(description)
         if asset:
             meta += f' · {asset["size"] / 1024**2:.1f}&nbsp;MiB'
-        if not shared_version:
-            meta += f' · v{version}'
+        meta += f' · v{version}'
         return (
             f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}" '
             f'aria-label="Download EIDORA {version} — {escape(label, quote=True)}">'
