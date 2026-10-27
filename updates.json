@@ -1,10 +1,42 @@
 {
   "schema_version": 1,
   "latest": {
-    "macos-arm64": null,
-    "macos-x86_64": null,
+    "macos-arm64": "0.2.0",
+    "macos-x86_64": "0.2.0",
     "windows-x86_64": null,
     "linux-x86_64": null
   },
-  "releases": {}
+  "releases": {
+    "0.2.0": {
+      "published_at": "2026-10-27",
+      "channel": "prototype",
+      "notes": "Experimental prototype release for macOS, version 0.2.0.\n\nThese early builds are not a stable release. Native installation testing is incomplete. Builds may crash, lose data, or change without notice. Use only copies of your data and projects; do not rely on these builds for production work.\n\nChoose the DMG for your Mac:\n- Apple Silicon: EIDORA-0.2.0-macos-arm64.dmg\n- Intel: EIDORA-0.2.0-macos-x86_64.dmg\n\nBoth applications are Developer ID signed and notarized. Packaged self-tests passed. The Intel build was tested under Rosetta on Apple Silicon; testing on Intel hardware remains pending.\n\nQuit EIDORA, open the DMG, and drag EIDORA into Applications. Keep a backup of existing projects before opening them with this version.\n\nMac application source commit: 940b5b38aec5b898c04945aaf08f047a1e24bf73.\n",
+      "platforms": {
+        "macos-arm64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.0-macos-arm64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.0/EIDORA-0.2.0-macos-arm64.dmg",
+              "size": 475885048,
+              "sha256": "dac2cc56876e67f7f613991ec98caa5b98267741ecb53593c3a6f5795beb71af"
+            }
+          ]
+        },
+        "macos-x86_64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.0-macos-x86_64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.0/EIDORA-0.2.0-macos-x86_64.dmg",
+              "size": 492715561,
+              "sha256": "dca2db101900c2bed125f2db9794d91b1810a0959a137cb7860a02c92e08a61c"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

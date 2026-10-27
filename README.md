@@ -22,8 +22,15 @@ download listings, and release history.
 | Windows · x64 | Windows 10 or 11 |
 | Linux · x64 | Requirements will accompany the public release |
 
-Public application downloads are coming soon. Availability is listed separately
-for each platform.
+Stable application downloads are coming soon. EIDORA 0.2.0 experimental Mac
+installers are available for Apple Silicon and Intel. Availability is listed
+separately for each platform.
+
+Prototype and preview installers have a separate `/experimental/` page, linked
+discreetly from the homepage footer and marked for search engines not to index.
+It is publicly accessible, with a warning that builds are experimental and
+untested. Only stable releases appear in the main downloads and public update
+feed. See [release information](RELEASES.md) for how to add installer files.
 
 ## About this repository
 

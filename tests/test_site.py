@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_site import END, START, build, render_landing_downloads
+from build_site import END, START, build, catalog_for_channels, render_landing_downloads
 from catalog import PLATFORMS, REPOSITORY, validate_catalog
 from prepare_release import merge_release
 
@@ -109,11 +109,16 @@ class SiteTests(unittest.TestCase):
             shutil.copytree(ROOT / "assets", source / "assets")
             (source / "updates.json").write_text(json.dumps(sample()))
             output = build(source)
-            self.assertEqual(json.loads((output / "updates.json").read_text()), sample())
+            self.assertEqual(json.loads((output / "updates.json").read_text()), catalog_for_channels(sample(), {"stable"}))
             history = (output / "releases/index.html").read_text()
-            self.assertIn("&lt;script&gt;", history)
-            self.assertNotIn("<script>", history)
-            self.assertIn("Prototype software.", history)
+            self.assertNotIn("0.2.0", history)
+            experimental = (output / "experimental/index.html").read_text()
+            self.assertIn("&lt;script&gt;", experimental)
+            self.assertNotIn("<script>", experimental)
+            self.assertIn("untested prototype software", experimental)
+            self.assertIn('<meta name="robots" content="noindex, nofollow">', experimental)
+            self.assertIn('href="/experimental/#v0.2.0"', experimental)
+            self.assertIn('href="/experimental/"', (output / "index.html").read_text())
             self.assertNotIn("scripts", [p.name for p in output.iterdir()])
             for path in output.rglob("*.html"):
                 document = Links()
@@ -133,6 +138,45 @@ class SiteTests(unittest.TestCase):
             initial = (output / "index.html").read_bytes()
             build(source)
             self.assertEqual(initial, (output / "index.html").read_bytes())
+
+    def test_experimental_builds_do_not_replace_public_downloads_or_updates(self):
+        data = sample()
+        for version, channel in (("0.1.0", "stable"), ("0.3.0", "preview")):
+            record = json.loads(json.dumps(data["releases"]["0.2.0"]).replace("0.2.0", version))
+            record.update(channel=channel, notes=f"Notes for {version}")
+            data["releases"][version] = record
+        data["latest"]["macos-arm64"] = "0.3.0"
+        validate_catalog(data)
+        public = catalog_for_channels(data, {"stable"})
+        experimental = catalog_for_channels(data, {"prototype", "preview"})
+        self.assertEqual(public["latest"]["macos-arm64"], "0.1.0")
+        self.assertEqual(set(public["releases"]), {"0.1.0"})
+        self.assertEqual(experimental["latest"]["macos-arm64"], "0.3.0")
+        self.assertEqual(set(experimental["releases"]), {"0.2.0", "0.3.0"})
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "request-access.html", "EIDORA_logo.svg"):
+                shutil.copyfile(ROOT / name, source / name)
+            shutil.copytree(ROOT / "assets", source / "assets")
+            (source / "updates.json").write_text(json.dumps(data))
+            output = build(source)
+            for name in ("index.html", "download/index.html", "releases/index.html", "updates.json"):
+                rendered = (output / name).read_text()
+                self.assertIn("0.1.0", rendered)
+                self.assertNotIn("0.2.0", rendered)
+                self.assertNotIn("0.3.0", rendered)
+            rendered = (output / "experimental/index.html").read_text()
+            self.assertIn("0.2.0", rendered)
+            self.assertIn("0.3.0", rendered)
+            self.assertNotIn("0.1.0", rendered)
+
+    def test_empty_experimental_catalog_is_explicit(self):
+        from build_site import cards, history
+        empty = {"schema_version": 1, "latest": dict.fromkeys(PLATFORMS), "releases": {}}
+        self.assertIn("No experimental installers have been posted yet", history(empty, experimental=True))
+        rendered = cards(empty, experimental=True)
+        self.assertEqual(rendered.count("No experimental build available yet"), len(PLATFORMS))
+        self.assertNotIn('class="download-link"', rendered)
 
 
 if __name__ == "__main__":

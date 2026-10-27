@@ -6,6 +6,9 @@
 .release-page h1 { font-family: var(--serif); font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.15; }
 .release-page > p { margin-block: 1.5rem; max-width: 48rem; }
 .release-page .release-grid { margin-block: 2rem; }
+.experimental-notice { max-width: 48rem; margin-block: 2rem; padding: 1.5rem; border-left: 3px solid var(--gold-ink); background: var(--sage-mist); }
+.experimental-notice h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
+.experimental-notice p { margin-top: .75rem; }
 .checksum { font-size: .75rem; margin-block: .5rem; }
 .checksum summary { cursor: pointer; color: var(--porcelain); }
 .checksum summary:hover, .checksum summary::after { color: var(--gold); }
