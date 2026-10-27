@@ -9,10 +9,13 @@
 .experimental-notice { max-width: 48rem; margin-block: 2rem; padding: 1.5rem; border-left: 3px solid var(--gold-ink); background: var(--sage-mist); }
 .experimental-notice h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
 .experimental-notice p { margin-top: .75rem; }
-.checksum { font-size: .75rem; margin-block: .5rem; }
-.checksum summary { cursor: pointer; color: var(--porcelain); }
-.checksum summary:hover, .checksum summary::after { color: var(--gold); }
-.checksum code { display: block; overflow-wrap: anywhere; margin-top: .5rem; }
+.download-primary { display: flex; justify-content: center; min-height: 48px; padding: .75rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; text-align: center; text-decoration: none; }
+.download-primary:hover { background: var(--gold); color: var(--deep-teal); }
+.checksum, .checksum:last-child { border: 0; font-size: .68rem; margin-block: .35rem; }
+.checksum summary { display: inline-flex; align-items: center; gap: .4rem; min-height: 36px; padding: .35rem .15rem; color: var(--inverse-muted); font-size: inherit; font-weight: 400; }
+.checksum summary::after { position: static; font-size: .8rem; color: inherit; }
+.checksum summary:hover { color: var(--porcelain); }
+.checksum code { display: block; overflow-wrap: anywhere; margin-top: .25rem; color: var(--inverse-muted); }
 .checksum summary:focus-visible { outline-color: var(--gold); }
 .installation { max-width: 48rem; margin-top: 3rem; }
 .installation h3 { margin-top: 1.5rem; }

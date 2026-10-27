@@ -21,11 +21,11 @@ PLATFORM_REQUIREMENTS = {
 def download_details(platform, *, checksums=False):
     parts = [f'<p class="release-meta">{escape(platform["requirements"])}</p>']
     if "store_url" in platform:
-        parts.append(f'<a class="download-link" href="{escape(platform["store_url"], quote=True)}">Get it from Microsoft Store</a>')
+        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}">Get it from Microsoft Store</a>')
     else:
         for asset in platform["downloads"]:
             parts.append(
-                f'<div class="installer"><a class="download-link" href="{escape(asset["url"], quote=True)}">'
+                f'<div class="installer"><a class="download-link download-primary" href="{escape(asset["url"], quote=True)}">'
                 f'Download {escape({"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"]))} · {asset["size"] / 1024**2:.1f} MiB</a>'
             )
             if checksums:
