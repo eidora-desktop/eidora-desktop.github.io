@@ -1,6 +1,11 @@
 /* Shared download catalog additions; the landing-page design stays in styles.css. */
 .release-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .release-grid .download-card { min-width: 0; scroll-margin-top: 2rem; }
+.release-grid .download-card > h3 { min-height: 2.8em; }
+.download-actions { display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; margin-top: .75rem; }
+.release-grid .download-actions { min-height: calc(96px + .6rem); }
+.download-details { margin-top: 1.25rem; }
+.download-details .release-meta { margin-block: 0 .65rem; }
 .release-grid .download-card:target { outline: 3px solid var(--gold); outline-offset: 4px; }
 .release-page { padding-block: 3rem; }
 .release-page h1 { font-family: var(--serif); font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.15; }
@@ -9,7 +14,7 @@
 .experimental-notice { max-width: 48rem; margin-block: 2rem; padding: 1.5rem; border-left: 3px solid var(--gold-ink); background: var(--sage-mist); }
 .experimental-notice h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
 .experimental-notice p { margin-top: .75rem; }
-.download-primary { display: flex; justify-content: center; min-height: 48px; padding: .75rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; text-align: center; text-decoration: none; }
+.download-primary { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 13.5rem; max-width: 100%; height: 48px; margin-top: 0; padding: .5rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; line-height: 1.2; text-align: center; text-decoration: none; }
 .download-primary:hover { background: var(--gold); color: var(--deep-teal); }
 .checksum, .checksum:last-child { border: 0; font-size: .68rem; margin-block: .35rem; }
 .checksum summary { display: inline-flex; align-items: center; gap: .4rem; min-height: 36px; padding: .35rem .15rem; color: var(--inverse-muted); font-size: inherit; font-weight: 400; }

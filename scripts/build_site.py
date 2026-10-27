@@ -18,19 +18,29 @@ PLATFORM_REQUIREMENTS = {
 }
 
 
-def download_details(platform, *, checksums=False):
-    parts = [f'<p class="release-meta">{escape(platform["requirements"])}</p>']
+def download_details(platform, *, checksums=False, release=None):
+    parts = ['<div class="download-actions">']
     if "store_url" in platform:
-        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}">Get it from Microsoft Store</a>')
+        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}">Microsoft Store</a>')
     else:
         for asset in platform["downloads"]:
+            label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
             parts.append(
-                f'<div class="installer"><a class="download-link download-primary" href="{escape(asset["url"], quote=True)}">'
-                f'Download {escape({"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"]))} · {asset["size"] / 1024**2:.1f}&nbsp;MiB</a>'
+                f'<a class="download-link download-primary" href="{escape(asset["url"], quote=True)}" aria-label="Download {escape(asset["name"], quote=True)}">'
+                f'Download {escape(label)}</a>'
             )
+    parts.append('</div><div class="download-details">')
+    if release is not None:
+        parts.append(f'<p class="release-meta">Version {release["version"]} · {release["published_at"]} · {release["channel"].capitalize()}</p>')
+    parts.append(f'<p class="release-meta">{escape(platform["requirements"])}</p>')
+    if "downloads" in platform:
+        for asset in platform["downloads"]:
+            label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
+            parts.append(f'<div class="installer"><p class="release-meta">{escape(label)} · {asset["size"] / 1024**2:.1f}&nbsp;MiB</p>')
             if checksums:
                 parts.append(f'<details class="checksum"><summary>SHA-256 checksum</summary><code>{asset["sha256"]}</code></details>')
             parts.append('</div>')
+    parts.append('</div>')
     return "".join(parts)
 
 
@@ -49,14 +59,14 @@ def platform_card(catalog, key, *, checksums=False, experimental=False):
     version = catalog["latest"][key]
     parts = [f'<article class="download-card" id="{key}"><h3>{PLATFORMS[key][0]}</h3>']
     if version is None:
+        parts.append('<div class="download-actions"><span class="download-pending">Not available yet</span></div><div class="download-details">')
         if key in PLATFORM_REQUIREMENTS:
             parts.append(f'<p class="release-meta">{escape(PLATFORM_REQUIREMENTS[key])}</p>')
         status = "No experimental build available yet" if experimental else "Public release coming soon"
-        parts.append(f'<p class="release-meta">{status}</p><span class="download-pending">Not available yet</span>')
+        parts.append(f'<p class="release-meta">{status}</p></div>')
     else:
         release = catalog["releases"][version]
-        parts.append(f'<p class="release-meta">Version {version} · {release["published_at"]} · {release["channel"].capitalize()}</p>')
-        parts.append(download_details(release["platforms"][key], checksums=checksums))
+        parts.append(download_details(release["platforms"][key], checksums=checksums, release={**release, "version": version}))
         notes_path = "experimental" if experimental else "releases"
         parts.append(f'<a class="download-link" href="/{notes_path}/#v{version}">Release notes</a>')
     parts.append('</article>')
@@ -102,9 +112,10 @@ def history(catalog, *, experimental=False):
         parts.append(f'<p class="release-notes">{escape(release["notes"])}</p>')
         for key, platform in release["platforms"].items():
             parts.append(f'<section class="download-card history-platform"><h3>{PLATFORMS[key][0]}</h3>')
+            parts.append(download_details(platform, checksums=True))
             if key == "windows-x86_64":
                 parts.append('<p class="release-meta">Microsoft Store offers its current version; historical Windows packages are not hosted here.</p>')
-            parts.append(download_details(platform, checksums=True) + '</section>')
+            parts.append('</section>')
         parts.append('</article>')
     return "".join(parts)
 
