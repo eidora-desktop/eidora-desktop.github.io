@@ -4,7 +4,7 @@
     "macos-arm64": "0.2.0",
     "macos-x86_64": "0.2.0",
     "windows-x86_64": null,
-    "linux-x86_64": "0.2.0"
+    "linux-x86_64": "0.2.1"
   },
   "releases": {
     "0.2.0": {
@@ -52,6 +52,32 @@
               "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.0/EIDORA-0.2.0-linux-x86_64.AppImage",
               "size": 535296504,
               "sha256": "f442b3bce496fae43b6e595a2fdf5f4bf6596d9648e29093c6bb0a0a79192126"
+            }
+          ]
+        }
+      }
+    },
+    "0.2.1": {
+      "published_at": "2026-10-27",
+      "channel": "prototype",
+      "notes": "Experimental Linux x64 prototype release, version 0.2.1.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis Linux-only patch adds developer attribution, the EIDORA homepage, and AppStream metadata. It does not provide a verified publisher badge or a signed APT repository.\n\nDownloads:\n- EIDORA-0.2.1-linux-x86_64.AppImage — standalone application; make the file executable before running it.\n- EIDORA-0.2.1-linux-x86_64.deb — package for Debian-based distributions; install with your package manager. Installed files occupy approximately 1.25 GB.\n\nThe builds were built and self-tested on Ubuntu 24.04. Packaged X11 self-tests, project creation, and the welcome tour passed. Other distributions and native installation/upgrade have not been verified.\n\nMac downloads remain at version 0.2.0. There is no Windows build in this release.\n\nApplication source commit: 443fde7bdc009e507f0e738565103c96d6f34726.\n",
+      "platforms": {
+        "linux-x86_64": {
+          "requirements": "Linux x64; built and self-tested on Ubuntu 24.04",
+          "downloads": [
+            {
+              "format": "deb",
+              "name": "EIDORA-0.2.1-linux-x86_64.deb",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.1/EIDORA-0.2.1-linux-x86_64.deb",
+              "size": 474446636,
+              "sha256": "0825a185f9343f9f7344d7ad7d9a4f35d432a303ed516971427668b76c5f4049"
+            },
+            {
+              "format": "AppImage",
+              "name": "EIDORA-0.2.1-linux-x86_64.AppImage",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.1/EIDORA-0.2.1-linux-x86_64.AppImage",
+              "size": 535292408,
+              "sha256": "05f60169105010bfa142a37469a6f22ab03557d790b18d66f317cead70cc01d5"
             }
           ]
         }

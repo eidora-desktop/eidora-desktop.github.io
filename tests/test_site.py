@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_site import END, START, build, catalog_for_channels, render_landing_downloads
+from build_site import END, START, build, catalog_for_channels, experimental_downloads, render_landing_downloads
 from catalog import PLATFORMS, REPOSITORY, validate_catalog
 from prepare_release import merge_release
 
@@ -138,6 +138,31 @@ class SiteTests(unittest.TestCase):
             initial = (output / "index.html").read_bytes()
             build(source)
             self.assertEqual(initial, (output / "index.html").read_bytes())
+
+    def test_linux_patch_keeps_mac_version_and_displays_matching_downloads(self):
+        original = sample()
+        assets = []
+        for extension in ("deb", "AppImage"):
+            name = f"EIDORA-0.2.1-linux-x86_64.{extension}"
+            assets.append({"name": name, "state": "uploaded", "digest": "sha256:" + "b" * 64,
+                           "size": 2000000, "browser_download_url": f"{REPOSITORY}/releases/download/v0.2.1/{name}"})
+        release = {"tag_name": "v0.2.1", "draft": False, "prerelease": True,
+                   "published_at": "2026-01-02T12:00:00Z", "body": "Linux patch", "assets": assets}
+        catalog = merge_release(original, release, "0.2.1", "linux-x86_64", "Linux test requirement", "prototype")
+        self.assertEqual(catalog["latest"]["macos-arm64"], "0.2.0")
+        self.assertEqual(catalog["latest"]["linux-x86_64"], "0.2.1")
+        self.assertEqual(catalog["releases"]["0.2.0"], original["releases"]["0.2.0"])
+        rendered = experimental_downloads(catalog)
+        self.assertIn('class="prototype-badge">Experimental</span>', rendered)
+        self.assertIn('aria-label="Download EIDORA 0.2.0 — Apple Silicon (M-Series)"', rendered)
+        self.assertIn('aria-label="Download EIDORA 0.2.1 — AppImage"', rendered)
+        self.assertIn('aria-label="Download EIDORA 0.2.1 — DEB package"', rendered)
+        linux = rendered.split('id="linux-x86_64"', 1)[1].split('</article>', 1)[0]
+        self.assertEqual(linux.count(' · v0.2.1'), 2)
+        self.assertNotIn('v0.2.0', linux)
+        for asset in assets:
+            self.assertIn(asset["browser_download_url"], linux)
+        self.assertNotIn('0.2.1', json.dumps(catalog_for_channels(catalog, {"stable"})))
 
     def test_experimental_builds_do_not_replace_public_downloads_or_updates(self):
         data = sample()

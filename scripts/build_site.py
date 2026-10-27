@@ -86,7 +86,7 @@ def experimental_downloads(catalog):
     if shared_version:
         parts.append(f'<p class="prototype-version"><span class="prototype-badge">Experimental</span>Version {shared_version}<a href="/experimental/#v{shared_version}">Release notes</a></p>')
     else:
-        parts.append('<p class="prototype-version">Choose a download for your computer.</p>')
+        parts.append('<p class="prototype-version"><span class="prototype-badge">Experimental</span>Choose a download for your computer.</p>')
     parts.append('<p class="prototype-warning">This is untested prototype software. Use copies of your projects.</p>')
 
     def option(key, label, description, extension=None):
