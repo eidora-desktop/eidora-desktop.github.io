@@ -26,7 +26,7 @@ def download_details(platform, *, checksums=False):
         for asset in platform["downloads"]:
             parts.append(
                 f'<div class="installer"><a class="download-link download-primary" href="{escape(asset["url"], quote=True)}">'
-                f'Download {escape({"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"]))} · {asset["size"] / 1024**2:.1f} MiB</a>'
+                f'Download {escape({"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"]))} · {asset["size"] / 1024**2:.1f}&nbsp;MiB</a>'
             )
             if checksums:
                 parts.append(f'<details class="checksum"><summary>SHA-256 checksum</summary><code>{asset["sha256"]}</code></details>')

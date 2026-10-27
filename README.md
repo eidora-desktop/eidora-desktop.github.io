@@ -22,9 +22,11 @@ download listings, and release history.
 | Windows · x64 | Windows 10 or 11 |
 | Linux · x64 | Requirements will accompany the public release |
 
-Stable application downloads are coming soon. EIDORA 0.2.0 experimental Mac
-installers are available for Apple Silicon and Intel. Availability is listed
-separately for each platform.
+Stable application downloads are coming soon. EIDORA 0.2.0 experimental installers
+are available for Apple Silicon and Intel Macs, plus Linux x64 as AppImage and DEB.
+The Linux builds were built and self-tested on Ubuntu 24.04; other distributions
+and native installation remain unverified. Availability is listed separately for
+each platform.
 
 Prototype and preview installers have a separate `/experimental/` page, linked
 discreetly from the homepage footer and marked for search engines not to index.

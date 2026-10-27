@@ -11,10 +11,12 @@ It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. Experimental release 0.2.0 includes
-signed and notarized DMG installers for Apple Silicon and Intel Macs. Native
-installation testing remains incomplete; the Intel build has been tested under
-Rosetta on Apple Silicon, with Intel hardware testing still pending. Each download
-includes its size and SHA-256 checksum on the experimental page.
+signed and notarized DMG installers for Apple Silicon and Intel Macs, plus AppImage
+and DEB installers for Linux x64. The Linux builds were built and self-tested on
+Ubuntu 24.04; other distributions remain unverified. Native installation testing
+remains incomplete; the Intel build has been tested under Rosetta on Apple Silicon,
+with Intel hardware testing still pending. Each download includes its size and an
+expandable SHA-256 checksum on the experimental page.
 
 ## Download formats
 
