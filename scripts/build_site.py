@@ -1,5 +1,6 @@
 """Build a static Pages artifact; no browser JavaScript or third-party packages."""
 import argparse
+import hashlib
 from html import escape
 import json
 from pathlib import Path
@@ -77,7 +78,7 @@ def cards(catalog, *, checksums=False, experimental=False):
     return '<div class="download-grid release-grid">' + "".join(platform_card(catalog, key, checksums=checksums, experimental=experimental) for key in PLATFORMS) + '</div>'
 
 
-def page(title, content, path, *, noindex=False):
+def page(title, content, path, *, noindex=False, stylesheet_revision=""):
     robots = '<meta name="robots" content="noindex, nofollow">' if noindex else ""
     return f'''<!doctype html>
 <html lang="en"><head>
@@ -86,7 +87,7 @@ def page(title, content, path, *, noindex=False):
 {robots}
 <link rel="canonical" href="https://www.eidora.org/{path}/">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
-<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/release-pages.css">
+<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/release-pages.css?v={stylesheet_revision}">
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header wrap"><a class="brand" href="/" aria-label="EIDORA home">
@@ -139,7 +140,9 @@ def build(source=ROOT):
     catalog = validate_catalog(json.loads(raw))
     public_catalog = catalog_for_channels(catalog, {"stable"})
     experimental_catalog = catalog_for_channels(catalog, {"prototype", "preview"})
+    stylesheet_revision = hashlib.sha256((source / "release-pages.css").read_bytes()).hexdigest()[:12]
     index = render_landing_downloads((source / "index.html").read_text(), public_catalog)
+    index = index.replace('href="release-pages.css"', f'href="release-pages.css?v={stylesheet_revision}"')
     output = source / "_site"
     if output.is_symlink():
         raise ValueError("The build output must not be a symlink.")
@@ -169,7 +172,7 @@ def build(source=ROOT):
     for path, title, body in (("download", "Download EIDORA", content), ("releases", "EIDORA releases", history(public_catalog)), ("experimental", "Experimental builds", experimental_content)):
         directory = output / path
         directory.mkdir()
-        (directory / "index.html").write_text(page(title, body, path, noindex=path == "experimental"))
+        (directory / "index.html").write_text(page(title, body, path, noindex=path == "experimental", stylesheet_revision=stylesheet_revision))
     return output
 
 
