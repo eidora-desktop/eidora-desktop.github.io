@@ -109,7 +109,7 @@ def experimental_downloads(catalog):
 
     parts.append('<div class="prototype-grid">')
     parts.append('<article class="prototype-card" aria-labelledby="prototype-macos"><h2 id="prototype-macos">macOS</h2>')
-    parts.append('<div class="prototype-options">' + option("macos-arm64", "Apple Silicon", "DMG", "dmg") + option("macos-x86_64", "Intel", "DMG", "dmg") + '</div>')
+    parts.append('<div class="prototype-options">' + option("macos-arm64", "Apple Silicon (M-Series)", "DMG", "dmg") + option("macos-x86_64", "Intel (older Macs)", "DMG", "dmg") + '</div>')
     mac_requirements = {catalog["releases"][version]["platforms"][key]["requirements"]
                         for key in ("macos-arm64", "macos-x86_64") if (version := catalog["latest"][key])}
     parts.append(f'<div class="prototype-card-footer"><p>{escape(" · ".join(sorted(mac_requirements)) or "macOS 15 or later")}</p>')
