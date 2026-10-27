@@ -78,7 +78,80 @@ def cards(catalog, *, checksums=False, experimental=False):
     return '<div class="download-grid release-grid">' + "".join(platform_card(catalog, key, checksums=checksums, experimental=experimental) for key in PLATFORMS) + '</div>'
 
 
-def page(title, content, path, *, noindex=False, stylesheet_revision=""):
+def experimental_downloads(catalog):
+    """Group choices by operating system, with technical information out of the way."""
+    versions = {version for version in catalog["latest"].values() if version is not None}
+    shared_version = next(iter(versions)) if len(versions) == 1 else None
+    parts = ['<div class="prototype-downloads">']
+    if shared_version:
+        parts.append(f'<p class="prototype-version"><span class="prototype-badge">Experimental</span>Version {shared_version}<a href="/experimental/#v{shared_version}">Release notes</a></p>')
+    else:
+        parts.append('<p class="prototype-version">Choose a download for your computer.</p>')
+    parts.append('<p class="prototype-warning">This is untested prototype software. Use copies of your projects.</p>')
+
+    def option(key, label, description, extension=None):
+        version = catalog["latest"][key]
+        platform = catalog["releases"][version]["platforms"][key] if version else None
+        asset = next((item for item in platform.get("downloads", []) if item["format"] == extension), None) if platform else None
+        if not platform or (extension and asset is None):
+            return f'<div class="prototype-option"><span class="prototype-unavailable">{escape(label)}<span>Coming soon</span></span></div>'
+        url = asset["url"] if asset else platform["store_url"]
+        meta = escape(description)
+        if asset:
+            meta += f' · {asset["size"] / 1024**2:.1f}&nbsp;MiB'
+        if not shared_version:
+            meta += f' · v{version}'
+        return (
+            f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}" '
+            f'aria-label="Download EIDORA {version} — {escape(label, quote=True)}">'
+            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p></div>'
+        )
+
+    parts.append('<div class="prototype-grid">')
+    parts.append('<article class="prototype-card" aria-labelledby="prototype-macos"><h2 id="prototype-macos">macOS</h2>')
+    parts.append('<div class="prototype-options">' + option("macos-arm64", "Apple Silicon", "DMG", "dmg") + option("macos-x86_64", "Intel", "DMG", "dmg") + '</div>')
+    mac_requirements = {catalog["releases"][version]["platforms"][key]["requirements"]
+                        for key in ("macos-arm64", "macos-x86_64") if (version := catalog["latest"][key])}
+    parts.append(f'<div class="prototype-card-footer"><p>{escape(" · ".join(sorted(mac_requirements)) or "macOS 15 or later")}</p>')
+    parts.append('<details class="prototype-help"><summary>Which Mac do I have?</summary><p>Open Apple menu → About This Mac. If “Chip” says Apple M-series, choose Apple Silicon. If “Processor” says Intel, choose Intel.</p></details></div></article>')
+
+    parts.append('<article class="prototype-card prototype-card-pending" aria-labelledby="prototype-windows"><h2 id="prototype-windows">Windows</h2>')
+    if catalog["latest"]["windows-x86_64"]:
+        parts.append('<div class="prototype-options">' + option("windows-x86_64", "Microsoft Store", "Windows x64") + '</div>')
+    else:
+        parts.append('<div class="prototype-coming-soon"><span>Coming soon</span><p>No experimental Windows download yet.</p></div>')
+    parts.append('<div class="prototype-card-footer"><p>Windows 10 or 11 · x64</p></div></article>')
+
+    parts.append('<article class="prototype-card" id="linux-x86_64" aria-labelledby="prototype-linux"><h2 id="prototype-linux">Linux</h2>')
+    parts.append('<div class="prototype-options">' + option("linux-x86_64", "AppImage", "Standalone app", "AppImage") + option("linux-x86_64", "DEB package", "Ubuntu / Debian package", "deb") + '</div>')
+    linux_version = catalog["latest"]["linux-x86_64"]
+    linux_requirement = catalog["releases"][linux_version]["platforms"]["linux-x86_64"]["requirements"] if linux_version else "Linux x64"
+    parts.append(f'<div class="prototype-card-footer"><p>{escape(linux_requirement)}</p></div></article></div>')
+
+    parts.append('<div class="prototype-extras"><details class="prototype-extra"><summary>Checksums &amp; compatibility</summary><div class="prototype-extra-body">')
+    if not versions:
+        parts.append('<p>No experimental installers have been posted yet.</p>')
+    for key, version in catalog["latest"].items():
+        if not version:
+            continue
+        platform = catalog["releases"][version]["platforms"][key]
+        parts.append(f'<section class="prototype-technical"><h3>{PLATFORMS[key][0]} · v{version}</h3><p>{escape(platform["requirements"])}</p>')
+        if key == "linux-x86_64":
+            parts.append('<p>Native installation and other distributions remain unverified. Make the AppImage executable before running it; install the DEB with your package manager.</p>')
+        for asset in platform.get("downloads", []):
+            parts.append(f'<p class="prototype-filename">{escape(asset["name"])}</p><code>{asset["sha256"]}</code>')
+        parts.append('</section>')
+    parts.append('</div></details>')
+    for version in sorted(catalog["releases"], key=version_tuple, reverse=True):
+        release = catalog["releases"][version]
+        parts.append(f'<details class="prototype-extra" id="v{version}"><summary>Release notes · {version}</summary><div class="prototype-extra-body">')
+        parts.append(f'<p class="prototype-note-date">{release["published_at"]} · {release["channel"].capitalize()}</p><p class="release-notes">{escape(release["notes"])}</p>')
+        parts.append(f'<p><a href="https://github.com/eidora-desktop/EIDORA/releases/tag/v{version}">View this release on GitHub</a></p></div></details>')
+    parts.append('</div><p class="prototype-public-link"><a href="/download/">Looking for a stable release?</a></p></div>')
+    return "".join(parts)
+
+
+def page(title, content, path, *, noindex=False, stylesheet_revision="", heading=None):
     robots = '<meta name="robots" content="noindex, nofollow">' if noindex else ""
     return f'''<!doctype html>
 <html lang="en"><head>
@@ -94,7 +167,7 @@ def page(title, content, path, *, noindex=False, stylesheet_revision=""):
 <img class="brand-icon" src="/assets/brand/eidora_icon.svg" alt="" width="44" height="44">
 <img class="wordmark" src="/assets/brand/eidora_wordmark.svg" alt="EIDORA" width="136" height="24"></a>
 <nav aria-label="Main navigation"><a href="/download/">Downloads</a><a href="/releases/">Releases</a></nav></header>
-<main id="main" class="wrap release-page"><h1>{escape(title)}</h1>{content}</main>
+<main id="main" class="wrap release-page"><h1>{escape(heading or title)}</h1>{content}</main>
 <footer class="site-footer wrap"><p>EIDORA · The Embedding Space Explorer</p><a href="https://github.com/eidora-desktop/EIDORA">Source code</a></footer>
 </body></html>'''
 
@@ -162,17 +235,11 @@ def build(source=ROOT):
 <h3>Linux</h3><p>Use the DEB package on compatible Debian-based distributions, or the AppImage on supported Linux systems. Install a newer DEB over the previous package. For AppImage, quit EIDORA, replace the old file, and make the new file executable. Updates are downloaded manually.</p>
 <p>Keep your project folders when replacing the application. Read each release's compatibility notes before opening existing projects.</p>
 <p><a href="/releases/">Release notes and previous versions</a></p></section>'''
-    experimental_content = f'''<p>Early builds for people who want to try EIDORA while it is still in development.</p>
-<aside class="experimental-notice" aria-labelledby="experimental-warning"><h2 id="experimental-warning">Before you download</h2>
-<p>{PROTOTYPE_NOTICE}</p></aside>
-<p>Choose your platform below. Check the requirements and release notes for each build before installing.</p>'''
-    experimental_content += cards(experimental_catalog, checksums=True, experimental=True)
-    experimental_content += '<section class="installation" aria-labelledby="experimental-notes"><h2 id="experimental-notes">Experimental release notes</h2>' + history(experimental_catalog, experimental=True) + '</section>'
-    experimental_content += '<p><a href="/download/">View public release availability</a></p>'
+    experimental_content = experimental_downloads(experimental_catalog)
     for path, title, body in (("download", "Download EIDORA", content), ("releases", "EIDORA releases", history(public_catalog)), ("experimental", "Experimental builds", experimental_content)):
         directory = output / path
         directory.mkdir()
-        (directory / "index.html").write_text(page(title, body, path, noindex=path == "experimental", stylesheet_revision=stylesheet_revision))
+        (directory / "index.html").write_text(page(title, body, path, noindex=path == "experimental", stylesheet_revision=stylesheet_revision, heading="Download EIDORA" if path == "experimental" else None))
     return output
 
 
