@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "latest": {
-    "macos-arm64": "0.2.0",
-    "macos-x86_64": "0.2.0",
+    "macos-arm64": "0.2.2",
+    "macos-x86_64": "0.2.2",
     "windows-x86_64": null,
-    "linux-x86_64": "0.2.1"
+    "linux-x86_64": "0.2.2"
   },
   "releases": {
     "0.2.0": {
@@ -78,6 +78,56 @@
               "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.1/EIDORA-0.2.1-linux-x86_64.AppImage",
               "size": 535292408,
               "sha256": "05f60169105010bfa142a37469a6f22ab03557d790b18d66f317cead70cc01d5"
+            }
+          ]
+        }
+      }
+    },
+    "0.2.2": {
+      "published_at": "2026-10-29",
+      "channel": "prototype",
+      "notes": "Experimental macOS and Linux prototype release, version 0.2.2.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch improves keyboard navigation, Discovery and Figures workflows, Linux dark-mode appearance, and starter setup. The updated MET example includes reduced ResNet50 and DINO vectors, saved projections, snapshots, and figure settings. No project-format change is introduced.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Signed runtime tests passed on Apple Silicon and under Rosetta. The maintainer reported that the requested Intel Mac and Linux x64 manual installation and workflow checks passed. Linux builds were built and self-tested on Ubuntu 24.04; no broader distribution compatibility is claimed.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows is excluded from this release and the website downloads while its validation continues.\n\nApplication build source: efad10cce18517c2dc6472a9604d1f90b73e9e87.\n",
+      "platforms": {
+        "macos-arm64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.2-macos-arm64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.2/EIDORA-0.2.2-macos-arm64.dmg",
+              "size": 481908406,
+              "sha256": "402bddd3186f11191a68d96ec97da34498f9e6f906a621ba8571f20d5cdc218b"
+            }
+          ]
+        },
+        "macos-x86_64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.2-macos-x86_64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.2/EIDORA-0.2.2-macos-x86_64.dmg",
+              "size": 496459459,
+              "sha256": "3f5e3356ebd6b6512af0a725a10e24f79ec6de1d8b4b877c593d5cc937a15eb7"
+            }
+          ]
+        },
+        "linux-x86_64": {
+          "requirements": "Linux x64; built and self-tested on Ubuntu 24.04",
+          "downloads": [
+            {
+              "format": "deb",
+              "name": "EIDORA-0.2.2-linux-x86_64.deb",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.2/EIDORA-0.2.2-linux-x86_64.deb",
+              "size": 479598786,
+              "sha256": "1dfa79d202c4e6c9693b968f3a5985b6d74298a9b6af4b9e9505e69a8851f891"
+            },
+            {
+              "format": "AppImage",
+              "name": "EIDORA-0.2.2-linux-x86_64.AppImage",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.2/EIDORA-0.2.2-linux-x86_64.AppImage",
+              "size": 540465656,
+              "sha256": "6fe76a652818e2a4df9c1cfcf0cfb8ebb3f41637d8409feb017bbef88bebc185"
             }
           ]
         }

@@ -11,15 +11,16 @@ It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. The experimental downloads offer
-signed and notarized 0.2.0 DMG installers for Apple Silicon and Intel Macs, plus
-0.2.1 AppImage and DEB installers for Linux x64. The Linux patch adds developer
-attribution, the project homepage, and AppStream metadata. The 0.2.0 release assets
-remain available on GitHub. The page groups these downloads under the 0.2 series
-and shows the latest full version for each platform. The Linux builds were built
-and self-tested on Ubuntu 24.04; other distributions remain unverified. Native installation testing
-remains incomplete; the Intel build has been tested under Rosetta on Apple Silicon,
-with Intel hardware testing still pending. Each download includes its size and an
-expandable SHA-256 checksum on the experimental page.
+0.2.2 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
+and DEB installers for Linux x64. Windows remains unavailable. Earlier release
+assets remain on GitHub. The page groups downloads under the 0.2 series and
+shows the latest full version for each platform.
+
+All platform packaged tests passed. Signed Mac tests passed on Apple Silicon
+and under Rosetta, and the maintainer reported passing Intel Mac and Linux x64
+manual installation and workflow checks. Linux packages were built and
+self-tested on Ubuntu 24.04; broader distribution support is not claimed.
+Every download includes its size and expandable SHA-256 checksum.
 
 ## Download formats
 
