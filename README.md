@@ -23,7 +23,7 @@ download listings, and release history.
 | Linux · x64 | Requirements will accompany the public release |
 
 Stable application downloads are coming soon. Experimental installers are available
-for Apple Silicon and Intel Macs (0.2.0), plus Linux x64 as AppImage and DEB (0.2.1).
+for Apple Silicon and Intel Macs and Linux x64 as AppImage and DEB, all at 0.2.3.
 The Linux builds were built and self-tested on Ubuntu 24.04; other distributions
 and native installation remain unverified. Availability is listed separately for
 each platform.
