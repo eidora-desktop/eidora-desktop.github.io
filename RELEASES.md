@@ -11,14 +11,15 @@ It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. The experimental downloads offer
-0.2.2 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
+0.2.3 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
 and DEB installers for Linux x64. Windows remains unavailable. Earlier release
-assets remain on GitHub. The page groups downloads under the 0.2 series and
+listings and assets are retired after local archival; Git tags and source history
+remain available. The page groups downloads under the 0.2 series and
 shows the latest full version for each platform.
 
 All platform packaged tests passed. Signed Mac tests passed on Apple Silicon
-and under Rosetta, and the maintainer reported passing Intel Mac and Linux x64
-manual installation and workflow checks. Linux packages were built and
+and under Rosetta. Fresh manual installation checks on Intel hardware and Linux
+remain unverified for 0.2.3. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Every download includes its size and expandable SHA-256 checksum.
 
