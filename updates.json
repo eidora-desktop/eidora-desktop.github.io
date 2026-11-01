@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "latest": {
-    "macos-arm64": "0.2.3",
-    "macos-x86_64": "0.2.3",
+    "macos-arm64": "0.2.4",
+    "macos-x86_64": "0.2.4",
     "windows-x86_64": null,
-    "linux-x86_64": "0.2.3"
+    "linux-x86_64": "0.2.4"
   },
   "releases": {
     "0.2.3": {
@@ -52,6 +52,56 @@
               "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.3/EIDORA-0.2.3-linux-x86_64.AppImage",
               "size": 540469752,
               "sha256": "66a4c12111b9adfe68c5b3e3ebf75730efdd0d288a3ffe929a1459be8346a1ce"
+            }
+          ]
+        }
+      }
+    },
+    "0.2.4": {
+      "published_at": "2026-11-01",
+      "channel": "prototype",
+      "notes": "Experimental macOS and Linux prototype release, version 0.2.4.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch fixes automatic thumbnail creation after image/video embedding, preserves thumbnail aspect ratio independently of model preprocessing, and corrects upside-down portrait video thumbnails. It also fixes UMAP runtime permissions in signed Mac applications, Discovery shutdown, Windows welcome-tour positioning, and Discovery filter/snapshot footer alignment. Project formats and dependency pins are unchanged.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Packaged self-tests passed on all four build platforms. Signed Mac runtime checks passed on Apple Silicon and under Rosetta, including a real UMAP projection. Linux packages were built and self-tested on Ubuntu 24.04. Fresh manual installation checks on Intel hardware and Linux, and broader Linux distribution support, remain unverified for this experimental version.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows 0.2.4 is prepared separately for installed testing and Microsoft Store submission. It is not included in these public downloads.\n\nApplication build source: bd86a53b8f88a905036ef8e4f333777232981d81.\n",
+      "platforms": {
+        "macos-arm64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.4-macos-arm64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-macos-arm64.dmg",
+              "size": 481234454,
+              "sha256": "a635ae07a8287ebe379e0616d372897ac8abd289dd84b7b8c3a7279744a15eb6"
+            }
+          ]
+        },
+        "macos-x86_64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.4-macos-x86_64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-macos-x86_64.dmg",
+              "size": 497668002,
+              "sha256": "44ad56bc71dab235b77df7ba3ac8e605242748f808f438393a0c11dd019195aa"
+            }
+          ]
+        },
+        "linux-x86_64": {
+          "requirements": "Linux x64; built and self-tested on Ubuntu 24.04",
+          "downloads": [
+            {
+              "format": "deb",
+              "name": "EIDORA-0.2.4-linux-x86_64.deb",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-linux-x86_64.deb",
+              "size": 479700016,
+              "sha256": "8bd5332eff915ad35d815ee54f62447ee1c881cf73824939ac0bc98f7704cb5a"
+            },
+            {
+              "format": "AppImage",
+              "name": "EIDORA-0.2.4-linux-x86_64.AppImage",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-linux-x86_64.AppImage",
+              "size": 540473848,
+              "sha256": "0268801d0cbda03e9366743d7b1da3c89099a68b232794b4205974a7de0af516"
             }
           ]
         }
