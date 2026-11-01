@@ -26,7 +26,9 @@ remain unverified for 0.2.4. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
-as a direct website download. Store acceptance does not replace separately
+as a direct website download. The Store website button opens in a new tab;
+“Open Store app (Windows)” uses Microsoft’s `ms-windows-store` product link
+to request the native Store app on Windows. Store acceptance does not replace separately
 recorded installed-Windows QA or WACK evidence.
 
 ## Download formats

@@ -19,10 +19,16 @@ PLATFORM_REQUIREMENTS = {
 }
 
 
+def store_app_link(store_url):
+    product_id = store_url.rsplit("/", 1)[-1]
+    return (f'<a href="ms-windows-store://pdp/?ProductId={escape(product_id, quote=True)}">'
+            'Open Store app (Windows)</a>')
+
+
 def download_details(platform, *, checksums=False, release=None):
     parts = ['<div class="download-actions">']
     if "store_url" in platform:
-        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}">Microsoft Store</a>')
+        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab">Microsoft Store</a>')
     else:
         for asset in platform["downloads"]:
             label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
@@ -34,6 +40,8 @@ def download_details(platform, *, checksums=False, release=None):
     if release is not None:
         parts.append(f'<p class="release-meta">Version {release["version"]} · {release["published_at"]} · {release["channel"].capitalize()}</p>')
     parts.append(f'<p class="release-meta">{escape(platform["requirements"])}</p>')
+    if "store_url" in platform:
+        parts.append(f'<p class="release-meta">{store_app_link(platform["store_url"])}</p>')
     if "downloads" in platform:
         for asset in platform["downloads"]:
             label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
@@ -98,14 +106,16 @@ def experimental_downloads(catalog):
         if not platform or (extension and asset is None):
             return f'<div class="prototype-option"><span class="prototype-unavailable">{escape(label)}<span>Coming soon</span></span></div>'
         url = asset["url"] if asset else platform["store_url"]
+        store_attributes = ' target="_blank" rel="noopener noreferrer" title="Opens in a new tab"' if not asset else ""
+        native_link = f'<p class="prototype-option-meta">{store_app_link(platform["store_url"])}</p>' if not asset else ""
         meta = escape(description)
         if asset:
             meta += f' · {asset["size"] / 1024**2:.1f}&nbsp;MiB'
         meta += f' · v{version}'
         return (
-            f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}" '
+            f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}"{store_attributes} '
             f'aria-label="Download EIDORA {version} — {escape(label, quote=True)}">'
-            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p></div>'
+            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p>{native_link}</div>'
         )
 
     parts.append('<div class="prototype-grid">')
