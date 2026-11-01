@@ -3,7 +3,7 @@
   "latest": {
     "macos-arm64": "0.2.4",
     "macos-x86_64": "0.2.4",
-    "windows-x86_64": null,
+    "windows-x86_64": "0.2.4",
     "linux-x86_64": "0.2.4"
   },
   "releases": {
@@ -60,7 +60,7 @@
     "0.2.4": {
       "published_at": "2026-11-01",
       "channel": "prototype",
-      "notes": "Experimental macOS and Linux prototype release, version 0.2.4.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch fixes automatic thumbnail creation after image/video embedding, preserves thumbnail aspect ratio independently of model preprocessing, and corrects upside-down portrait video thumbnails. It also fixes UMAP runtime permissions in signed Mac applications, Discovery shutdown, Windows welcome-tour positioning, and Discovery filter/snapshot footer alignment. Project formats and dependency pins are unchanged.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Packaged self-tests passed on all four build platforms. Signed Mac runtime checks passed on Apple Silicon and under Rosetta, including a real UMAP projection. Linux packages were built and self-tested on Ubuntu 24.04. Fresh manual installation checks on Intel hardware and Linux, and broader Linux distribution support, remain unverified for this experimental version.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows 0.2.4 is prepared separately for installed testing and Microsoft Store submission. It is not included in these public downloads.\n\nApplication build source: bd86a53b8f88a905036ef8e4f333777232981d81.\n",
+      "notes": "Experimental macOS, Linux, and Windows prototype release, version 0.2.4.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch fixes automatic thumbnail creation after image/video embedding, preserves thumbnail aspect ratio independently of model preprocessing, and corrects upside-down portrait video thumbnails. It also fixes UMAP runtime permissions in signed Mac applications, Discovery shutdown, Windows welcome-tour positioning, and Discovery filter/snapshot footer alignment. Project formats and dependency pins are unchanged.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Packaged self-tests passed on all four build platforms. Signed Mac runtime checks passed on Apple Silicon and under Rosetta, including a real UMAP projection. Linux packages were built and self-tested on Ubuntu 24.04. Fresh manual installation checks on Intel hardware and Linux, and broader Linux distribution support, remain unverified for this experimental version.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows 0.2.4 is available through Microsoft Store (package version 1.2.4.0). Microsoft manages installation and updates. Separate manual installed-Windows validation and WACK results have not been recorded here.\n\nApplication build source: bd86a53b8f88a905036ef8e4f333777232981d81.\n",
       "platforms": {
         "macos-arm64": {
           "requirements": "macOS 15 or later",
@@ -104,6 +104,10 @@
               "sha256": "0268801d0cbda03e9366743d7b1da3c89099a68b232794b4205974a7de0af516"
             }
           ]
+        },
+        "windows-x86_64": {
+          "requirements": "Windows 10 22H2 or later · x64",
+          "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
         }
       }
     }
