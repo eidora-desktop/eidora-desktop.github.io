@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_site import END, START, build, catalog_for_channels, experimental_downloads, render_landing_downloads
+from build_site import END, START, build, catalog_for_channels, download_details, experimental_downloads, render_landing_downloads
 from catalog import PLATFORMS, REPOSITORY, validate_catalog
 from prepare_release import merge_release
 
@@ -80,6 +80,18 @@ class SiteTests(unittest.TestCase):
         data["releases"]["0.1.0"]["platforms"]["windows-x86_64"]["downloads"] = []
         with self.assertRaises(ValueError):
             validate_catalog(data)
+
+    def test_store_links_preserve_website_and_offer_native_windows_app(self):
+        data = sample()
+        platform = {"requirements": "Windows x64", "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"}
+        data["latest"]["windows-x86_64"] = "0.2.0"
+        data["releases"]["0.2.0"]["platforms"]["windows-x86_64"] = platform
+        for rendered in (experimental_downloads(data), download_details(platform)):
+            self.assertIn('href="https://apps.microsoft.com/detail/9P0WFNT5DZS5" target="_blank" rel="noopener noreferrer"', rendered)
+            self.assertIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5">Open Store app (Windows)</a>', rendered)
+        mac_only = experimental_downloads(sample())
+        self.assertNotIn('target="_blank"', mac_only)
+        self.assertNotIn('ms-windows-store:', mac_only)
 
     def test_import_accepts_published_prototype_but_rejects_drafts(self):
         data = sample()
