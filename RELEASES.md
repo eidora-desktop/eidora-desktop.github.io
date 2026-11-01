@@ -12,7 +12,9 @@ Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. The experimental downloads offer
 0.2.4 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
-and DEB installers for Linux x64. Windows remains unavailable. The previous
+and DEB installers for Linux x64. Windows 0.2.4 is available through
+[Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5), with accepted
+package version 1.2.4.0 confirmed by the maintainer. The previous
 0.2.3 release remains archived in the catalog and on GitHub. The page groups
 downloads under the 0.2 series and
 shows the latest full version for each platform.
@@ -22,7 +24,10 @@ Signed Mac tests passed on Apple Silicon and under Rosetta. Fresh manual
 installation checks on Intel hardware and Linux
 remain unverified for 0.2.4. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
-Every download includes its size and expandable SHA-256 checksum.
+Mac/Linux downloads include their size and expandable SHA-256 checksum.
+Microsoft Store manages Windows installation and updates; the MSIX is not hosted
+as a direct website download. Store acceptance does not replace separately
+recorded installed-Windows QA or WACK evidence.
 
 ## Download formats
 
