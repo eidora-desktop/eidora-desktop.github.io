@@ -19,6 +19,14 @@ PLATFORM_REQUIREMENTS = {
 }
 
 
+def action_icon(*, store=False):
+    path = 'M14 3h7v7M21 3l-9 9M10 3H3v18h18v-7' if store else 'M12 3v12m-5-5 5 5 5-5M4 21h16'
+    kind = 'open' if store else 'download'
+    return (f'<svg class="action-icon action-icon-{kind}" width="18" height="18" viewBox="0 0 24 24" '
+            f'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
+            f'stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="{path}"/></svg>')
+
+
 def store_app_url(platform):
     """Derive the native Store link from the catalog's validated product URL."""
     return 'ms-windows-store://pdp/?ProductId=' + platform["store_url"].rsplit('/', 1)[1]
@@ -31,14 +39,14 @@ def store_browser_link(platform):
 def download_details(platform, *, checksums=False, release=None):
     parts = ['<div class="download-actions">']
     if "store_url" in platform:
-        parts.append(f'<a class="download-link download-primary" href="{escape(store_app_url(platform), quote=True)}">Microsoft Store</a>')
+        parts.append(f'<a class="download-link download-primary" href="{escape(store_app_url(platform), quote=True)}" aria-label="Open EIDORA in Microsoft Store">Microsoft Store{action_icon(store=True)}</a>')
         parts.append(store_browser_link(platform))
     else:
         for asset in platform["downloads"]:
             label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
             parts.append(
                 f'<a class="download-link download-primary" href="{escape(asset["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Download {escape(asset["name"], quote=True)}">'
-                f'Download {escape(label)}</a>'
+                f'Download {escape(label)}{action_icon()}</a>'
             )
     parts.append('</div><div class="download-details">')
     if release is not None:
@@ -128,7 +136,8 @@ def landing_cards(catalog):
             else:
                 url = asset["url"] if asset else store_app_url(platform)
                 target = ' target="_blank" rel="noopener noreferrer"' if asset else ''
-                parts.append(f'<a class="download-link download-primary" href="{escape(url, quote=True)}"{target} aria-label="Download EIDORA {version} — {escape(label, quote=True)}">{escape(label)}<span aria-hidden="true">↓</span></a>')
+                action_label = f"Download EIDORA {version} — {label}" if asset else "Open EIDORA in Microsoft Store"
+                parts.append(f'<a class="download-link download-primary" href="{escape(url, quote=True)}"{target} aria-label="{escape(action_label, quote=True)}">{escape(label)}{action_icon(store=not asset)}</a>')
                 meta = f'{asset["format"].upper() if extension != "AppImage" else "AppImage"} · {asset["size"] / 1024**2:.1f}&nbsp;MiB' if asset else "Windows x64"
                 if len(versions) > 1:
                     meta += f' · v{version}'
@@ -167,14 +176,15 @@ def experimental_downloads(catalog):
         url = asset["url"] if asset else store_app_url(platform)
         target = ' target="_blank" rel="noopener noreferrer"' if asset else ''
         browser_link = store_browser_link(platform) if not asset else ''
+        action_label = f"Download EIDORA {version} — {label}" if asset else "Open EIDORA in Microsoft Store"
         meta = escape(description)
         if asset:
             meta += f' · {asset["size"] / 1024**2:.1f}&nbsp;MiB'
         meta += f' · v{version}'
         return (
             f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}"{target} '
-            f'aria-label="Download EIDORA {version} — {escape(label, quote=True)}">'
-            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p>{browser_link}</div>'
+            f'aria-label="{escape(action_label, quote=True)}">'
+            f'{escape(label)}{action_icon(store=not asset)}</a><p class="prototype-option-meta">{meta}</p>{browser_link}</div>'
         )
 
     parts.append('<div class="prototype-grid">')
