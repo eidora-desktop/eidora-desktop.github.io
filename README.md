@@ -38,7 +38,9 @@ redirects to the homepage downloads section; the obsolete access-request page ha
 been removed. The public update feed keeps its existing format and publishes explicitly
 recommended releases from the catalog, including 0.2.4 for all four platforms.
 Prototype labels are preserved; no application rebuild is required.
-See [release information](RELEASES.md) for how to add installer files.
+Follow [Publishing a new release](RELEASES.md#publishing-a-new-release-on-the-website)
+for importing installers, adding Windows Store availability, setting app-update
+recommendations, validating, deploying, and checking the live feed.
 
 ## About this repository
 

@@ -50,7 +50,7 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(rendered.count('<article class="download-card">'), 3)
         for heading in ("macOS", "Windows", "Linux"):
             self.assertIn(f'<h3>{heading}</h3>', rendered)
-        self.assertIn('>Apple Silicon (M-Series)<span aria-hidden="true">↓</span></a>', rendered)
+        self.assertIn('>Apple Silicon (M-Series)<svg class="action-icon action-icon-download"', rendered)
         self.assertTrue(rendered.startswith("<main>" + START))
         self.assertTrue(rendered.endswith(END + "</main>"))
         for malformed in (START, END, END + START, START + START + END):

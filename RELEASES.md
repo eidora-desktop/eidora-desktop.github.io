@@ -78,22 +78,146 @@ to that group, or the highest available matching version for that platform.
 Platform identifiers are `macos-arm64`, `macos-x86_64`, `windows-x86_64`, and
 `linux-x86_64`. Recommended versions can differ between platforms.
 
-## Adding an experimental installer
+## Publishing a new release on the website
 
-Publish the installer as a GitHub prerelease in the application repository, using
-the versioned asset names required by the catalog (for example,
-`EIDORA-0.2.0-macos-arm64.dmg`). Import its verified metadata with:
+Run these steps in the website repository. No EIDORA application code changes or
+rebuild are needed to publish an update recommendation using the existing schema.
+Edit the source `updates.json`, never `_site/updates.json`: `_site/` is regenerated
+on every build and is not committed.
+
+### 1. Publish and verify the application distributions
+
+Publish the application GitHub release at tag `vMAJOR.MINOR.PATCH` (not a draft).
+Use these exact asset names, replacing `VERSION` with the application version:
+
+- `EIDORA-VERSION-macos-arm64.dmg`
+- `EIDORA-VERSION-macos-x86_64.dmg`
+- `EIDORA-VERSION-linux-x86_64.AppImage`
+- `EIDORA-VERSION-linux-x86_64.deb`
+
+Confirm the assets are downloadable and their requirements and release notes are
+accurate. Keep published installer contents immutable; changed binaries need a new
+version. For Windows, confirm that the intended version is available in Microsoft
+Store before recommending it. Store submission alone is not publication.
+
+### 2. Import each available Mac/Linux platform
+
+For example, for a future **0.2.5** prototype (substitute the actual version and
+verified requirements):
 
 ```sh
-python scripts/prepare_release.py --version 0.2.0 --platform macos-arm64 \
+python3 scripts/prepare_release.py --version 0.2.5 --platform macos-arm64 \
   --requirements "macOS 15 or later" --channel prototype
+python3 scripts/prepare_release.py --version 0.2.5 --platform macos-x86_64 \
+  --requirements "macOS 15 or later" --channel prototype
+python3 scripts/prepare_release.py --version 0.2.5 --platform linux-x86_64 \
+  --requirements "Linux x64 (tested on Ubuntu 24.04)" --channel prototype
 ```
 
-Use the actual version, platform, and verified requirements for your build.
-The importer obtains the asset URL, size, and checksum from GitHub. Commit the
-updated catalog with the website changes; the normal Pages build generates the
-experimental downloads and the homepage fallback. `preview` also goes to this page. Use `stable` only for releases designated stable. App-update publication is
-controlled separately by the catalog’s explicit `latest` entries.
+The importer reads the date, release notes, asset URLs, sizes, and SHA-256 digests
+from GitHub. **Each invocation also sets `latest[platform]` to the imported
+version**, making that platform an app-update recommendation once deployed.
+Only run imports for platforms ready to publish; leave other recommendations at
+their previous working versions. To archive a release without recommending it,
+restore that platform's previous `latest` value before committing.
 
-Run `python -m unittest discover -s tests -v` and
-`python scripts/build_site.py` to check the catalog and generated pages locally.
+Use `prototype`, `preview`, or `stable` according to the release designation.
+A GitHub prerelease cannot be imported as stable. Prototype and preview releases
+can be recommended to the app; do not relabel them stable just to populate the feed.
+If imports report differing release metadata, review the existing record and the
+GitHub notes/date/channel before reconciling them. Import all available platforms
+before making any intentional website-specific edits to the shared release notes.
+
+### 3. Add Windows when the Store version is available
+
+The importer does not handle Windows. In the new release's `platforms` object,
+add the verified Windows entry:
+
+```json
+"windows-x86_64": {
+  "requirements": "Windows 10 or 11 · x64",
+  "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
+}
+```
+
+Then set `latest["windows-x86_64"]` to the application version, such as `"0.2.5"`.
+Use the EIDORA application version, not the Store package version (for example,
+0.2.4 rather than 1.2.4.0). Do not add a `downloads` array or an MSIX asset.
+If Windows ships first, create its release record with `published_at`, `channel`,
+`notes`, and `platforms`; later Mac/Linux imports must agree with that metadata.
+
+### 4. Review recommendations and generated pages
+
+Keep earlier release records for website history. Each non-null `latest` entry
+must reference a release that actually contains that platform. The public feed
+includes exactly the release records referenced by `latest`, preserving their
+channel labels. It does not automatically recommend every new experimental build.
+
+When intentionally replacing 0.2.4 as the recommendation, update the explicit
+publication regression in `tests/test_site.py`
+(`test_published_feed_recommends_024_for_every_platform`), including its name and
+expected per-platform versions. For staggered releases, assert the intended mixed
+recommendations instead of requiring every platform to have the same version.
+
+Regenerate the checked-in homepage cards for local file previews:
+
+```sh
+python3 - <<'PYCODE'
+import json
+import sys
+from pathlib import Path
+sys.path.insert(0, "scripts")
+from build_site import catalog_for_channels, render_landing_downloads
+catalog = json.loads(Path("updates.json").read_text())
+page = Path("index.html")
+page.write_text(render_landing_downloads(
+    page.read_text(),
+    catalog_for_channels(catalog, {"stable"}),
+    catalog_for_channels(catalog, {"prototype", "preview"}),
+))
+PYCODE
+python3 -m unittest discover -s tests -v
+python3 scripts/build_site.py
+python3 -m json.tool _site/updates.json
+git diff --check
+```
+
+Check that the generated feed has the intended recommendations and that each
+referenced record has the correct notes, platform requirements, and distributions.
+Preview `_site/` with `python3 -m http.server 8000 --directory _site`:
+
+- `/`: current download cards and working installer/Store links.
+- `/releases/#vVERSION`: new version, channel label, notes, and checksums.
+- `/experimental/`: prototype/preview downloads, when applicable.
+- `/download/`: redirects to the homepage downloads section, including when opened
+  by the app with a platform fragment.
+
+Homepage selection is independent of the update feed: it prefers stable releases
+and only falls back to experimental releases when no stable downloads exist.
+Review this distinction when publishing a preview newer than the stable version.
+
+### 5. Deploy and verify the live feed
+
+Commit the reviewed source catalog, regenerated `index.html`, relevant test updates,
+and documentation. Push a branch, open a pull request, and merge after its checks
+pass. The `Validate and deploy website` workflow deploys GitHub Pages on pushes to
+`main`; a branch push or successful PR build alone does not publish the feed.
+
+After the deployment succeeds, fetch the exact URL used by the application:
+
+```sh
+curl -fsSL https://eidora.org/updates.json -o /tmp/eidora-live-updates.json
+python3 -m json.tool /tmp/eidora-live-updates.json
+```
+
+Compare its `latest` entries and referenced records with `_site/updates.json`.
+Verify the live release-note anchors and download links too. An older application
+version should offer the recommended newer version; the recommended version should
+report that it is current. This can be checked with the existing application
+`application_info.service.parse_release` function without editing application code,
+or using Check for Updates in the installed app. Windows installation and updates
+continue to be managed by Microsoft Store.
+
+If a recommendation must be withdrawn, restore only the affected `latest` entries
+to the previous available versions (or `null` if none), validate, and redeploy.
+Keep historical records and never silently replace already published binaries.
