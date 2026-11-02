@@ -7,60 +7,6 @@
     "linux-x86_64": "0.2.5"
   },
   "releases": {
-    "0.2.4": {
-      "published_at": "2026-11-01",
-      "channel": "prototype",
-      "notes": "EIDORA 0.2.4 — First public release\n\nEIDORA is open-source desktop software for researching cultural collections through embedding space exploration. This first public release brings collection preparation, metadata, embeddings, interactive discovery, and figure creation into one interface.\n\nStart with a folder of media files, or bring existing metadata, vector embeddings, or projection coordinates. Import multidimensional vectors or compute embeddings locally with compatible models for images, video, text, audio, and multimodal combinations.\n\nExplore two-dimensional projections linked to collection metadata. Investigate patterns with filters, color mappings, media previews, and annotations. Save snapshots to revisit and compare views, and use the Slicer to explore numerical ranges such as time periods while keeping projection coordinates fixed.\n\nCreate single- or multi-panel figures with captions, legends, and annotations, and export figures or animations. Methods reports help document models, algorithms, parameters, and references used in an analysis.\n\nAvailable for macOS on Apple Silicon and Intel, Windows x64 through Microsoft Store, and Linux x64 as AppImage and DEB packages. The Mac installers are signed and notarized. Requirements: macOS 15 or later; Windows 10 or 11; Linux x64 (tested on Ubuntu 24.04).\n\nAnalysis runs locally. Internet access is needed to discover and download models; installed models run on your computer. EIDORA is free under the MIT license; embedding models may have their own licenses.\n\nThis is a prototype release. Stability and backward compatibility are not guaranteed; use copies of your data and projects. Intel Mac hardware installation and broader Linux distribution support remain unverified.\n",
-      "platforms": {
-        "macos-arm64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.4-macos-arm64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-macos-arm64.dmg",
-              "size": 481234454,
-              "sha256": "a635ae07a8287ebe379e0616d372897ac8abd289dd84b7b8c3a7279744a15eb6"
-            }
-          ]
-        },
-        "macos-x86_64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.4-macos-x86_64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-macos-x86_64.dmg",
-              "size": 497668002,
-              "sha256": "44ad56bc71dab235b77df7ba3ac8e605242748f808f438393a0c11dd019195aa"
-            }
-          ]
-        },
-        "linux-x86_64": {
-          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
-          "downloads": [
-            {
-              "format": "deb",
-              "name": "EIDORA-0.2.4-linux-x86_64.deb",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-linux-x86_64.deb",
-              "size": 479700016,
-              "sha256": "8bd5332eff915ad35d815ee54f62447ee1c881cf73824939ac0bc98f7704cb5a"
-            },
-            {
-              "format": "AppImage",
-              "name": "EIDORA-0.2.4-linux-x86_64.AppImage",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.4/EIDORA-0.2.4-linux-x86_64.AppImage",
-              "size": 540473848,
-              "sha256": "0268801d0cbda03e9366743d7b1da3c89099a68b232794b4205974a7de0af516"
-            }
-          ]
-        },
-        "windows-x86_64": {
-          "requirements": "Windows 10 or 11 · x64",
-          "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
-        }
-      }
-    },
     "0.2.5": {
       "published_at": "2026-11-02",
       "channel": "prototype",

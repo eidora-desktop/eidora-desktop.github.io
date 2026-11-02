@@ -245,10 +245,18 @@ class SiteTests(unittest.TestCase):
         feed = validate_catalog(update_feed(catalog))
         self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.5"))
         self.assertEqual(set(feed["releases"]), {"0.2.5"})
-        self.assertEqual(catalog["releases"]["0.2.4"]["channel"], "prototype")
-        self.assertEqual(set(catalog["releases"]["0.2.4"]["platforms"]), set(PLATFORMS))
+        self.assertNotIn("0.2.4", catalog["releases"])
         self.assertEqual(feed["releases"]["0.2.5"]["channel"], "prototype")
         self.assertEqual(set(feed["releases"]["0.2.5"]["platforms"]), set(PLATFORMS))
+
+    def test_withdrawn_024_has_no_generated_download_links(self):
+        from build_site import history
+        catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
+        for experimental in (False, True):
+            page = history(catalog, experimental=experimental)
+            self.assertNotIn("/download/v0.2.4/", page)
+            self.assertNotIn("EIDORA-0.2.4-", page)
+        self.assertNotIn("EIDORA-0.2.4-", (ROOT / "index.html").read_text())
 
     def test_empty_experimental_catalog_is_explicit(self):
         from build_site import cards, history
