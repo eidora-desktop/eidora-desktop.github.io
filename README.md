@@ -23,16 +23,18 @@ download listings, and release history.
 | Linux · x64 | Requirements will accompany the public release |
 
 Stable application downloads are coming soon. Experimental installers are available
-for Apple Silicon and Intel Macs (0.2.0), plus Linux x64 as AppImage and DEB (0.2.1).
+for Apple Silicon and Intel Macs, Windows x64 through Microsoft Store, and Linux
+x64 as AppImage and DEB (0.2.4).
 The Linux builds were built and self-tested on Ubuntu 24.04; other distributions
 and native installation remain unverified. Availability is listed separately for
 each platform.
 
-Prototype and preview installers have a separate `/experimental/` page, linked
-discreetly from the homepage footer and marked for search engines not to index.
-It is publicly accessible, with a warning that builds are experimental and
-untested. Only stable releases appear in the main downloads and public update
-feed. See [release information](RELEASES.md) for how to add installer files.
+While stable downloads are unavailable, the homepage shows the latest experimental
+installers labelled Prototype on each download card. Their release notes, checksums,
+and installation details appear at `/experimental/`, which is marked for search
+engines not to index. Only stable releases appear at `/download/`, `/releases/`,
+and in the public update feed.
+See [release information](RELEASES.md) for how to add installer files.
 
 ## About this repository
 

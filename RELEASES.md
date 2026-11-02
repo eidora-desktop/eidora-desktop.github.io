@@ -4,17 +4,21 @@
 requirements for each platform. [Release history](https://www.eidora.org/releases/)
 provides version notes and links to stable installers.
 
-Early builds appear separately at `/experimental/`, reached through the small
-“Experimental builds” link in the homepage footer. This page warns that builds
+Early builds appear at `/experimental/`, reached through the homepage download
+cards and the “Experimental builds” link in the footer. When no stable installers
+are available, the homepage offers the latest experimental builds labelled
+Prototype on each download card. The `/experimental/` page warns that builds
 are experimental and untested and requests `noindex, nofollow` from search engines.
 It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. The experimental downloads offer
-signed and notarized 0.2.0 DMG installers for Apple Silicon and Intel Macs, plus
-0.2.1 AppImage and DEB installers for Linux x64. The Linux patch adds developer
-attribution, the project homepage, and AppStream metadata. The 0.2.0 release assets
-remain available on GitHub. The page groups these downloads under the 0.2 series
+signed and notarized 0.2.4 DMG installers for Apple Silicon and Intel Macs, plus
+0.2.4 AppImage and DEB installers for Linux x64. This patch fixes thumbnail creation
+and orientation, signed Mac UMAP runtime permissions, and Discovery shutdown and
+layout issues. Windows 0.2.4 is available through Microsoft Store (package version
+1.2.4.0), requiring Windows 10 or 11 on x64. Earlier release assets remain available
+on GitHub. The experimental page groups these downloads under the 0.2 series
 and shows the latest full version for each platform. The Linux builds were built
 and self-tested on Ubuntu 24.04; other distributions remain unverified. Native installation testing
 remains incomplete; the Intel build has been tested under Rosetta on Apple Silicon,
@@ -39,7 +43,8 @@ The public [update catalog](https://www.eidora.org/updates.json) provides
 machine-readable stable release information for the desktop application. The same
 stable data appears on the main download and release pages. The source
 `updates.json` also holds prototype and preview records; the build routes these
-only to the experimental page and excludes them from the published update feed.
+to the experimental page and, while stable installers are unavailable, the homepage.
+It excludes them from the published update feed and stable download/release pages.
 For each channel group, the build uses the recommended version when it belongs
 to that group, or the highest available matching version for that platform.
 
@@ -73,7 +78,7 @@ python scripts/prepare_release.py --version 0.2.0 --platform macos-arm64 \
 Use the actual version, platform, and verified requirements for your build.
 The importer obtains the asset URL, size, and checksum from GitHub. Commit the
 updated catalog with the website changes; the normal Pages build generates the
-experimental downloads. `preview` also goes to this page. Only use `stable` when
+experimental downloads and the homepage fallback. `preview` also goes to this page. Only use `stable` when
 you intend a release to appear in the main downloads and public update feed.
 
 Run `python -m unittest discover -s tests -v` and

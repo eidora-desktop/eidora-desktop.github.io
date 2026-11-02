@@ -14,8 +14,10 @@
 .experimental-notice { max-width: 48rem; margin-block: 2rem; padding: 1.5rem; border-left: 3px solid var(--gold-ink); background: var(--sage-mist); }
 .experimental-notice h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
 .experimental-notice p { margin-top: .75rem; }
-.download-primary { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 13.5rem; max-width: 100%; height: 48px; margin-top: 0; padding: .5rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; line-height: 1.2; text-align: center; text-decoration: none; }
+.download-primary { display: flex; align-items: center; justify-content: flex-start; flex: 0 0 auto; width: min(13.5rem, 100%); min-width: 0; min-height: 48px; margin-top: 0; padding: .5rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; line-height: 1.2; text-align: left; overflow-wrap: anywhere; text-decoration: none; }
 .download-primary:hover { background: var(--gold); color: var(--deep-teal); }
+.store-browser-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .75rem; }
+.download-card .store-browser-link { color: var(--paper); }
 .checksum, .checksum:last-child { border: 0; font-size: .68rem; margin-block: .35rem; }
 .checksum summary { display: inline-flex; align-items: center; gap: .4rem; min-height: 36px; padding: .35rem .15rem; color: var(--inverse-muted); font-size: inherit; font-weight: 400; }
 .checksum summary::after { position: static; font-size: .8rem; color: inherit; }
@@ -38,7 +40,8 @@
 .prototype-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.75rem; }
 .prototype-card { display: flex; flex-direction: column; min-width: 0; padding: 1.5rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--porcelain); scroll-margin-top: 2rem; }
 .prototype-card h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 600; letter-spacing: -.025em; }
-.prototype-options { display: grid; gap: .9rem; margin-block: 1.25rem; }
+.prototype-options { display: grid; grid-template-columns: minmax(0, 1fr); gap: .9rem; margin-block: 1.25rem; }
+.prototype-option { min-width: 0; }
 .prototype-button { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: 44px; padding: .6rem .85rem; border-radius: 4px; background: var(--deep-teal); color: var(--porcelain); font-size: .9rem; font-weight: 600; text-decoration: none; }
 .prototype-button:hover { background: var(--teal-hover); color: var(--porcelain); }
 .prototype-button > span { font-size: 1.1rem; color: var(--gold); line-height: 1; }
@@ -55,7 +58,7 @@
 .prototype-coming-soon { margin-top: 1.5rem; max-width: 15rem; color: var(--muted); }
 .prototype-coming-soon > span { display: inline-block; padding: .2rem .55rem; border-radius: 3px; background: var(--sage-mist); color: var(--muted); font-size: .72rem; }
 .prototype-coming-soon p { margin-top: .7rem; font-size: .85rem; line-height: 1.6; }
-.prototype-extras { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 1.5rem; margin-top: 1.25rem; }
+.prototype-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 1.5rem; margin-top: 1.25rem; }
 .prototype-extra, .prototype-extra:last-child { min-width: 0; border-top: 1px solid var(--rule); border-bottom: 0; scroll-margin-top: 2rem; }
 .prototype-extra summary { min-height: 44px; padding: .7rem 1.5rem .7rem 0; font-size: .75rem; font-weight: 400; color: var(--muted); }
 .prototype-extra summary::after { top: .6rem; font-size: .95rem; }
@@ -67,10 +70,13 @@
 .prototype-filename { overflow-wrap: anywhere; }
 .prototype-note-date { font-size: .72rem; }
 .prototype-public-link { margin-top: 1.5rem; font-size: .75rem; }
-@media (max-width: 800px) {
+@media (max-width: 900px) {
+  .prototype-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
   .prototype-grid { grid-template-columns: 1fr; }
   .prototype-card { padding: 1.25rem; }
-  .prototype-options { grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .prototype-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
   .prototype-coming-soon { margin-block: 1rem; max-width: none; }
   .prototype-extras { grid-template-columns: 1fr; gap: 0; }
 }

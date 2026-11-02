@@ -19,15 +19,25 @@ PLATFORM_REQUIREMENTS = {
 }
 
 
+def store_app_url(platform):
+    """Derive the native Store link from the catalog's validated product URL."""
+    return 'ms-windows-store://pdp/?ProductId=' + platform["store_url"].rsplit('/', 1)[1]
+
+
+def store_browser_link(platform):
+    return f'<a class="store-browser-link" href="{escape(platform["store_url"], quote=True)}" target="_blank" rel="noopener noreferrer">View in browser</a>'
+
+
 def download_details(platform, *, checksums=False, release=None):
     parts = ['<div class="download-actions">']
     if "store_url" in platform:
-        parts.append(f'<a class="download-link download-primary" href="{escape(platform["store_url"], quote=True)}">Microsoft Store</a>')
+        parts.append(f'<a class="download-link download-primary" href="{escape(store_app_url(platform), quote=True)}">Microsoft Store</a>')
+        parts.append(store_browser_link(platform))
     else:
         for asset in platform["downloads"]:
             label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
             parts.append(
-                f'<a class="download-link download-primary" href="{escape(asset["url"], quote=True)}" aria-label="Download {escape(asset["name"], quote=True)}">'
+                f'<a class="download-link download-primary" href="{escape(asset["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Download {escape(asset["name"], quote=True)}">'
                 f'Download {escape(label)}</a>'
             )
     parts.append('</div><div class="download-details">')
@@ -78,6 +88,57 @@ def cards(catalog, *, checksums=False, experimental=False):
     return '<div class="download-grid release-grid">' + "".join(platform_card(catalog, key, checksums=checksums, experimental=experimental) for key in PLATFORMS) + '</div>'
 
 
+def landing_cards(catalog, *, experimental=False):
+    """Keep one homepage card per OS, with architecture/format choices inside."""
+    groups = (
+        ("macOS", (("macos-arm64", "Apple Silicon (M-Series)", "dmg"),
+                   ("macos-x86_64", "Intel (older Macs)", "dmg"))),
+        ("Windows", (("windows-x86_64", "Microsoft Store", None),)),
+        ("Linux", (("linux-x86_64", "AppImage", "AppImage"),
+                   ("linux-x86_64", "DEB package", "deb"))),
+    )
+    parts = ['<div class="download-grid landing-download-grid">']
+    for title, options in groups:
+        parts.append(f'<article class="download-card"><div class="platform-heading"><h3>{title}</h3></div>')
+        versions = sorted({catalog["latest"][key] for key, _, _ in options
+                           if catalog["latest"][key]}, key=version_tuple, reverse=True)
+        for version in versions:
+            release = catalog["releases"][version]
+            channel = release["channel"].capitalize()
+            parts.append(f'<p class="release-meta">Version {version} · {release["published_at"]} · {channel}</p>')
+        requirements = []
+        for key, label, extension in options:
+            version = catalog["latest"][key]
+            platform = catalog["releases"][version]["platforms"][key] if version else None
+            requirement = platform["requirements"] if platform else PLATFORM_REQUIREMENTS.get(key, "Linux x64")
+            if requirement not in requirements:
+                requirements.append(requirement)
+            asset = next((item for item in platform.get("downloads", [])
+                          if item["format"] == extension), None) if platform else None
+            parts.append('<div class="installer">')
+            if not platform or (extension and asset is None):
+                parts.append(f'<span class="installer-label">{escape(label)}</span><span class="download-pending">Coming soon</span>')
+            else:
+                url = asset["url"] if asset else store_app_url(platform)
+                target = ' target="_blank" rel="noopener noreferrer"' if asset else ''
+                parts.append(f'<a class="download-link download-primary" href="{escape(url, quote=True)}"{target} aria-label="Download EIDORA {version} — {escape(label, quote=True)}">{escape(label)}</a>')
+                meta = f'{asset["format"].upper() if extension != "AppImage" else "AppImage"} · {asset["size"] / 1024**2:.1f}&nbsp;MiB' if asset else "Windows x64"
+                if len(versions) > 1:
+                    meta += f' · v{version}'
+                parts.append(f'<p class="release-meta">{meta}</p>')
+                if not asset:
+                    parts.append(store_browser_link(platform))
+            parts.append('</div>')
+        parts.append(f'<div class="download-card-footer"><p class="release-meta">{escape(" · ".join(requirements))}</p>')
+        notes_path = "experimental" if experimental else "releases"
+        for version in versions:
+            label = f"Release notes · {version}" if len(versions) > 1 else "Release notes"
+            parts.append(f'<a class="download-link" href="/{notes_path}/#v{version}">{label}</a>')
+        parts.append('</div></article>')
+    parts.append('</div>')
+    return "".join(parts)
+
+
 def experimental_downloads(catalog):
     """Group choices by operating system, with technical information out of the way."""
     versions = {version for version in catalog["latest"].values() if version is not None}
@@ -97,15 +158,17 @@ def experimental_downloads(catalog):
         asset = next((item for item in platform.get("downloads", []) if item["format"] == extension), None) if platform else None
         if not platform or (extension and asset is None):
             return f'<div class="prototype-option"><span class="prototype-unavailable">{escape(label)}<span>Coming soon</span></span></div>'
-        url = asset["url"] if asset else platform["store_url"]
+        url = asset["url"] if asset else store_app_url(platform)
+        target = ' target="_blank" rel="noopener noreferrer"' if asset else ''
+        browser_link = store_browser_link(platform) if not asset else ''
         meta = escape(description)
         if asset:
             meta += f' · {asset["size"] / 1024**2:.1f}&nbsp;MiB'
         meta += f' · v{version}'
         return (
-            f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}" '
+            f'<div class="prototype-option"><a class="prototype-button" href="{escape(url, quote=True)}"{target} '
             f'aria-label="Download EIDORA {version} — {escape(label, quote=True)}">'
-            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p></div>'
+            f'{escape(label)}<span aria-hidden="true">↓</span></a><p class="prototype-option-meta">{meta}</p>{browser_link}</div>'
         )
 
     parts.append('<div class="prototype-grid">')
@@ -116,12 +179,15 @@ def experimental_downloads(catalog):
     parts.append(f'<div class="prototype-card-footer"><p>{escape(" · ".join(sorted(mac_requirements)) or "macOS 15 or later")}</p>')
     parts.append('<details class="prototype-help"><summary>Which Mac do I have?</summary><p>Open Apple menu → About This Mac. If “Chip” says Apple M-series, choose Apple Silicon. If “Processor” says Intel, choose Intel.</p></details></div></article>')
 
-    parts.append('<article class="prototype-card prototype-card-pending" aria-labelledby="prototype-windows"><h2 id="prototype-windows">Windows</h2>')
+    windows_version = catalog["latest"]["windows-x86_64"]
+    windows_class = "prototype-card" if windows_version else "prototype-card prototype-card-pending"
+    parts.append(f'<article class="{windows_class}" aria-labelledby="prototype-windows"><h2 id="prototype-windows">Windows</h2>')
     if catalog["latest"]["windows-x86_64"]:
         parts.append('<div class="prototype-options">' + option("windows-x86_64", "Microsoft Store", "Windows x64") + '</div>')
     else:
         parts.append('<div class="prototype-coming-soon"><span>Coming soon</span><p>No experimental Windows download yet.</p></div>')
-    parts.append('<div class="prototype-card-footer"><p>Windows 10 or 11 · x64</p></div></article>')
+    windows_requirement = catalog["releases"][windows_version]["platforms"]["windows-x86_64"]["requirements"] if windows_version else "Windows 10 or 11 · x64"
+    parts.append(f'<div class="prototype-card-footer"><p>{escape(windows_requirement)}</p></div></article>')
 
     parts.append('<article class="prototype-card" id="linux-x86_64" aria-labelledby="prototype-linux"><h2 id="prototype-linux">Linux</h2>')
     parts.append('<div class="prototype-options">' + option("linux-x86_64", "AppImage", "Standalone app", "AppImage") + option("linux-x86_64", "DEB package", "Ubuntu / Debian package", "deb") + '</div>')
@@ -147,7 +213,7 @@ def experimental_downloads(catalog):
         release = catalog["releases"][version]
         parts.append(f'<details class="prototype-extra" id="v{version}"><summary>Release notes · {version}</summary><div class="prototype-extra-body">')
         parts.append(f'<p class="prototype-note-date">{release["published_at"]} · {release["channel"].capitalize()}</p><p class="release-notes">{escape(release["notes"])}</p>')
-        parts.append(f'<p><a href="https://github.com/eidora-desktop/EIDORA/releases/tag/v{version}">View this release on GitHub</a></p></div></details>')
+        parts.append(f'<p><a href="https://github.com/eidora-desktop/EIDORA/releases/tag/v{version}" target="_blank" rel="noopener noreferrer">View this release on GitHub</a></p></div></details>')
     parts.append('</div><p class="prototype-public-link"><a href="/download/">Looking for a stable release?</a></p></div>')
     return "".join(parts)
 
@@ -167,9 +233,9 @@ def page(title, content, path, *, noindex=False, stylesheet_revision="", heading
 <header class="site-header wrap"><a class="brand" href="/" aria-label="EIDORA home">
 <img class="brand-icon" src="/assets/brand/eidora_icon.svg" alt="" width="44" height="44">
 <img class="wordmark" src="/assets/brand/eidora_wordmark.svg" alt="EIDORA" width="136" height="24"></a>
-<nav aria-label="Main navigation"><a href="/download/">Downloads</a><a href="/releases/">Releases</a></nav></header>
+<nav aria-label="Main navigation"><a href="/#downloads">Downloads</a><a href="/releases/">Releases</a></nav></header>
 <main id="main" class="wrap release-page"><h1>{escape(heading or title)}</h1>{content}</main>
-<footer class="site-footer wrap"><p>EIDORA · The Embedding Space Explorer</p><a href="https://github.com/eidora-desktop/EIDORA">Source code</a></footer>
+<footer class="site-footer wrap"><p>EIDORA · The Embedding Space Explorer</p><a href="https://github.com/eidora-desktop/EIDORA" target="_blank" rel="noopener noreferrer">Source code</a></footer>
 </body></html>'''
 
 
@@ -195,7 +261,7 @@ def history(catalog, *, experimental=False):
     return "".join(parts)
 
 
-def render_landing_downloads(index, catalog):
+def render_landing_downloads(index, catalog, experimental_catalog=None):
     """Replace a marked download section with catalog-generated cards, if present."""
     if START not in index and END not in index:
         return index
@@ -203,7 +269,12 @@ def render_landing_downloads(index, catalog):
         raise ValueError("Keep exactly one ordered pair of EIDORA DOWNLOADS markers in index.html.")
     before, rest = index.split(START)
     _, after = rest.split(END)
-    return before + START + cards(catalog) + '<p class="download-footnote"><a href="/download/">Installation and download details</a><a href="/releases/">Release history</a></p>' + END + after
+    if not any(catalog["latest"].values()) and experimental_catalog and any(experimental_catalog["latest"].values()):
+        downloads = landing_cards(experimental_catalog, experimental=True)
+        downloads += '<p class="download-footnote"><a href="/experimental/">Release notes, checksums, and installation details</a></p>'
+    else:
+        downloads = landing_cards(catalog) + '<p class="download-footnote"><a href="/download/">Installation and download details</a><a href="/releases/">Release history</a></p>'
+    return before + START + downloads + END + after
 
 
 def build(source=ROOT):
@@ -215,7 +286,7 @@ def build(source=ROOT):
     public_catalog = catalog_for_channels(catalog, {"stable"})
     experimental_catalog = catalog_for_channels(catalog, {"prototype", "preview"})
     stylesheet_revision = hashlib.sha256((source / "release-pages.css").read_bytes()).hexdigest()[:12]
-    index = render_landing_downloads((source / "index.html").read_text(), public_catalog)
+    index = render_landing_downloads((source / "index.html").read_text(), public_catalog, experimental_catalog)
     index = index.replace('href="release-pages.css"', f'href="release-pages.css?v={stylesheet_revision}"')
     output = source / "_site"
     if output.is_symlink():

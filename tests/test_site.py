@@ -47,6 +47,10 @@ class SiteTests(unittest.TestCase):
         rendered = render_landing_downloads(landing, sample())
         self.assertNotIn("Old download cards", rendered)
         self.assertIn("Version 0.2.0", rendered)
+        self.assertEqual(rendered.count('<article class="download-card">'), 3)
+        for heading in ("macOS", "Windows", "Linux"):
+            self.assertIn(f'<h3>{heading}</h3>', rendered)
+        self.assertIn('>Apple Silicon (M-Series)</a>', rendered)
         self.assertTrue(rendered.startswith("<main>" + START))
         self.assertTrue(rendered.endswith(END + "</main>"))
         for malformed in (START, END, END + START, START + START + END):
@@ -110,6 +114,11 @@ class SiteTests(unittest.TestCase):
             (source / "updates.json").write_text(json.dumps(sample()))
             output = build(source)
             self.assertEqual(json.loads((output / "updates.json").read_text()), catalog_for_channels(sample(), {"stable"}))
+            landing = (output / "index.html").read_text()
+            self.assertIn("· Prototype</p>", landing)
+            self.assertIn('href="/experimental/#v0.2.0"', landing)
+            self.assertIn(sample()["releases"]["0.2.0"]["platforms"]["macos-arm64"]["downloads"][0]["url"], landing)
+            self.assertNotIn("0.2.0", (output / "download/index.html").read_text())
             history = (output / "releases/index.html").read_text()
             self.assertNotIn("0.2.0", history)
             experimental = (output / "experimental/index.html").read_text()
