@@ -14,10 +14,11 @@ are experimental and untested and requests `noindex, nofollow` from search engin
 It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
-The public release history begins with **EIDORA 0.2.4**, the first public release,
-labelled Prototype. Its release notes introduce the software and available
-workflows rather than describe changes from internal builds. Pre-launch versions
-are excluded from the website catalog and release history.
+**EIDORA 0.2.4** was the first public release, labelled Prototype. Its downloads
+were withdrawn on 2026-11-02 after 0.2.5 became available on all platforms.
+The live catalog and download history now contain 0.2.5 only. Historical release
+metadata, installers, validation evidence, and the source tag are retained by
+the maintainer; pre-launch and withdrawn versions are not offered as downloads.
 
 Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
 AppImage and DEB installers for Linux x64, and Windows x64 through
@@ -28,7 +29,7 @@ and shows the latest full version for each platform.
 All platform packaged tests passed, including UMAP and video-thumbnail checks.
 Signed Mac tests passed on Apple Silicon and under Rosetta. Fresh manual
 installation checks on Intel hardware and Linux
-remain unverified for 0.2.4. Linux packages were built and
+remain unverified for 0.2.5. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 The 0.2.5 Mac/Linux update fixes macOS cursor crashes, model-download
 responsiveness, welcome-tour resets, and update-version messages. Both signed
@@ -156,14 +157,15 @@ If Windows ships first, create its release record with `published_at`, `channel`
 
 ### 4. Review recommendations and generated pages
 
-Keep public release records from 0.2.4 onward for website history; do not reintroduce
-pre-launch versions. Future notes may describe changes since the preceding public
-release. Each non-null `latest` entry
+Keep available public releases for website history. When the maintainer withdraws
+a release, archive its metadata and validation evidence before removing its
+download catalog record and public release. Do not reintroduce withdrawn or
+pre-launch versions. Future notes may describe changes since the preceding public release. Each non-null `latest` entry
 must reference a release that actually contains that platform. The public feed
 includes exactly the release records referenced by `latest`, preserving their
 channel labels. It does not automatically recommend every new experimental build.
 
-When intentionally replacing 0.2.4 as the recommendation, update the explicit
+When changing a platform recommendation, update the explicit
 publication regression in `tests/test_site.py`
 (`test_published_feed_recommends_025_for_every_platform`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
