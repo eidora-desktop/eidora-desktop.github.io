@@ -75,6 +75,8 @@ h3 { font-size: 1.16rem; font-weight: 600; line-height: 1.4; letter-spacing: -.0
 .download-footnote + .landing-download-grid { margin-top: 1rem; }
 .landing-download-grid .installer .release-meta { margin-block: .35rem 1rem; }
 .landing-download-grid .download-card { display: flex; flex-direction: column; }
+.landing-download-grid .download-primary { width: 100%; justify-content: space-between; gap: .75rem; }
+.landing-download-grid .download-primary > span { flex-shrink: 0; font-size: 1.1rem; line-height: 1; }
 .download-card-footer { margin-top: auto; padding-top: .75rem; }
 .download-card-footer .release-meta { margin-block: 0; }
 .download-card { min-width: 0; background: var(--deep-teal); color: var(--porcelain); padding: 1.45rem 1.55rem 1.25rem; border-radius: 5px; }

@@ -66,6 +66,13 @@ def catalog_for_channels(catalog, channels):
     return {"schema_version": catalog["schema_version"], "latest": latest, "releases": releases}
 
 
+def update_feed(catalog):
+    """Publish only explicitly recommended releases, regardless of their label."""
+    versions = {version for version in catalog["latest"].values() if version is not None}
+    return {"schema_version": catalog["schema_version"], "latest": dict(catalog["latest"]),
+            "releases": {version: catalog["releases"][version] for version in sorted(versions, key=version_tuple)}}
+
+
 def platform_card(catalog, key, *, checksums=False, experimental=False):
     version = catalog["latest"][key]
     parts = [f'<article class="download-card" id="{key}"><h3>{PLATFORMS[key][0]}</h3>']
@@ -88,7 +95,7 @@ def cards(catalog, *, checksums=False, experimental=False):
     return '<div class="download-grid release-grid">' + "".join(platform_card(catalog, key, checksums=checksums, experimental=experimental) for key in PLATFORMS) + '</div>'
 
 
-def landing_cards(catalog, *, experimental=False):
+def landing_cards(catalog):
     """Keep one homepage card per OS, with architecture/format choices inside."""
     groups = (
         ("macOS", (("macos-arm64", "Apple Silicon (M-Series)", "dmg"),
@@ -121,7 +128,7 @@ def landing_cards(catalog, *, experimental=False):
             else:
                 url = asset["url"] if asset else store_app_url(platform)
                 target = ' target="_blank" rel="noopener noreferrer"' if asset else ''
-                parts.append(f'<a class="download-link download-primary" href="{escape(url, quote=True)}"{target} aria-label="Download EIDORA {version} — {escape(label, quote=True)}">{escape(label)}</a>')
+                parts.append(f'<a class="download-link download-primary" href="{escape(url, quote=True)}"{target} aria-label="Download EIDORA {version} — {escape(label, quote=True)}">{escape(label)}<span aria-hidden="true">↓</span></a>')
                 meta = f'{asset["format"].upper() if extension != "AppImage" else "AppImage"} · {asset["size"] / 1024**2:.1f}&nbsp;MiB' if asset else "Windows x64"
                 if len(versions) > 1:
                     meta += f' · v{version}'
@@ -130,10 +137,9 @@ def landing_cards(catalog, *, experimental=False):
                     parts.append(store_browser_link(platform))
             parts.append('</div>')
         parts.append(f'<div class="download-card-footer"><p class="release-meta">{escape(" · ".join(requirements))}</p>')
-        notes_path = "experimental" if experimental else "releases"
         for version in versions:
             label = f"Release notes · {version}" if len(versions) > 1 else "Release notes"
-            parts.append(f'<a class="download-link" href="/{notes_path}/#v{version}">{label}</a>')
+            parts.append(f'<a class="download-link" href="/releases/#v{version}">{label}</a>')
         parts.append('</div></article>')
     parts.append('</div>')
     return "".join(parts)
@@ -214,7 +220,7 @@ def experimental_downloads(catalog):
         parts.append(f'<details class="prototype-extra" id="v{version}"><summary>Release notes · {version}</summary><div class="prototype-extra-body">')
         parts.append(f'<p class="prototype-note-date">{release["published_at"]} · {release["channel"].capitalize()}</p><p class="release-notes">{escape(release["notes"])}</p>')
         parts.append(f'<p><a href="https://github.com/eidora-desktop/EIDORA/releases/tag/v{version}" target="_blank" rel="noopener noreferrer">View this release on GitHub</a></p></div></details>')
-    parts.append('</div><p class="prototype-public-link"><a href="/download/">Looking for a stable release?</a></p></div>')
+    parts.append('</div><p class="prototype-public-link"><a href="/#downloads">Back to current downloads</a></p></div>')
     return "".join(parts)
 
 
@@ -243,7 +249,7 @@ def history(catalog, *, experimental=False):
     if not catalog["releases"]:
         if experimental:
             return '<p>No experimental installers have been posted yet. Builds and their release notes will appear here when available.</p>'
-        return '<p>There are no public application releases yet. Downloads and release notes will appear here after publication.</p><p><a href="/download/">View platform availability</a></p>'
+        return '<p>There are no published releases yet. Downloads and release notes will appear here after publication.</p><p><a href="/#downloads">View platform availability</a></p>'
     parts = []
     for version in sorted(catalog["releases"], key=version_tuple, reverse=True):
         release = catalog["releases"][version]
@@ -270,10 +276,10 @@ def render_landing_downloads(index, catalog, experimental_catalog=None):
     before, rest = index.split(START)
     _, after = rest.split(END)
     if not any(catalog["latest"].values()) and experimental_catalog and any(experimental_catalog["latest"].values()):
-        downloads = landing_cards(experimental_catalog, experimental=True)
-        downloads += '<p class="download-footnote"><a href="/experimental/">Release notes, checksums, and installation details</a></p>'
+        downloads = landing_cards(experimental_catalog)
     else:
-        downloads = landing_cards(catalog) + '<p class="download-footnote"><a href="/download/">Installation and download details</a><a href="/releases/">Release history</a></p>'
+        downloads = landing_cards(catalog)
+    downloads += '<p class="download-footnote"><a href="/releases/">Release notes, checksums, and installation details</a></p>'
     return before + START + downloads + END + after
 
 
@@ -294,24 +300,32 @@ def build(source=ROOT):
     if output.exists():
         shutil.rmtree(output)
     output.mkdir()
-    for name in ("styles.css", "release-pages.css", "CNAME", "request-access.html", "EIDORA_logo.svg"):
+    for name in ("styles.css", "release-pages.css", "CNAME", "EIDORA_logo.svg"):
         shutil.copyfile(source / name, output / name)
     shutil.copytree(source / "assets", output / "assets", ignore=shutil.ignore_patterns(".DS_Store", "*.md"))
     (output / "index.html").write_text(index)
-    (output / "updates.json").write_text(json.dumps(public_catalog, indent=2, ensure_ascii=False) + "\n")
+    (output / "updates.json").write_text(json.dumps(update_feed(catalog), indent=2, ensure_ascii=False) + "\n")
     (output / ".nojekyll").touch()
-    content = '<p>Choose your operating system and architecture. Each platform shows the stable version currently available for it.</p>' + cards(public_catalog, checksums=True)
-    content += '''<section class="installation"><h2>Installing and updating</h2>
+    installation = '''<section class="installation" id="installation"><h2>Installing and updating</h2>
 <h3>Windows</h3><p>Install EIDORA from Microsoft Store when available. The Store manages subsequent updates.</p>
 <h3>macOS</h3><p>Choose Apple Silicon or Intel to match your Mac. Quit EIDORA, open the downloaded DMG, and copy EIDORA into Applications, replacing the previous application when updating.</p>
 <h3>Linux</h3><p>Use the DEB package on compatible Debian-based distributions, or the AppImage on supported Linux systems. Install a newer DEB over the previous package. For AppImage, quit EIDORA, replace the old file, and make the new file executable. Updates are downloaded manually.</p>
 <p>Keep your project folders when replacing the application. Read each release's compatibility notes before opening existing projects.</p>
-<p><a href="/releases/">Release notes and previous versions</a></p></section>'''
+<p><a href="/#downloads">Back to current downloads</a></p></section>'''
+    release_content = '<p>Release notes and downloads for published versions, including prototypes and previews labelled by release type. <a href="#installation">Installing and updating</a></p>' + history(catalog) + installation
     experimental_content = experimental_downloads(experimental_catalog)
-    for path, title, body in (("download", "Download EIDORA", content), ("releases", "EIDORA releases", history(public_catalog)), ("experimental", "Experimental builds", experimental_content)):
+    for path, title, body in (("releases", "EIDORA releases", release_content), ("experimental", "Experimental builds", experimental_content)):
         directory = output / path
         directory.mkdir()
         (directory / "index.html").write_text(page(title, body, path, noindex=path == "experimental", stylesheet_revision=stylesheet_revision, heading="Download EIDORA" if path == "experimental" else None))
+    (output / "download").mkdir()
+    (output / "download/index.html").write_text('''<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Downloads — EIDORA</title>
+<meta http-equiv="refresh" content="0; url=/#downloads">
+<link rel="canonical" href="https://www.eidora.org/#downloads">
+</head><body><p>Downloads have moved to the homepage. <a href="/#downloads">Go to EIDORA downloads</a>.</p></body></html>''')
     return output
 
 

@@ -1,11 +1,13 @@
 # EIDORA downloads and releases
 
-[Downloads](https://www.eidora.org/download/) lists availability and system
+[Downloads](https://www.eidora.org/#downloads) lists availability and system
 requirements for each platform. [Release history](https://www.eidora.org/releases/)
-provides version notes and links to stable installers.
+provides notes, checksums, installation instructions, and downloads for all
+published versions, including clearly labelled prototypes and previews. The old
+`/download/` URL redirects to the homepage downloads section.
 
-Early builds appear at `/experimental/`, reached through the homepage download
-cards and the “Experimental builds” link in the footer. When no stable installers
+Early builds also appear at `/experimental/`, reached through the
+“Experimental builds” link in the footer. When no stable installers
 are available, the homepage offers the latest experimental builds labelled
 Prototype on each download card. The `/experimental/` page warns that builds
 are experimental and untested and requests `noindex, nofollow` from search engines.
@@ -48,11 +50,15 @@ identify a specific version and include file sizes and SHA-256 checksums.
 ## Update catalog
 
 The public [update catalog](https://www.eidora.org/updates.json) provides
-machine-readable stable release information for the desktop application. The same
-stable data appears on the main download and release pages. The source
-`updates.json` also holds prototype and preview records; the build routes these
-to the experimental page and, while stable installers are unavailable, the homepage.
-It excludes them from the published update feed and stable download/release pages.
+machine-readable recommendations for the desktop application. Its schema remains
+unchanged; no application code changes are needed. The feed uses the source
+catalog's explicit `latest` entries and includes their referenced release records,
+regardless of whether they are labelled prototype, preview, or stable. Currently,
+all four platforms recommend 0.2.4, retaining its Prototype label. Adding a release
+record alone does not offer an update: update `latest` for each intended platform.
+Unrecommended historical records stay in website release history, outside the feed.
+The homepage prefers stable downloads, falling back to experimental builds while
+stable installers are unavailable. This display choice does not control app updates.
 For each channel group, the build uses the recommended version when it belongs
 to that group, or the highest available matching version for that platform.
 
@@ -86,8 +92,8 @@ python scripts/prepare_release.py --version 0.2.0 --platform macos-arm64 \
 Use the actual version, platform, and verified requirements for your build.
 The importer obtains the asset URL, size, and checksum from GitHub. Commit the
 updated catalog with the website changes; the normal Pages build generates the
-experimental downloads and the homepage fallback. `preview` also goes to this page. Only use `stable` when
-you intend a release to appear in the main downloads and public update feed.
+experimental downloads and the homepage fallback. `preview` also goes to this page. Use `stable` only for releases designated stable. App-update publication is
+controlled separately by the catalog’s explicit `latest` entries.
 
 Run `python -m unittest discover -s tests -v` and
 `python scripts/build_site.py` to check the catalog and generated pages locally.
