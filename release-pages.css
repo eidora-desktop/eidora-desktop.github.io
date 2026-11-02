@@ -8,11 +8,11 @@
 .download-details .release-meta { margin-block: 0 .65rem; }
 .release-grid .download-card:target { outline: 3px solid var(--gold); outline-offset: 4px; }
 .release-page { padding-block: 3rem; }
-.release-page h1 { font-family: var(--display); font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.15; }
+.release-page h1 { font-family: var(--serif); font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.15; }
 .release-page > p { margin-block: 1.5rem; max-width: 48rem; }
 .release-page .release-grid { margin-block: 2rem; }
 .experimental-notice { max-width: 48rem; margin-block: 2rem; padding: 1.5rem; border-left: 3px solid var(--gold-ink); background: var(--sage-mist); }
-.experimental-notice h2 { font-family: var(--display); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
+.experimental-notice h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: normal; }
 .experimental-notice p { margin-top: .75rem; }
 .download-primary { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex: 0 0 auto; width: min(13.5rem, 100%); min-width: 0; min-height: 48px; margin-top: 0; padding: .5rem .6rem; border-radius: 3px; background: var(--paper); color: var(--deep-teal); font-size: .95rem; font-weight: 600; line-height: 1.2; text-align: left; overflow-wrap: anywhere; text-decoration: none; }
 .download-primary:hover { background: var(--gold); color: var(--deep-teal); }
@@ -39,7 +39,7 @@
 .prototype-warning { margin-top: 1.15rem; padding-left: .8rem; border-left: 2px solid var(--gold-ink); color: var(--muted); font-size: .8rem; }
 .prototype-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.75rem; }
 .prototype-card { display: flex; flex-direction: column; min-width: 0; padding: 1.5rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--porcelain); scroll-margin-top: 2rem; }
-.prototype-card h2 { font-family: var(--display); font-size: 1.25rem; font-weight: 600; letter-spacing: -.025em; }
+.prototype-card h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 600; letter-spacing: -.025em; }
 .prototype-options { display: grid; grid-template-columns: minmax(0, 1fr); gap: .9rem; margin-block: 1.25rem; }
 .prototype-option { min-width: 0; }
 .prototype-button { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: 44px; padding: .6rem .85rem; border-radius: 4px; background: var(--deep-teal); color: var(--porcelain); font-size: .9rem; font-weight: 600; text-decoration: none; }

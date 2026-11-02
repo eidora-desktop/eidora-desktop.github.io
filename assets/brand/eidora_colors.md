@@ -37,8 +37,7 @@ The 16-pixel favicon uses a simplified mark for legibility at small sizes.
 
 The hero headline uses Outfit Medium (500), and its introductory sentence uses
 Outfit Regular (400). The EIDORA wordmark remains the original SVG artwork.
-All page, section, and card headings use Outfit, including generated release
-pages. Body text uses system sans-serif fonts.
+Body text uses system sans-serif fonts.
 
 Outfit's variable WOFF2 files are hosted locally in `assets/fonts/`, with Latin
 and extended Latin subsets. The Latin subset is preloaded; `font-display: swap`
