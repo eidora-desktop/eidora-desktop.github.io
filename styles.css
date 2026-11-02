@@ -134,7 +134,7 @@ details p { margin: 0 1.7rem 1.3rem .15rem; font-size: .84rem; line-height: 1.85
 /* Development credits */
 .acknowledgements { padding-block: 3rem; border-bottom: 1px solid var(--rule); }
 .acknowledgements h2 { font-family: var(--sans); font-size: 1.1rem; font-weight: 600; letter-spacing: -.025em; line-height: 1.4; }
-.acknowledgements p { max-width: 80ch; margin-top: 1rem; color: var(--muted); font-size: .85rem; line-height: 1.8; }
+.acknowledgements p { margin-top: 1rem; color: var(--muted); font-size: .85rem; line-height: 1.8; }
 .site-footer { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding-block: 2.5rem; }
 .footer-identity { display: flex; align-items: center; gap: 1rem; }
 .footer-identity img { width: 76px; }
