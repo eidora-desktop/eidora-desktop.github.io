@@ -14,14 +14,16 @@ are experimental and untested and requests `noindex, nofollow` from search engin
 It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
-Stable application downloads are coming soon. The experimental downloads offer
-0.2.4 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
-and DEB installers for Linux x64. Windows 0.2.4 is available through
-[Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5), with accepted
-package version 1.2.4.0 confirmed by the maintainer. The previous
-0.2.3 release remains archived in the catalog and on GitHub. The page groups
-downloads under the 0.2 series and
-shows the latest full version for each platform.
+The public release history begins with **EIDORA 0.2.4**, the first public release,
+labelled Prototype. Its release notes introduce the software and available
+workflows rather than describe changes from internal builds. Pre-launch versions
+are excluded from the website catalog and release history.
+
+Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
+AppImage and DEB installers for Linux x64, and Windows x64 through
+[Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5) (Store package
+version 1.2.4.0). The experimental page groups downloads under the 0.2 series
+and shows the latest full version for each platform.
 
 All platform packaged tests passed, including UMAP and video-thumbnail checks.
 Signed Mac tests passed on Apple Silicon and under Rosetta. Fresh manual
@@ -148,7 +150,9 @@ If Windows ships first, create its release record with `published_at`, `channel`
 
 ### 4. Review recommendations and generated pages
 
-Keep earlier release records for website history. Each non-null `latest` entry
+Keep public release records from 0.2.4 onward for website history; do not reintroduce
+pre-launch versions. Future notes may describe changes since the preceding public
+release. Each non-null `latest` entry
 must reference a release that actually contains that platform. The public feed
 includes exactly the release records referenced by `latest`, preserving their
 channel labels. It does not automatically recommend every new experimental build.

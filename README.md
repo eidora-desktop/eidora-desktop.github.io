@@ -20,11 +20,11 @@ download listings, and release history.
 | macOS · Apple Silicon | macOS 15 or later |
 | macOS · Intel | macOS 15 or later |
 | Windows · x64 | Windows 10 or 11 |
-| Linux · x64 | Requirements will accompany the public release |
+| Linux · x64 | Tested on Ubuntu 24.04 |
 
-Stable application downloads are coming soon. Experimental installers are available
-for Apple Silicon and Intel Macs, Windows x64 through Microsoft Store, and Linux
-x64 as AppImage and DEB (0.2.4).
+EIDORA 0.2.4 is the first public release, labelled Prototype. Installers are
+available for Apple Silicon and Intel Macs, Windows x64 through Microsoft Store,
+and Linux x64 as AppImage and DEB. Public release history starts at 0.2.4.
 The Linux builds were built and self-tested on Ubuntu 24.04; other distributions
 and native installation remain unverified. Availability is listed separately for
 each platform.
