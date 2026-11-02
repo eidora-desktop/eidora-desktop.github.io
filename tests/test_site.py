@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_site import END, START, build, catalog_for_channels, download_details, experimental_downloads, render_landing_downloads
+from build_site import END, START, build, catalog_for_channels, download_details, experimental_downloads, render_landing_downloads, update_feed
 from catalog import PLATFORMS, REPOSITORY, validate_catalog
 from prepare_release import merge_release
 
@@ -50,7 +50,7 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(rendered.count('<article class="download-card">'), 3)
         for heading in ("macOS", "Windows", "Linux"):
             self.assertIn(f'<h3>{heading}</h3>', rendered)
-        self.assertIn('>Apple Silicon (M-Series)</a>', rendered)
+        self.assertIn('>Apple Silicon (M-Series)<span aria-hidden="true">↓</span></a>', rendered)
         self.assertTrue(rendered.startswith("<main>" + START))
         self.assertTrue(rendered.endswith(END + "</main>"))
         for malformed in (START, END, END + START, START + START + END):
@@ -123,19 +123,26 @@ class SiteTests(unittest.TestCase):
     def test_generated_pages_and_local_links(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory)
-            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "request-access.html", "EIDORA_logo.svg"):
+            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "EIDORA_logo.svg"):
                 shutil.copyfile(ROOT / name, source / name)
             shutil.copytree(ROOT / "assets", source / "assets")
             (source / "updates.json").write_text(json.dumps(sample()))
             output = build(source)
-            self.assertEqual(json.loads((output / "updates.json").read_text()), catalog_for_channels(sample(), {"stable"}))
+            self.assertEqual(json.loads((output / "updates.json").read_text()), sample())
             landing = (output / "index.html").read_text()
             self.assertIn("· Prototype</p>", landing)
-            self.assertIn('href="/experimental/#v0.2.0"', landing)
+            self.assertIn('href="/releases/#v0.2.0"', landing)
             self.assertIn(sample()["releases"]["0.2.0"]["platforms"]["macos-arm64"]["downloads"][0]["url"], landing)
             self.assertNotIn("0.2.0", (output / "download/index.html").read_text())
             history = (output / "releases/index.html").read_text()
-            self.assertNotIn("0.2.0", history)
+            self.assertIn("EIDORA 0.2.0", history)
+            self.assertIn("Prototype", history)
+            self.assertIn("&lt;script&gt;", history)
+            self.assertNotIn("<script>", history)
+            self.assertIn('id="installation"', history)
+            redirect = (output / "download/index.html").read_text()
+            self.assertIn('http-equiv="refresh" content="0; url=/#downloads"', redirect)
+            self.assertFalse((output / "request-access.html").exists())
             experimental = (output / "experimental/index.html").read_text()
             self.assertIn("&lt;script&gt;", experimental)
             self.assertNotIn("<script>", experimental)
@@ -191,7 +198,7 @@ class SiteTests(unittest.TestCase):
             self.assertIn(asset["browser_download_url"], linux)
         self.assertNotIn('0.2.1', json.dumps(catalog_for_channels(catalog, {"stable"})))
 
-    def test_experimental_builds_do_not_replace_public_downloads_or_updates(self):
+    def test_update_feed_uses_explicit_recommendations_independently_of_homepage(self):
         data = sample()
         for version, channel in (("0.1.0", "stable"), ("0.3.0", "preview")):
             record = json.loads(json.dumps(data["releases"]["0.2.0"]).replace("0.2.0", version))
@@ -207,20 +214,39 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(set(experimental["releases"]), {"0.2.0", "0.3.0"})
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory)
-            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "request-access.html", "EIDORA_logo.svg"):
+            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "EIDORA_logo.svg"):
                 shutil.copyfile(ROOT / name, source / name)
             shutil.copytree(ROOT / "assets", source / "assets")
             (source / "updates.json").write_text(json.dumps(data))
             output = build(source)
-            for name in ("index.html", "download/index.html", "releases/index.html", "updates.json"):
+            for name in ("index.html",):
                 rendered = (output / name).read_text()
                 self.assertIn("0.1.0", rendered)
                 self.assertNotIn("0.2.0", rendered)
                 self.assertNotIn("0.3.0", rendered)
+            releases = (output / "releases/index.html").read_text()
+            for version in ("0.1.0", "0.2.0", "0.3.0"):
+                self.assertIn(f'id="v{version}"', releases)
+            self.assertIn("Prototype", releases)
+            self.assertIn("Preview", releases)
+            feed = json.loads((output / "updates.json").read_text())
+            self.assertEqual(feed, update_feed(data))
+            self.assertEqual(feed["latest"]["macos-arm64"], "0.3.0")
+            self.assertEqual(set(feed["releases"]), {"0.3.0"})
+            data["latest"]["macos-arm64"] = "0.2.0"
+            self.assertEqual(set(update_feed(data)["releases"]), {"0.2.0"})
             rendered = (output / "experimental/index.html").read_text()
             self.assertIn("0.2.0", rendered)
             self.assertIn("0.3.0", rendered)
             self.assertNotIn("0.1.0", rendered)
+
+    def test_published_feed_recommends_024_for_every_platform(self):
+        catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
+        feed = validate_catalog(update_feed(catalog))
+        self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.4"))
+        self.assertEqual(set(feed["releases"]), {"0.2.4"})
+        self.assertEqual(feed["releases"]["0.2.4"]["channel"], "prototype")
+        self.assertEqual(set(feed["releases"]["0.2.4"]["platforms"]), set(PLATFORMS))
 
     def test_empty_experimental_catalog_is_explicit(self):
         from build_site import cards, history

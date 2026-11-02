@@ -9,7 +9,7 @@ This repository contains the EIDORA website, including its landing page,
 download listings, and release history.
 
 - [Website](https://www.eidora.org/)
-- [Downloads and system requirements](https://www.eidora.org/download/)
+- [Downloads and system requirements](https://www.eidora.org/#downloads)
 - [Release history](https://www.eidora.org/releases/)
 - [EIDORA application source code](https://github.com/eidora-desktop/EIDORA)
 
@@ -31,9 +31,13 @@ each platform.
 
 While stable downloads are unavailable, the homepage shows the latest experimental
 installers labelled Prototype on each download card. Their release notes, checksums,
-and installation details appear at `/experimental/`, which is marked for search
-engines not to index. Only stable releases appear at `/download/`, `/releases/`,
-and in the public update feed.
+and installation details appear at `/releases/`, alongside all published versions
+with their release types clearly labelled. `/experimental/` remains available for
+experimental builds and is marked for search engines not to index. `/download/`
+redirects to the homepage downloads section; the obsolete access-request page has
+been removed. The public update feed keeps its existing format and publishes explicitly
+recommended releases from the catalog, including 0.2.4 for all four platforms.
+Prototype labels are preserved; no application rebuild is required.
 See [release information](RELEASES.md) for how to add installer files.
 
 ## About this repository
