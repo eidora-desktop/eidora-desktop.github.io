@@ -32,3 +32,17 @@ below use the sRGB color space and correspond to [the site stylesheet](../../sty
 
 The instrument logo uses teal patina, gold fittings, and bronze shading.
 The 16-pixel favicon uses a simplified mark for legibility at small sizes.
+
+## Typography
+
+The hero headline uses Outfit Medium (500), and its introductory sentence uses
+Outfit Regular (400). The EIDORA wordmark remains the original SVG artwork.
+Body text uses system sans-serif fonts.
+
+Outfit's variable WOFF2 files are hosted locally in `assets/fonts/`, with Latin
+and extended Latin subsets. The Latin subset is preloaded; `font-display: swap`
+and system/Arial fallbacks keep text visible while loading. No external font
+service is required by the website.
+
+Source: [Google Fonts Outfit](https://github.com/google/fonts/tree/main/ofl/outfit).
+The SIL Open Font License is included in `assets/fonts/OFL-Outfit.txt`.

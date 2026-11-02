@@ -37,7 +37,7 @@
           ]
         },
         "linux-x86_64": {
-          "requirements": "Linux x64; built and self-tested on Ubuntu 24.04",
+          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
           "downloads": [
             {
               "format": "deb",
@@ -87,7 +87,7 @@
           ]
         },
         "linux-x86_64": {
-          "requirements": "Linux x64; built and self-tested on Ubuntu 24.04",
+          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
           "downloads": [
             {
               "format": "deb",
@@ -106,7 +106,7 @@
           ]
         },
         "windows-x86_64": {
-          "requirements": "Windows 10 22H2 or later · x64",
+          "requirements": "Windows 10 or 11 · x64",
           "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
         }
       }

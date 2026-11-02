@@ -47,6 +47,10 @@ class SiteTests(unittest.TestCase):
         rendered = render_landing_downloads(landing, sample())
         self.assertNotIn("Old download cards", rendered)
         self.assertIn("Version 0.2.0", rendered)
+        self.assertEqual(rendered.count('<article class="download-card">'), 3)
+        for heading in ("macOS", "Windows", "Linux"):
+            self.assertIn(f'<h3>{heading}</h3>', rendered)
+        self.assertIn('>Apple Silicon (M-Series)</a>', rendered)
         self.assertTrue(rendered.startswith("<main>" + START))
         self.assertTrue(rendered.endswith(END + "</main>"))
         for malformed in (START, END, END + START, START + START + END):
@@ -86,11 +90,14 @@ class SiteTests(unittest.TestCase):
         platform = {"requirements": "Windows x64", "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"}
         data["latest"]["windows-x86_64"] = "0.2.0"
         data["releases"]["0.2.0"]["platforms"]["windows-x86_64"] = platform
-        for rendered in (experimental_downloads(data), download_details(platform)):
+        for rendered in (experimental_downloads(data), download_details(platform), render_landing_downloads(START + END, data)):
             self.assertIn('href="https://apps.microsoft.com/detail/9P0WFNT5DZS5" target="_blank" rel="noopener noreferrer"', rendered)
-            self.assertIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5">Open Store app (Windows)</a>', rendered)
+            self.assertIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5"', rendered)
+            self.assertIn('Microsoft Store', rendered)
+            self.assertIn('View in browser</a>', rendered)
+            self.assertNotIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5" target="_blank"', rendered)
         mac_only = experimental_downloads(sample())
-        self.assertNotIn('target="_blank"', mac_only)
+        self.assertNotIn('View in browser', mac_only)
         self.assertNotIn('ms-windows-store:', mac_only)
 
     def test_import_accepts_published_prototype_but_rejects_drafts(self):
@@ -122,6 +129,11 @@ class SiteTests(unittest.TestCase):
             (source / "updates.json").write_text(json.dumps(sample()))
             output = build(source)
             self.assertEqual(json.loads((output / "updates.json").read_text()), catalog_for_channels(sample(), {"stable"}))
+            landing = (output / "index.html").read_text()
+            self.assertIn("· Prototype</p>", landing)
+            self.assertIn('href="/experimental/#v0.2.0"', landing)
+            self.assertIn(sample()["releases"]["0.2.0"]["platforms"]["macos-arm64"]["downloads"][0]["url"], landing)
+            self.assertNotIn("0.2.0", (output / "download/index.html").read_text())
             history = (output / "releases/index.html").read_text()
             self.assertNotIn("0.2.0", history)
             experimental = (output / "experimental/index.html").read_text()

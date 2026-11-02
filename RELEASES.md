@@ -4,8 +4,10 @@
 requirements for each platform. [Release history](https://www.eidora.org/releases/)
 provides version notes and links to stable installers.
 
-Early builds appear separately at `/experimental/`, reached through the small
-“Experimental builds” link in the homepage footer. This page warns that builds
+Early builds appear at `/experimental/`, reached through the homepage download
+cards and the “Experimental builds” link in the footer. When no stable installers
+are available, the homepage offers the latest experimental builds labelled
+Prototype on each download card. The `/experimental/` page warns that builds
 are experimental and untested and requests `noindex, nofollow` from search engines.
 It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
@@ -26,9 +28,9 @@ remain unverified for 0.2.4. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
-as a direct website download. The Store website button opens in a new tab;
-“Open Store app (Windows)” uses Microsoft’s `ms-windows-store` product link
-to request the native Store app on Windows. Store acceptance does not replace separately
+as a direct website download. The Microsoft Store button uses Microsoft’s
+`ms-windows-store` product link to request the native Store app on Windows.
+“View in browser” opens the Store website in a new tab. Store acceptance does not replace separately
 recorded installed-Windows QA or WACK evidence.
 
 ## Download formats
@@ -49,7 +51,8 @@ The public [update catalog](https://www.eidora.org/updates.json) provides
 machine-readable stable release information for the desktop application. The same
 stable data appears on the main download and release pages. The source
 `updates.json` also holds prototype and preview records; the build routes these
-only to the experimental page and excludes them from the published update feed.
+to the experimental page and, while stable installers are unavailable, the homepage.
+It excludes them from the published update feed and stable download/release pages.
 For each channel group, the build uses the recommended version when it belongs
 to that group, or the highest available matching version for that platform.
 
@@ -83,7 +86,7 @@ python scripts/prepare_release.py --version 0.2.0 --platform macos-arm64 \
 Use the actual version, platform, and verified requirements for your build.
 The importer obtains the asset URL, size, and checksum from GitHub. Commit the
 updated catalog with the website changes; the normal Pages build generates the
-experimental downloads. `preview` also goes to this page. Only use `stable` when
+experimental downloads and the homepage fallback. `preview` also goes to this page. Only use `stable` when
 you intend a release to appear in the main downloads and public update feed.
 
 Run `python -m unittest discover -s tests -v` and
