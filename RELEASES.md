@@ -22,7 +22,7 @@ are excluded from the website catalog and release history.
 Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
 AppImage and DEB installers for Linux x64, and Windows x64 through
 [Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5) (Store package
-version 1.2.4.0). The experimental page groups downloads under the 0.2 series
+version 1.2.5.0). The experimental page groups downloads under the 0.2 series
 and shows the latest full version for each platform.
 
 All platform packaged tests passed, including UMAP and video-thumbnail checks.
@@ -61,8 +61,8 @@ machine-readable recommendations for the desktop application. Its schema remains
 unchanged; no application code changes are needed. The feed uses the source
 catalog's explicit `latest` entries and includes their referenced release records,
 regardless of whether they are labelled prototype, preview, or stable. Currently,
-Mac/Linux platforms recommend 0.2.5 and Windows remains at 0.2.4, retaining
-the Prototype labels. Windows advances only after Store availability is confirmed.
+All four platforms recommend 0.2.5, retaining its Prototype label.
+The maintainer confirmed Windows Store availability on 2026-11-02.
 Adding a release record alone does not offer an update: update `latest` for each intended platform.
 Unrecommended historical records stay in website release history, outside the feed.
 The homepage prefers stable downloads, falling back to experimental builds while
@@ -165,7 +165,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When intentionally replacing 0.2.4 as the recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_025_for_mac_linux_and_024_for_windows`), including its name and
+(`test_published_feed_recommends_025_for_every_platform`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 

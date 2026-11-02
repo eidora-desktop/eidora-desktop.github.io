@@ -240,15 +240,15 @@ class SiteTests(unittest.TestCase):
             self.assertIn("0.3.0", rendered)
             self.assertNotIn("0.1.0", rendered)
 
-    def test_published_feed_recommends_025_for_mac_linux_and_024_for_windows(self):
+    def test_published_feed_recommends_025_for_every_platform(self):
         catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
         feed = validate_catalog(update_feed(catalog))
-        self.assertEqual(feed["latest"], {key: "0.2.4" if key == "windows-x86_64" else "0.2.5" for key in PLATFORMS})
-        self.assertEqual(set(feed["releases"]), {"0.2.4", "0.2.5"})
-        self.assertEqual(feed["releases"]["0.2.4"]["channel"], "prototype")
-        self.assertEqual(set(feed["releases"]["0.2.4"]["platforms"]), set(PLATFORMS))
+        self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.5"))
+        self.assertEqual(set(feed["releases"]), {"0.2.5"})
+        self.assertEqual(catalog["releases"]["0.2.4"]["channel"], "prototype")
+        self.assertEqual(set(catalog["releases"]["0.2.4"]["platforms"]), set(PLATFORMS))
         self.assertEqual(feed["releases"]["0.2.5"]["channel"], "prototype")
-        self.assertEqual(set(feed["releases"]["0.2.5"]["platforms"]), set(PLATFORMS) - {"windows-x86_64"})
+        self.assertEqual(set(feed["releases"]["0.2.5"]["platforms"]), set(PLATFORMS))
 
     def test_empty_experimental_catalog_is_explicit(self):
         from build_site import cards, history
