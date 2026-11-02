@@ -30,6 +30,11 @@ Signed Mac tests passed on Apple Silicon and under Rosetta. Fresh manual
 installation checks on Intel hardware and Linux
 remain unverified for 0.2.4. Linux packages were built and
 self-tested on Ubuntu 24.04; broader distribution support is not claimed.
+The 0.2.5 Mac/Linux update fixes macOS cursor crashes, model-download
+responsiveness, welcome-tour resets, and update-version messages. Both signed
+Mac architectures passed offscreen and native Cocoa runtime checks; Intel ran
+under Rosetta. Manual installation checks remain separate.
+
 Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
 as a direct website download. The Microsoft Store button uses Microsoft’s
@@ -56,8 +61,9 @@ machine-readable recommendations for the desktop application. Its schema remains
 unchanged; no application code changes are needed. The feed uses the source
 catalog's explicit `latest` entries and includes their referenced release records,
 regardless of whether they are labelled prototype, preview, or stable. Currently,
-all four platforms recommend 0.2.4, retaining its Prototype label. Adding a release
-record alone does not offer an update: update `latest` for each intended platform.
+Mac/Linux platforms recommend 0.2.5 and Windows remains at 0.2.4, retaining
+the Prototype labels. Windows advances only after Store availability is confirmed.
+Adding a release record alone does not offer an update: update `latest` for each intended platform.
 Unrecommended historical records stay in website release history, outside the feed.
 The homepage prefers stable downloads, falling back to experimental builds while
 stable installers are unavailable. This display choice does not control app updates.
@@ -159,7 +165,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When intentionally replacing 0.2.4 as the recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_024_for_every_platform`), including its name and
+(`test_published_feed_recommends_025_for_mac_linux_and_024_for_windows`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 
