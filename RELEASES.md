@@ -13,17 +13,25 @@ It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 Stable application downloads are coming soon. The experimental downloads offer
-signed and notarized 0.2.4 DMG installers for Apple Silicon and Intel Macs, plus
-0.2.4 AppImage and DEB installers for Linux x64. This patch fixes thumbnail creation
-and orientation, signed Mac UMAP runtime permissions, and Discovery shutdown and
-layout issues. Windows 0.2.4 is available through Microsoft Store (package version
-1.2.4.0), requiring Windows 10 or 11 on x64. Earlier release assets remain available
-on GitHub. The experimental page groups these downloads under the 0.2 series
-and shows the latest full version for each platform. The Linux builds were built
-and self-tested on Ubuntu 24.04; other distributions remain unverified. Native installation testing
-remains incomplete; the Intel build has been tested under Rosetta on Apple Silicon,
-with Intel hardware testing still pending. Each download includes its size and an
-expandable SHA-256 checksum on the experimental page.
+0.2.4 signed and notarized DMGs for Apple Silicon and Intel Macs, plus AppImage
+and DEB installers for Linux x64. Windows 0.2.4 is available through
+[Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5), with accepted
+package version 1.2.4.0 confirmed by the maintainer. The previous
+0.2.3 release remains archived in the catalog and on GitHub. The page groups
+downloads under the 0.2 series and
+shows the latest full version for each platform.
+
+All platform packaged tests passed, including UMAP and video-thumbnail checks.
+Signed Mac tests passed on Apple Silicon and under Rosetta. Fresh manual
+installation checks on Intel hardware and Linux
+remain unverified for 0.2.4. Linux packages were built and
+self-tested on Ubuntu 24.04; broader distribution support is not claimed.
+Mac/Linux downloads include their size and expandable SHA-256 checksum.
+Microsoft Store manages Windows installation and updates; the MSIX is not hosted
+as a direct website download. The Microsoft Store button uses Microsoft’s
+`ms-windows-store` product link to request the native Store app on Windows.
+“View in browser” opens the Store website in a new tab. Store acceptance does not replace separately
+recorded installed-Windows QA or WACK evidence.
 
 ## Download formats
 
