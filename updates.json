@@ -7,60 +7,10 @@
     "linux-x86_64": "0.2.4"
   },
   "releases": {
-    "0.2.3": {
-      "published_at": "2026-10-30",
-      "channel": "prototype",
-      "notes": "Experimental macOS and Linux prototype release, version 0.2.3.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch speeds up MET example setup by avoiding a repeated deep content audit after downloading the verified release archive. Download integrity and safe extraction checks remain in place. It also renders semantic icons directly from the bundled SVGs to prevent blank icons on first launch. No project-format change is introduced.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Packaged self-tests passed on all four build platforms, and signed Mac runtime tests passed on Apple Silicon and under Rosetta. Linux packages were built and self-tested on Ubuntu 24.04. Fresh manual installation checks on Intel hardware and Linux, and broader Linux distribution support, remain unverified for this version.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows 0.2.3 is prepared separately for installed testing before Microsoft Store submission. It is not included in these public downloads.\n\nApplication build source: a981da729420d432017305ab6d40248e5be53a7d.\n",
-      "platforms": {
-        "macos-arm64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.3-macos-arm64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.3/EIDORA-0.2.3-macos-arm64.dmg",
-              "size": 482169423,
-              "sha256": "f9db4e1e4cdb213e500744c0822db91cf70e8f6dbdd62e7040cfdc1f641ba90c"
-            }
-          ]
-        },
-        "macos-x86_64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.3-macos-x86_64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.3/EIDORA-0.2.3-macos-x86_64.dmg",
-              "size": 497643885,
-              "sha256": "cba01bb6fbe942afb95c36c536142934a2bc56d83b15611d3afef1f5003ba04e"
-            }
-          ]
-        },
-        "linux-x86_64": {
-          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
-          "downloads": [
-            {
-              "format": "deb",
-              "name": "EIDORA-0.2.3-linux-x86_64.deb",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.3/EIDORA-0.2.3-linux-x86_64.deb",
-              "size": 479601524,
-              "sha256": "90a39aaee75e6febc6de4376ae807f52c1cbbdc0696037f4d40806d83383a368"
-            },
-            {
-              "format": "AppImage",
-              "name": "EIDORA-0.2.3-linux-x86_64.AppImage",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.3/EIDORA-0.2.3-linux-x86_64.AppImage",
-              "size": 540469752,
-              "sha256": "66a4c12111b9adfe68c5b3e3ebf75730efdd0d288a3ffe929a1459be8346a1ce"
-            }
-          ]
-        }
-      }
-    },
     "0.2.4": {
       "published_at": "2026-11-01",
       "channel": "prototype",
-      "notes": "Experimental macOS, Linux, and Windows prototype release, version 0.2.4.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nThis patch fixes automatic thumbnail creation after image/video embedding, preserves thumbnail aspect ratio independently of model preprocessing, and corrects upside-down portrait video thumbnails. It also fixes UMAP runtime permissions in signed Mac applications, Discovery shutdown, Windows welcome-tour positioning, and Discovery filter/snapshot footer alignment. Project formats and dependency pins are unchanged.\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. Packaged self-tests passed on all four build platforms. Signed Mac runtime checks passed on Apple Silicon and under Rosetta, including a real UMAP projection. Linux packages were built and self-tested on Ubuntu 24.04. Fresh manual installation checks on Intel hardware and Linux, and broader Linux distribution support, remain unverified for this experimental version.\n\nQuit EIDORA before installing and back up existing projects. On macOS, open the DMG and drag EIDORA into Applications. On Linux, make the AppImage executable or install the DEB with your package manager.\n\nWindows 0.2.4 is available through Microsoft Store (package version 1.2.4.0). Microsoft manages installation and updates. Separate manual installed-Windows validation and WACK results have not been recorded here.\n\nApplication build source: bd86a53b8f88a905036ef8e4f333777232981d81.\n",
+      "notes": "EIDORA 0.2.4 — First public release\n\nEIDORA is open-source desktop software for researching cultural collections through embedding space exploration. This first public release brings collection preparation, metadata, embeddings, interactive discovery, and figure creation into one interface.\n\nStart with a folder of media files, or bring existing metadata, vector embeddings, or projection coordinates. Import multidimensional vectors or compute embeddings locally with compatible models for images, video, text, audio, and multimodal combinations.\n\nExplore two-dimensional projections linked to collection metadata. Investigate patterns with filters, color mappings, media previews, and annotations. Save snapshots to revisit and compare views, and use the Slicer to explore numerical ranges such as time periods while keeping projection coordinates fixed.\n\nCreate single- or multi-panel figures with captions, legends, and annotations, and export figures or animations. Methods reports help document models, algorithms, parameters, and references used in an analysis.\n\nAvailable for macOS on Apple Silicon and Intel, Windows x64 through Microsoft Store, and Linux x64 as AppImage and DEB packages. The Mac installers are signed and notarized. Requirements: macOS 15 or later; Windows 10 or 11; Linux x64 (tested on Ubuntu 24.04).\n\nAnalysis runs locally. Internet access is needed to discover and download models; installed models run on your computer. EIDORA is free under the MIT license; embedding models may have their own licenses.\n\nThis is a prototype release. Stability and backward compatibility are not guaranteed; use copies of your data and projects. Intel Mac hardware installation and broader Linux distribution support remain unverified.\n",
       "platforms": {
         "macos-arm64": {
           "requirements": "macOS 15 or later",
