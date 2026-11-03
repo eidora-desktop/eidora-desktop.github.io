@@ -51,7 +51,7 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('<script>', rendered)
         self.assertNotIn('href="javascript:', rendered)
         catalog = json.loads((ROOT / 'updates.json').read_text())
-        old = catalog['releases']['0.2.5']['notes']
+        old = 'Plain-text release notes\n\nChanges\n\n- A fix with <escaped> text.'
         from html import escape
         self.assertEqual(release_notes_html(old), f'<p class="release-notes">{escape(old)}</p>')
         current = release_notes_html(catalog['releases']['0.2.6']['notes'])
@@ -268,18 +268,19 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.6"))
         self.assertEqual(set(feed["releases"]), {"0.2.6"})
         self.assertNotIn("0.2.4", catalog["releases"])
-        self.assertEqual(catalog["releases"]["0.2.5"]["channel"], "prototype")
-        self.assertEqual(set(catalog["releases"]["0.2.5"]["platforms"]), set(PLATFORMS))
+        self.assertEqual(set(catalog["releases"]), {"0.2.6"})
         self.assertEqual(feed["releases"]["0.2.6"]["channel"], "prototype")
         self.assertEqual(set(feed["releases"]["0.2.6"]["platforms"]), set(PLATFORMS))
 
-    def test_withdrawn_024_has_no_generated_download_links(self):
+    def test_website_history_starts_at_026(self):
         from build_site import history
         catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
         for experimental in (False, True):
             page = history(catalog, experimental=experimental)
-            self.assertNotIn("/download/v0.2.4/", page)
-            self.assertNotIn("EIDORA-0.2.4-", page)
+            for version in ("0.2.4", "0.2.5"):
+                self.assertNotIn(f"/download/v{version}/", page)
+                self.assertNotIn(f"EIDORA-{version}-", page)
+                self.assertNotIn(f'id="v{version}"', page)
         self.assertNotIn("EIDORA-0.2.4-", (ROOT / "index.html").read_text())
 
     def test_empty_experimental_catalog_is_explicit(self):

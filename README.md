@@ -22,9 +22,9 @@ download listings, and release history.
 | Windows · x64 | Windows 10 or 11 |
 | Linux · x64 | Tested on Ubuntu 24.04 |
 
-EIDORA 0.2.4 is the first public release, labelled Prototype. Installers are
+The website release history starts with EIDORA 0.2.6, labelled Prototype. Installers are
 available for Apple Silicon and Intel Macs, Windows x64 through Microsoft Store,
-and Linux x64 as AppImage and DEB. Public release history starts at 0.2.4.
+and Linux x64 as AppImage and DEB. Earlier versions are no longer listed on the website.
 The Linux builds were built and self-tested on Ubuntu 24.04; other distributions
 and native installation remain unverified. Availability is listed separately for
 each platform.
