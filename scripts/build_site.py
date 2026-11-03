@@ -370,7 +370,20 @@ def build(source=ROOT):
 <h3>Linux</h3><p>Use the DEB package on compatible Debian-based distributions, or the AppImage on supported Linux systems. Install a newer DEB over the previous package. For AppImage, quit EIDORA, replace the old file, and make the new file executable. Updates are downloaded manually.</p>
 <p>Keep your project folders when replacing the application. Read each release's compatibility notes before opening existing projects.</p>
 <p><a href="/#downloads">Back to current downloads</a></p></section>'''
-    release_content = '<p>Release notes and downloads for published versions, including prototypes and previews labelled by release type. <a href="#installation">Installing and updating</a></p>' + history(catalog) + installation
+    series_overview = '''<section class="release-series" id="v0.2" aria-labelledby="series-02-title">
+<h2 id="series-02-title">EIDORA 0.2.x</h2>
+<p class="series-label">Series overview · Prototype</p>
+<p>EIDORA is open-source desktop software for researching cultural collections through embedding space exploration. The 0.2.x series brings collection preparation, metadata, embeddings, interactive discovery, and figure creation into one application.</p>
+<ul>
+<li><strong>Project and metadata:</strong> Start with a folder of media files or import existing metadata. Organize collection items, prepare thumbnails, and use metadata to guide exploration.</li>
+<li><strong>Embeddings:</strong> Import vectors from your own analyses or compute them locally with compatible models for images, video, text, audio, and multimodal combinations.</li>
+<li><strong>Discovery:</strong> Compute or import two-dimensional projections, explore linked media previews, filter and color items by metadata, annotate observations, and save snapshots. Use the Slicer to explore numerical ranges while keeping projection coordinates fixed.</li>
+<li><strong>Figures:</strong> Arrange saved views into single- or multi-panel figures with captions and legends, export figures or animations, and use methods reports to document your analysis.</li>
+</ul>
+<p>Available for macOS, Windows, and Linux. Analysis runs locally; internet access is needed to discover and download models. EIDORA is free under the MIT license; embedding models may have separate licenses.</p>
+<p>This series is prototype software. Stability and backward compatibility are not guaranteed; use copies of your data and projects. Individual releases below document changes, requirements, and validation.</p>
+</section>'''
+    release_content = '<p>Release notes and downloads for published versions, including prototypes and previews labelled by release type. <a href="#installation">Installing and updating</a></p>' + series_overview + history(catalog) + installation
     experimental_content = experimental_downloads(experimental_catalog)
     for path, title, body in (("releases", "EIDORA releases", release_content), ("experimental", "Experimental builds", experimental_content)):
         directory = output / path

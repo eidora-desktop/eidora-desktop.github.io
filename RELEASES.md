@@ -15,6 +15,10 @@ It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
 The website release history starts with **EIDORA 0.2.6**, labelled Prototype.
+An **EIDORA 0.2.x** series overview precedes the individual release notes and
+describes the general functionality of this series. It is editorial context,
+not an installable version or an update-feed record. Future series such as 0.3.x
+should have their own functionality overview alongside their release notes.
 Earlier versions, including 0.2.4 and 0.2.5, are no longer listed in the website
 catalog or offered as website downloads. Historical GitHub releases and their
 files are retained; this changes only the website's release history.
