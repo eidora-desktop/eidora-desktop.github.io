@@ -36,8 +36,8 @@ with their release types clearly labelled. `/experimental/` remains available fo
 experimental builds and is marked for search engines not to index. `/download/`
 redirects to the homepage downloads section; the obsolete access-request page has
 been removed. The public update feed keeps its existing format and publishes explicitly
-recommended releases from the catalog: 0.2.6 for Mac/Linux and the confirmed
-Store version 0.2.5 for Windows.
+recommended releases from the catalog: 0.2.6 for all four platforms, including
+the confirmed Microsoft Store version for Windows.
 Prototype labels are preserved; no application rebuild is required.
 Follow [Publishing a new release](RELEASES.md#publishing-a-new-release-on-the-website)
 for importing installers, adding Windows Store availability, setting app-update
