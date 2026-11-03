@@ -156,7 +156,7 @@ def landing_cards(catalog):
                     parts.append(f'<p class="release-meta">{meta}</p>')
             parts.append('</div>')
             if platform and "store_url" in platform:
-                parts.append('<div class="installer">' + store_installer_link(platform) + '<p class="release-meta" title="Approximate app download size; the installer itself is smaller">Windows x64 · approx. 490&nbsp;MiB</p></div>')
+                parts.append('<div class="installer">' + store_installer_link(platform) + '<p class="release-meta" title="Downloads EIDORA during installation.">Windows x64 · Web installer</p></div>')
         parts.append(f'<div class="download-card-footer"><p class="release-meta">{escape(" · ".join(requirements))}</p>')
         for version in versions:
             label = f"Release notes · {version}" if len(versions) > 1 else "Release notes"
@@ -214,7 +214,7 @@ def experimental_downloads(catalog):
         windows_platform = catalog["releases"][windows_version]["platforms"]["windows-x86_64"]
         parts.append('<div class="prototype-options">' + option("windows-x86_64", "Microsoft Store", "Windows x64")
                      + '<div class="prototype-option">' + store_installer_link(windows_platform, css_class="prototype-button")
-                     + '<p class="prototype-option-meta" title="Approximate app download size; the installer itself is smaller">Windows x64 · approx. 490&nbsp;MiB</p></div></div>')
+                     + '<p class="prototype-option-meta" title="Downloads EIDORA during installation.">Windows x64 · Web installer</p></div></div>')
     else:
         parts.append('<div class="prototype-coming-soon"><span>Coming soon</span><p>No experimental Windows download yet.</p></div>')
     windows_requirement = catalog["releases"][windows_version]["platforms"]["windows-x86_64"]["requirements"] if windows_version else "Windows 10 or 11 · x64"
