@@ -23,10 +23,10 @@ the maintainer; pre-launch and withdrawn versions are not offered as downloads.
 Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
 AppImage and DEB installers for Linux x64, and Windows x64 through
 [Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5) (Store package
-version 1.2.5.0). The experimental page groups downloads under the 0.2 series
+version 1.2.6.0). The experimental page groups downloads under the 0.2 series
 and shows the latest full version for each platform.
 
-EIDORA 0.2.6 is available for Mac and Linux. It improves CoreML model
+EIDORA 0.2.6 is available for Mac, Windows, and Linux. It improves CoreML model
 compatibility, displays Model Zoo download sizes, and makes NVIDIA GPU support
 an optional download. Both signed Mac architectures passed offscreen and native
 Cocoa runtime tests; Intel ran under Rosetta. All four platform packaged tests
@@ -34,8 +34,8 @@ passed, including UMAP, export and video-thumbnail checks. Linux packages were
 built and self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Manual native installation and NVIDIA hardware checks remain separate.
 
-Windows 0.2.6 / Store package 1.2.6.0 is prepared for the maintainer's submission.
-Until Store availability is confirmed, Windows continues to recommend 0.2.5.
+The maintainer confirmed Windows 0.2.6 / Store package 1.2.6.0 availability on
+2026-11-03. Windows now recommends 0.2.6.
 
 Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
@@ -80,9 +80,8 @@ machine-readable recommendations for the desktop application. Its schema remains
 unchanged; no application code changes are needed. The feed uses the source
 catalog's explicit `latest` entries and includes their referenced release records,
 regardless of whether they are labelled prototype, preview, or stable. Currently,
-Mac and Linux recommend 0.2.6, while Windows remains at 0.2.5; both retain their
-Prototype labels. The maintainer confirmed Windows 0.2.5 Store availability on
-2026-11-02. Windows 0.2.6 is not yet advertised as available.
+All four platforms recommend 0.2.6, retaining its Prototype label. The maintainer
+confirmed Windows 0.2.6 Store availability on 2026-11-03.
 Adding a release record alone does not offer an update: update `latest` for each intended platform.
 Unrecommended historical records stay in website release history, outside the feed.
 The homepage prefers stable downloads, falling back to experimental builds while
@@ -186,7 +185,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When changing a platform recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_026_for_mac_linux_and_025_for_windows`), including its name and
+(`test_published_feed_recommends_026_for_every_platform`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 
