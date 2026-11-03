@@ -243,14 +243,16 @@ class SiteTests(unittest.TestCase):
             self.assertIn("0.3.0", rendered)
             self.assertNotIn("0.1.0", rendered)
 
-    def test_published_feed_recommends_025_for_every_platform(self):
+    def test_published_feed_recommends_026_for_mac_linux_and_025_for_windows(self):
         catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
         feed = validate_catalog(update_feed(catalog))
-        self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.5"))
-        self.assertEqual(set(feed["releases"]), {"0.2.5"})
+        self.assertEqual(feed["latest"], {**dict.fromkeys(PLATFORMS, "0.2.6"), "windows-x86_64": "0.2.5"})
+        self.assertEqual(set(feed["releases"]), {"0.2.5", "0.2.6"})
         self.assertNotIn("0.2.4", catalog["releases"])
         self.assertEqual(feed["releases"]["0.2.5"]["channel"], "prototype")
         self.assertEqual(set(feed["releases"]["0.2.5"]["platforms"]), set(PLATFORMS))
+        self.assertEqual(feed["releases"]["0.2.6"]["channel"], "prototype")
+        self.assertEqual(set(feed["releases"]["0.2.6"]["platforms"]), set(PLATFORMS) - {"windows-x86_64"})
 
     def test_withdrawn_024_has_no_generated_download_links(self):
         from build_site import history
