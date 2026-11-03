@@ -18,6 +18,8 @@
 .download-primary:hover { background: var(--gold); color: var(--deep-teal); }
 .store-browser-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .75rem; }
 .download-card .store-browser-link { color: var(--paper); }
+.installer-meta { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.installer-meta .store-browser-link { min-height: 0; font-size: inherit; white-space: nowrap; }
 .checksum, .checksum:last-child { border: 0; font-size: .68rem; margin-block: .35rem; }
 .checksum summary { display: inline-flex; align-items: center; gap: .4rem; min-height: 36px; padding: .35rem .15rem; color: var(--inverse-muted); font-size: inherit; font-weight: 400; }
 .checksum summary::after { position: static; font-size: .8rem; color: inherit; }
