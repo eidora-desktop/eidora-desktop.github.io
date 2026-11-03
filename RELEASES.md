@@ -40,15 +40,32 @@ Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
 as a direct website download. The Microsoft Store button uses Microsoft’s
 `ms-windows-store` product link to request the native Store app on Windows.
-“View in browser” opens the Store website in a new tab. Store acceptance does not replace separately
+“open in browser” opens the Store website in a new tab. Store acceptance does not replace separately
 recorded installed-Windows QA or WACK evidence.
+
+“Download installer (.exe)” downloads Microsoft's EIDORA web installer directly from
+`https://get.microsoft.com/installer/download/9P0WFNT5DZS5`. This permanent product
+URL is derived from `store_url` and does not contain a release version. The small
+installer retrieves the current Store version available to the user's device;
+both Windows installation options remain managed and updated through Microsoft Store.
+Do not copy the EXE into this repository or pin its size or checksum in the catalog.
+It is a Microsoft-generated installer, not a separately hosted EIDORA package.
+
+For each Windows update, publish through Microsoft Store and confirm availability,
+then update the website's release record and `latest` recommendation as usual.
+The installer URL stays unchanged. Publishing a GitHub release or changing
+`updates.json` does not publish a Windows update to the Store. Historical release
+pages also download the current Store version, not the historical version.
+The web installer may work when only the Store app is disabled, but still needs
+Microsoft's installation services and remains subject to institutional policies.
+See [Microsoft's web-installer documentation](https://learn.microsoft.com/en-us/windows/apps/distribute-through-store/how-to-use-store-web-installer-for-distribution).
 
 ## Download formats
 
 | Platform | Distribution |
 | --- | --- |
 | macOS · Apple Silicon and Intel | DMG installers hosted in the [EIDORA releases](https://github.com/eidora-desktop/EIDORA/releases) |
-| Windows · x64 | Microsoft Store |
+| Windows · x64 | Microsoft Store app or direct Microsoft web installer (.exe) |
 | Linux · x64 | AppImage and DEB packages hosted in the [EIDORA releases](https://github.com/eidora-desktop/EIDORA/releases) |
 
 Availability may differ by platform. Microsoft Store links lead to the current

@@ -33,7 +33,15 @@ def store_app_url(platform):
 
 
 def store_browser_link(platform):
-    return f'<a class="store-browser-link" href="{escape(platform["store_url"], quote=True)}" target="_blank" rel="noopener noreferrer">View in browser</a>'
+    return f'<a class="store-browser-link" href="{escape(platform["store_url"], quote=True)}" target="_blank" rel="noopener noreferrer">open in browser</a>'
+
+
+def store_installer_link(platform, *, css_class="download-link download-primary"):
+    """Use Microsoft's product endpoint so the installer follows Store releases."""
+    url = 'https://get.microsoft.com/installer/download/' + platform["store_url"].rsplit('/', 1)[1]
+    return (f'<a class="{css_class}" href="{escape(url, quote=True)}" '
+            f'aria-label="Download EIDORA Microsoft Store installer (.exe)">'
+            f'Download installer (.exe){action_icon()}</a>')
 
 
 def download_details(platform, *, checksums=False, release=None):
@@ -41,6 +49,7 @@ def download_details(platform, *, checksums=False, release=None):
     if "store_url" in platform:
         parts.append(f'<a class="download-link download-primary" href="{escape(store_app_url(platform), quote=True)}" aria-label="Open EIDORA in Microsoft Store">Microsoft Store{action_icon(store=True)}</a>')
         parts.append(store_browser_link(platform))
+        parts.append(store_installer_link(platform))
     else:
         for asset in platform["downloads"]:
             label = {"dmg": "DMG", "deb": "DEB"}.get(asset["format"], asset["format"])
@@ -141,10 +150,13 @@ def landing_cards(catalog):
                 meta = f'{asset["format"].upper() if extension != "AppImage" else "AppImage"} · {asset["size"] / 1024**2:.1f}&nbsp;MiB' if asset else "Windows x64"
                 if len(versions) > 1:
                     meta += f' · v{version}'
-                parts.append(f'<p class="release-meta">{meta}</p>')
                 if not asset:
-                    parts.append(store_browser_link(platform))
+                    parts.append(f'<p class="release-meta installer-meta"><span>{meta}</span>{store_browser_link(platform)}</p>')
+                else:
+                    parts.append(f'<p class="release-meta">{meta}</p>')
             parts.append('</div>')
+            if platform and "store_url" in platform:
+                parts.append('<div class="installer">' + store_installer_link(platform) + '<p class="release-meta" title="Approximate app download size; the installer itself is smaller">Windows x64 · approx. 490&nbsp;MiB</p></div>')
         parts.append(f'<div class="download-card-footer"><p class="release-meta">{escape(" · ".join(requirements))}</p>')
         for version in versions:
             label = f"Release notes · {version}" if len(versions) > 1 else "Release notes"
@@ -199,7 +211,10 @@ def experimental_downloads(catalog):
     windows_class = "prototype-card" if windows_version else "prototype-card prototype-card-pending"
     parts.append(f'<article class="{windows_class}" aria-labelledby="prototype-windows"><h2 id="prototype-windows">Windows</h2>')
     if catalog["latest"]["windows-x86_64"]:
-        parts.append('<div class="prototype-options">' + option("windows-x86_64", "Microsoft Store", "Windows x64") + '</div>')
+        windows_platform = catalog["releases"][windows_version]["platforms"]["windows-x86_64"]
+        parts.append('<div class="prototype-options">' + option("windows-x86_64", "Microsoft Store", "Windows x64")
+                     + '<div class="prototype-option">' + store_installer_link(windows_platform, css_class="prototype-button")
+                     + '<p class="prototype-option-meta" title="Approximate app download size; the installer itself is smaller">Windows x64 · approx. 490&nbsp;MiB</p></div></div>')
     else:
         parts.append('<div class="prototype-coming-soon"><span>Coming soon</span><p>No experimental Windows download yet.</p></div>')
     windows_requirement = catalog["releases"][windows_version]["platforms"]["windows-x86_64"]["requirements"] if windows_version else "Windows 10 or 11 · x64"
@@ -317,7 +332,8 @@ def build(source=ROOT):
     (output / "updates.json").write_text(json.dumps(update_feed(catalog), indent=2, ensure_ascii=False) + "\n")
     (output / ".nojekyll").touch()
     installation = '''<section class="installation" id="installation"><h2>Installing and updating</h2>
-<h3>Windows</h3><p>Install EIDORA from Microsoft Store when available. The Store manages subsequent updates.</p>
+<h3>Windows</h3><p>Open Microsoft Store or choose Download installer (.exe) to download Microsoft's EIDORA installer directly, without visiting the Store website. The installer downloads the current version available to your device from Microsoft Store; the Store manages subsequent updates for both options.</p>
+<p>The downloaded installer can work when only the Store app is blocked. It still requires access to Microsoft's installation services and may be restricted by your university's IT policies.</p>
 <h3>macOS</h3><p>Choose Apple Silicon or Intel to match your Mac. Quit EIDORA, open the downloaded DMG, and copy EIDORA into Applications, replacing the previous application when updating.</p>
 <h3>Linux</h3><p>Use the DEB package on compatible Debian-based distributions, or the AppImage on supported Linux systems. Install a newer DEB over the previous package. For AppImage, quit EIDORA, replace the old file, and make the new file executable. Updates are downloaded manually.</p>
 <p>Keep your project folders when replacing the application. Read each release's compatibility notes before opening existing projects.</p>

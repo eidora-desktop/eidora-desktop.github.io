@@ -94,11 +94,14 @@ class SiteTests(unittest.TestCase):
             self.assertIn('href="https://apps.microsoft.com/detail/9P0WFNT5DZS5" target="_blank" rel="noopener noreferrer"', rendered)
             self.assertIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5"', rendered)
             self.assertIn('Microsoft Store', rendered)
-            self.assertIn('View in browser</a>', rendered)
+            self.assertIn('open in browser</a>', rendered)
+            self.assertIn('href="https://get.microsoft.com/installer/download/9P0WFNT5DZS5"', rendered)
+            self.assertIn('Download installer (.exe)<svg class="action-icon action-icon-download"', rendered)
             self.assertNotIn('href="ms-windows-store://pdp/?ProductId=9P0WFNT5DZS5" target="_blank"', rendered)
         mac_only = experimental_downloads(sample())
-        self.assertNotIn('View in browser', mac_only)
+        self.assertNotIn('open in browser', mac_only)
         self.assertNotIn('ms-windows-store:', mac_only)
+        self.assertNotIn('get.microsoft.com/installer/download/', mac_only)
 
     def test_import_accepts_published_prototype_but_rejects_drafts(self):
         data = sample()
