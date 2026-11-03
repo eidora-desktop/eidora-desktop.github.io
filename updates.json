@@ -7,60 +7,6 @@
     "linux-x86_64": "0.2.6"
   },
   "releases": {
-    "0.2.5": {
-      "published_at": "2026-11-02",
-      "channel": "prototype",
-      "notes": "EIDORA 0.2.5 is a compatible update for macOS, Windows, and Linux. Project formats are unchanged.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\nChanges\n\n- Fix native cursor crashes on macOS 27.2 by updating the Mac runtime to Qt 6.11.2.\n- Keep model downloads responsive by coalescing progress updates without repeatedly rescanning the installed model catalog.\n- Show the welcome tour again after updating or replacing an installation.\n- Display the release version clearly in website update results.\n- Windows update actions open Microsoft Store's updates page. Windows 0.2.5 is available in Microsoft Store (Store package 1.2.5.0).\n\nDownloads and installation\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. They require macOS 15 or later. Quit EIDORA, open the appropriate DMG, and drag EIDORA into Applications.\n\nLinux x64 packages were built and self-tested on Ubuntu 24.04. Make the AppImage executable or install the DEB with your package manager. Broader Linux distribution support is not claimed.\n\nWindows installation and updates remain managed by Microsoft Store. The Store submission package is not a direct website download.\n\nValidation\n\nAll four platform builds and packaged self-tests passed. Both signed Mac apps passed runtime checks with offscreen and native Cocoa rendering, including a real UMAP projection. Intel checks ran under Rosetta. Fresh manual installation/upgrade checks on Intel hardware, Linux, and Windows, and Windows WACK, remain unverified.\n\nBack up existing projects before installing. Installer sizes and SHA-256 checksums are provided with the release.\n\nApplication build source: aa922d691637b1e95e869a8d5247ff9da08846d8.\n",
-      "platforms": {
-        "macos-arm64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.5-macos-arm64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.5/EIDORA-0.2.5-macos-arm64.dmg",
-              "size": 486509463,
-              "sha256": "cf9c088ab0d1544417dfd0c3e1d356525dd6af407c4255cc1b05cc402895f01a"
-            }
-          ]
-        },
-        "macos-x86_64": {
-          "requirements": "macOS 15 or later",
-          "downloads": [
-            {
-              "format": "dmg",
-              "name": "EIDORA-0.2.5-macos-x86_64.dmg",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.5/EIDORA-0.2.5-macos-x86_64.dmg",
-              "size": 503438378,
-              "sha256": "ab35ad1e6c5aef23c75089b916ac9bd60c091d4907574944990e1005164ac2a0"
-            }
-          ]
-        },
-        "linux-x86_64": {
-          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
-          "downloads": [
-            {
-              "format": "deb",
-              "name": "EIDORA-0.2.5-linux-x86_64.deb",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.5/EIDORA-0.2.5-linux-x86_64.deb",
-              "size": 479574016,
-              "sha256": "be57fb00e573bd1813292f7dcc5af659bb36a24d73420b51f1174606769316b5"
-            },
-            {
-              "format": "AppImage",
-              "name": "EIDORA-0.2.5-linux-x86_64.AppImage",
-              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.5/EIDORA-0.2.5-linux-x86_64.AppImage",
-              "size": 540473848,
-              "sha256": "b171fc41649499b403aa5fafdfe5fa03afa489a92898b13b6ddf0d1fe71415d0"
-            }
-          ]
-        },
-        "windows-x86_64": {
-          "requirements": "Windows 10 or 11 · x64",
-          "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
-        }
-      }
-    },
     "0.2.6": {
       "published_at": "2026-11-03",
       "channel": "prototype",

@@ -14,11 +14,10 @@ are experimental and untested and requests `noindex, nofollow` from search engin
 It is publicly accessible to anyone with the URL; this is not access control.
 Public GitHub release assets and this repository also remain discoverable.
 
-**EIDORA 0.2.4** was the first public release, labelled Prototype. Its downloads
-were withdrawn on 2026-11-02 after 0.2.5 became available on all platforms.
-The live catalog and download history contain 0.2.5 and 0.2.6. Historical release
-metadata, installers, validation evidence, and the source tag are retained by
-the maintainer; pre-launch and withdrawn versions are not offered as downloads.
+The website release history starts with **EIDORA 0.2.6**, labelled Prototype.
+Earlier versions, including 0.2.4 and 0.2.5, are no longer listed in the website
+catalog or offered as website downloads. Historical GitHub releases and their
+files are retained; this changes only the website's release history.
 
 Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
 AppImage and DEB installers for Linux x64, and Windows x64 through
