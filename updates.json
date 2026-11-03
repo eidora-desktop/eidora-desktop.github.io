@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "latest": {
-    "macos-arm64": "0.2.5",
-    "macos-x86_64": "0.2.5",
+    "macos-arm64": "0.2.6",
+    "macos-x86_64": "0.2.6",
     "windows-x86_64": "0.2.5",
-    "linux-x86_64": "0.2.5"
+    "linux-x86_64": "0.2.6"
   },
   "releases": {
     "0.2.5": {
@@ -58,6 +58,56 @@
         "windows-x86_64": {
           "requirements": "Windows 10 or 11 · x64",
           "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
+        }
+      }
+    },
+    "0.2.6": {
+      "published_at": "2026-11-03",
+      "channel": "prototype",
+      "notes": "EIDORA 0.2.6 is available for macOS and Linux. Project formats are unchanged. Windows 0.2.6 is prepared for Microsoft Store submission; the currently confirmed Store version remains 0.2.5.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed. Use copies of your data and projects.\n\n### Changes\n\n- Improve CoreML compatibility for Model Zoo models, including VGG and transformer models, with static-shape execution and preserved normalized outputs. Unsupported graph sections can still run on CPU.\n- Show Model Zoo download sizes using cached Hugging Face file metadata.\n- Make NVIDIA GPU support an optional, verified download on Windows and Linux. The base installers contain neither NVIDIA libraries nor ONNX Runtime's CUDA provider. On compatible NVIDIA devices, **Enable NVIDIA GPU…** downloads and checks GPU support, with progress, cancellation, and retry. CPU execution needs no extra download.\n- Use patched ONNX 1.22.0 for macOS compatibility processing. Mac dependencies and CoreML availability remain unchanged by the optional CUDA packaging.\n\n### Downloads and installation\n\nBoth Mac DMGs are Developer ID signed, notarized, and stapled. They require macOS 15 or later. Quit EIDORA, open the appropriate DMG, and drag EIDORA into Applications.\n\nLinux x64 packages were built and self-tested on Ubuntu 24.04. Make the AppImage executable or install the DEB with your package manager. The AppImage is about 513 MiB and the DEB about 455 MiB. SHA-256 checksums cover the final installer bytes.\n\nWindows installation and updates remain managed by [Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5). The MSIX submission package is not attached here. Windows 0.2.6 will become available only after Store submission and publication.\n\n### Validation\n\nAll four platform builds and packaged self-tests passed. Both signed Mac applications passed offscreen and native Cocoa runtime checks, including UMAP and export checks; Intel checks ran under Rosetta. The release-pinned source suite passed 2,393 tests, with one skipped.\n\nNVIDIA hardware inference, fresh native installation/upgrade checks, and Windows WACK remain maintainer-deferred and are not reported as passed. CoreML compatibility with untested future models is not guaranteed.\n\nApplication build source: 0fbe2de1cc28d4b280073f1e0781293559225325.\n",
+      "platforms": {
+        "macos-arm64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.6-macos-arm64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.6/EIDORA-0.2.6-macos-arm64.dmg",
+              "size": 486780546,
+              "sha256": "1611f9c1bd3291f22f2e81b0ce5581225b17cca9396b1e3193a82972ee928592"
+            }
+          ]
+        },
+        "macos-x86_64": {
+          "requirements": "macOS 15 or later",
+          "downloads": [
+            {
+              "format": "dmg",
+              "name": "EIDORA-0.2.6-macos-x86_64.dmg",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.6/EIDORA-0.2.6-macos-x86_64.dmg",
+              "size": 503367355,
+              "sha256": "b67d74f16b4a482887bba64834f72a24841947ced130d51c5fe2e7243520ca45"
+            }
+          ]
+        },
+        "linux-x86_64": {
+          "requirements": "Linux x64 (tested on Ubuntu 24.04)",
+          "downloads": [
+            {
+              "format": "deb",
+              "name": "EIDORA-0.2.6-linux-x86_64.deb",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.6/EIDORA-0.2.6-linux-x86_64.deb",
+              "size": 477417380,
+              "sha256": "9c07312c62ab85df156e088079cc69a98a404636b637dabbea9578374d323550"
+            },
+            {
+              "format": "AppImage",
+              "name": "EIDORA-0.2.6-linux-x86_64.AppImage",
+              "url": "https://github.com/eidora-desktop/EIDORA/releases/download/v0.2.6/EIDORA-0.2.6-linux-x86_64.AppImage",
+              "size": 538081784,
+              "sha256": "b825363f876fe7ce4965d3247393461a3622ff0ce74cf383df97ab46777f0249"
+            }
+          ]
         }
       }
     }
