@@ -40,6 +40,25 @@ class Links(HTMLParser):
 
 
 class SiteTests(unittest.TestCase):
+    def test_markdown_release_notes_render_safe_html(self):
+        from build_site import release_notes_html
+        notes = 'Intro\n\n### Changes\n\n- **GPU support**\n- [Store](https://apps.microsoft.com/detail/TEST)\n\n<script>alert(1)</script> [unsafe](javascript:alert(1))'
+        rendered = release_notes_html(notes)
+        self.assertIn('<h3>Changes</h3>', rendered)
+        self.assertIn('<ul><li><strong>GPU support</strong></li>', rendered)
+        self.assertIn('href="https://apps.microsoft.com/detail/TEST"', rendered)
+        self.assertIn('&lt;script&gt;', rendered)
+        self.assertNotIn('<script>', rendered)
+        self.assertNotIn('href="javascript:', rendered)
+        catalog = json.loads((ROOT / 'updates.json').read_text())
+        old = catalog['releases']['0.2.5']['notes']
+        from html import escape
+        self.assertEqual(release_notes_html(old), f'<p class="release-notes">{escape(old)}</p>')
+        current = release_notes_html(catalog['releases']['0.2.6']['notes'])
+        self.assertNotIn('### ', current)
+        self.assertNotIn('**', current)
+        self.assertIn('<h3>Validation</h3>', current)
+
     def test_optional_download_section_and_marker_validation(self):
         plain_page = '<main><a href="/download/">Downloads</a></main>'
         self.assertEqual(render_landing_downloads(plain_page, sample()), plain_page)

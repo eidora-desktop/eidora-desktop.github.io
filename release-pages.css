@@ -32,6 +32,11 @@
 .release-entry { border-top: 1px solid var(--rule); margin-top: 2rem; padding-block: 2rem; }
 .release-entry > p { margin-top: 1rem; }
 .release-notes { white-space: pre-wrap; overflow-wrap: anywhere; }
+.release-notes-formatted { white-space: normal; }
+.release-notes-formatted h3 { margin-block: 1.75rem .65rem; }
+.release-notes-formatted p, .release-notes-formatted ul { margin-block: .85rem; }
+.release-notes-formatted ul { padding-left: 1.5rem; list-style: disc; }
+.release-notes-formatted li + li { margin-top: .5rem; }
 .history-platform { margin-top: 1rem; max-width: 48rem; }
 /* Experimental downloads: one compact card per operating system. */
 .prototype-downloads { margin-top: 1rem; }

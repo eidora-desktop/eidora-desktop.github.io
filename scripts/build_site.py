@@ -3,6 +3,7 @@ import argparse
 import hashlib
 from html import escape
 import json
+import re
 from pathlib import Path
 import shutil
 
@@ -30,6 +31,37 @@ def action_icon(*, store=False):
 def store_app_url(platform):
     """Derive the native Store link from the catalog's validated product URL."""
     return 'ms-windows-store://pdp/?ProductId=' + platform["store_url"].rsplit('/', 1)[1]
+
+
+def release_notes_html(notes):
+    """Render our Markdown notes subset safely; preserve older plain-text notes."""
+    if not re.search(r"^### ", notes, re.MULTILINE):
+        return f'<p class="release-notes">{escape(notes)}</p>'
+
+    def inline(text):
+        parts = []
+        cursor = 0
+        for match in re.finditer(r"\*\*([^*\n]+)\*\*|\[([^\]\n]+)\]\((https://[^\s)]+)\)", text):
+            parts.append(escape(text[cursor:match.start()]))
+            if match.group(1):
+                parts.append(f'<strong>{escape(match.group(1))}</strong>')
+            else:
+                parts.append(f'<a href="{escape(match.group(3), quote=True)}" target="_blank" rel="noopener noreferrer">{escape(match.group(2))}</a>')
+            cursor = match.end()
+        parts.append(escape(text[cursor:]))
+        return ''.join(parts)
+
+    parts = ['<div class="release-notes release-notes-formatted">']
+    for block in re.split(r'\n\s*\n', notes.strip()):
+        lines = block.splitlines()
+        if len(lines) == 1 and block.startswith('### '):
+            parts.append(f'<h3>{inline(block[4:])}</h3>')
+        elif all(line.startswith('- ') for line in lines):
+            parts.append('<ul>' + ''.join(f'<li>{inline(line[2:])}</li>' for line in lines) + '</ul>')
+        else:
+            parts.append(f'<p>{inline(block)}</p>')
+    parts.append('</div>')
+    return ''.join(parts)
 
 
 def store_browser_link(platform):
@@ -243,7 +275,7 @@ def experimental_downloads(catalog):
     for version in sorted(catalog["releases"], key=version_tuple, reverse=True):
         release = catalog["releases"][version]
         parts.append(f'<details class="prototype-extra" id="v{version}"><summary>Release notes · {version}</summary><div class="prototype-extra-body">')
-        parts.append(f'<p class="prototype-note-date">{release["published_at"]} · {release["channel"].capitalize()}</p><p class="release-notes">{escape(release["notes"])}</p>')
+        parts.append(f'<p class="prototype-note-date">{release["published_at"]} · {release["channel"].capitalize()}</p>' + release_notes_html(release["notes"]))
         parts.append(f'<p><a href="https://github.com/eidora-desktop/EIDORA/releases/tag/v{version}" target="_blank" rel="noopener noreferrer">View this release on GitHub</a></p></div></details>')
     parts.append('</div><p class="prototype-public-link"><a href="/#downloads">Back to current downloads</a></p></div>')
     return "".join(parts)
@@ -281,7 +313,7 @@ def history(catalog, *, experimental=False):
         parts.append(f'<article class="release-entry" id="v{version}"><h2>EIDORA {version}</h2><p>{release["published_at"]} · {release["channel"].capitalize()}</p>')
         if release["channel"] in ("prototype", "preview"):
             parts.append(f'<p>{PROTOTYPE_NOTICE}</p>')
-        parts.append(f'<p class="release-notes">{escape(release["notes"])}</p>')
+        parts.append(release_notes_html(release["notes"]))
         for key, platform in release["platforms"].items():
             parts.append(f'<section class="download-card history-platform"><h3>{PLATFORMS[key][0]}</h3>')
             parts.append(download_details(platform, checksums=True))
