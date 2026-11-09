@@ -26,7 +26,7 @@ files are retained; this changes only the website's release history.
 Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
 AppImage and DEB installers for Linux x64, and Windows x64 through
 [Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5) (Store package
-version 1.2.6.0). The experimental page groups downloads under the 0.2 series
+version 1.2.7.0). The experimental page groups downloads under the 0.2 series
 and shows the latest full version for each platform.
 
 EIDORA 0.2.6 is available for Mac, Windows, and Linux. It improves CoreML model
@@ -37,7 +37,7 @@ passed, including UMAP, export and video-thumbnail checks. Linux packages were
 built and self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Manual native installation and NVIDIA hardware checks remain separate.
 
-EIDORA 0.2.7 is available for macOS and Linux. It improves Figures legends
+EIDORA 0.2.7 is available for macOS, Windows, and Linux. It improves Figures legends
 and grid sizing, shows progress while opening a startup project, and fixes
 Discovery Canvas Layers settings. Both signed Mac builds passed offscreen and
 Cocoa self-tests, with Intel tested under Rosetta. The Linux x64 build passed
@@ -89,8 +89,7 @@ machine-readable recommendations for the desktop application. Its schema remains
 unchanged; no application code changes are needed. The feed uses the source
 catalog's explicit `latest` entries and includes their referenced release records,
 regardless of whether they are labelled prototype, preview, or stable. The
-feed recommends 0.2.7 for macOS and Linux and 0.2.6 for Windows. Both releases
-retain their Prototype label.
+feed recommends 0.2.7 for macOS, Windows, and Linux with its Prototype label.
 Adding a release record alone does not offer an update: update `latest` for each intended platform.
 Unrecommended historical records stay in website release history, outside the feed.
 The homepage prefers stable downloads, falling back to experimental builds while
@@ -194,7 +193,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When changing a platform recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_027_for_mac_and_linux`), including its name and
+(`test_published_feed_recommends_027_for_every_platform`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 

@@ -3,7 +3,7 @@
   "latest": {
     "macos-arm64": "0.2.7",
     "macos-x86_64": "0.2.7",
-    "windows-x86_64": "0.2.6",
+    "windows-x86_64": "0.2.7",
     "linux-x86_64": "0.2.7"
   },
   "releases": {
@@ -64,7 +64,7 @@
     "0.2.7": {
       "published_at": "2026-11-09",
       "channel": "prototype",
-      "notes": "EIDORA 0.2.7 is available for macOS and Linux. Windows 0.2.7 is prepared for Microsoft Store. The website recommends Windows 0.2.6 while Store availability of 0.2.7 is pending.\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed.\n\n### Changes\n\n- Give Figures legends separate side and alignment controls, and reserve enough space for rendered labels.\n- Size Figures map and guideline grids in millimetres, with square cells and at least 25% of the final cell visible.\n- Keep the startup project chooser visible with an opening indicator until the main window is ready.\n- Open Canvas Layers settings from a dedicated arrow and close them when clicking outside. Avoid repainting the Layers bar on first open and keep checkboxes visible while scrolling Pins, Tooltips, and Marked Areas.\n\n### Downloads and validation\n\nBoth macOS DMGs require macOS 15 or later. They are Developer ID signed, notarized, and stapled. Signed-app self-tests passed in offscreen and Cocoa modes, with Intel tested under Rosetta.\n\nThe Linux x64 DEB and AppImage were built and self-tested on Ubuntu 24.04. SHA-256 checksums cover the final installer files.\n\nApplication build source: d5dedbb6d46b65353f40f1440d056fe1ccab76cc.\n",
+      "notes": "EIDORA 0.2.7 is available for macOS, Linux, and Windows through Microsoft Store (package 1.2.7.0).\n\nPrototype software. Use at your own risk. Stability and backward compatibility are not guaranteed.\n\n### Changes\n\n- Give Figures legends separate side and alignment controls, and reserve enough space for rendered labels.\n- Size Figures map and guideline grids in millimetres, with square cells and at least 25% of the final cell visible.\n- Keep the startup project chooser visible with an opening indicator until the main window is ready.\n- Open Canvas Layers settings from a dedicated arrow and close them when clicking outside. Avoid repainting the Layers bar on first open and keep checkboxes visible while scrolling Pins, Tooltips, and Marked Areas.\n\n### Downloads and validation\n\nBoth macOS DMGs require macOS 15 or later. They are Developer ID signed, notarized, and stapled. Signed-app self-tests passed in offscreen and Cocoa modes, with Intel tested under Rosetta.\n\nThe Linux x64 DEB and AppImage were built and self-tested on Ubuntu 24.04. SHA-256 checksums cover the final installer files.\n\nApplication build source: d5dedbb6d46b65353f40f1440d056fe1ccab76cc.\n",
       "platforms": {
         "macos-arm64": {
           "requirements": "macOS 15 or later",
@@ -108,6 +108,10 @@
               "sha256": "743ae64364327a22ab2400f1994408f8dde8c342de3ba463b48a327c18ad8c5c"
             }
           ]
+        },
+        "windows-x86_64": {
+          "requirements": "Windows 10 or 11 · x64",
+          "store_url": "https://apps.microsoft.com/detail/9P0WFNT5DZS5"
         }
       }
     }
