@@ -262,19 +262,15 @@ class SiteTests(unittest.TestCase):
             self.assertIn("0.3.0", rendered)
             self.assertNotIn("0.1.0", rendered)
 
-    def test_published_feed_recommends_027_for_mac_and_linux(self):
+    def test_published_feed_recommends_027_for_every_platform(self):
         catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
         feed = validate_catalog(update_feed(catalog))
-        mac_and_linux = set(PLATFORMS) - {"windows-x86_64"}
-        self.assertEqual(feed["latest"], {
-            **dict.fromkeys(mac_and_linux, "0.2.7"),
-            "windows-x86_64": "0.2.6",
-        })
+        self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.7"))
         self.assertEqual(set(catalog["releases"]), {"0.2.6", "0.2.7"})
-        self.assertEqual(set(feed["releases"]), {"0.2.6", "0.2.7"})
+        self.assertEqual(set(feed["releases"]), {"0.2.7"})
         self.assertEqual(feed["releases"]["0.2.7"]["channel"], "prototype")
-        self.assertEqual(set(feed["releases"]["0.2.7"]["platforms"]), mac_and_linux)
-        self.assertEqual(set(feed["releases"]["0.2.6"]["platforms"]), set(PLATFORMS))
+        self.assertEqual(set(feed["releases"]["0.2.7"]["platforms"]), set(PLATFORMS))
+        self.assertEqual(set(catalog["releases"]["0.2.6"]["platforms"]), set(PLATFORMS))
 
     def test_website_history_starts_at_026(self):
         from build_site import history
