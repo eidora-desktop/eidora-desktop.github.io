@@ -37,8 +37,14 @@ passed, including UMAP, export and video-thumbnail checks. Linux packages were
 built and self-tested on Ubuntu 24.04; broader distribution support is not claimed.
 Manual native installation and NVIDIA hardware checks remain separate.
 
+EIDORA 0.2.7 is available for macOS and Linux. It improves Figures legends
+and grid sizing, shows progress while opening a startup project, and fixes
+Discovery Canvas Layers settings. Both signed Mac builds passed offscreen and
+Cocoa self-tests, with Intel tested under Rosetta. The Linux x64 build passed
+its packaged self-test on Ubuntu 24.04.
+
 The maintainer confirmed Windows 0.2.6 / Store package 1.2.6.0 availability on
-2026-11-03. Windows now recommends 0.2.6.
+2026-11-03.
 
 Mac/Linux downloads include their size and expandable SHA-256 checksum.
 Microsoft Store manages Windows installation and updates; the MSIX is not hosted
@@ -82,9 +88,9 @@ The public [update catalog](https://www.eidora.org/updates.json) provides
 machine-readable recommendations for the desktop application. Its schema remains
 unchanged; no application code changes are needed. The feed uses the source
 catalog's explicit `latest` entries and includes their referenced release records,
-regardless of whether they are labelled prototype, preview, or stable. Currently,
-All four platforms recommend 0.2.6, retaining its Prototype label. The maintainer
-confirmed Windows 0.2.6 Store availability on 2026-11-03.
+regardless of whether they are labelled prototype, preview, or stable. The
+feed recommends 0.2.7 for macOS and Linux and 0.2.6 for Windows. Both releases
+retain their Prototype label.
 Adding a release record alone does not offer an update: update `latest` for each intended platform.
 Unrecommended historical records stay in website release history, outside the feed.
 The homepage prefers stable downloads, falling back to experimental builds while
@@ -188,7 +194,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When changing a platform recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_026_for_every_platform`), including its name and
+(`test_published_feed_recommends_027_for_mac_and_linux`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 
