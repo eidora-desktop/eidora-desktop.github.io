@@ -21,7 +21,8 @@ installer or Microsoft Store links. `/download/` still redirects to the homepage
 The schema-1 update feed has `null` recommendations for every platform and no
 release records, so it does not offer withdrawn versions to installed apps.
 
-Previous application releases and version tags are being withdrawn from GitHub.
+Previous application releases are unpublished GitHub drafts. Their assets and
+version tags are preserved; only maintainers can access the draft installers.
 The separate starter datasets are not application releases. Removing website
 Store links does not unpublish the Microsoft Store listing.
 

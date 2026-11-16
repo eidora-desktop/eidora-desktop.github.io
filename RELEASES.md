@@ -8,8 +8,8 @@ links. `/download/` redirects to the homepage downloads section.
 
 The catalog is intentionally empty: every `latest` value is `null` and `releases`
 is `{}`. This also withdraws all app-update recommendations without changing the
-feed schema. Previous application GitHub releases and version tags are being
-removed; starter datasets remain separate. Website changes do not unpublish the
+feed schema. Previous application GitHub releases are unpublished drafts; their assets and
+version tags are preserved. Starter datasets remain separate. Website changes do not unpublish the
 Microsoft Store listing or prevent Store-managed updates.
 
 Do not restore withdrawn pre-launch releases. To resume distribution, publish and
