@@ -12,6 +12,7 @@ from catalog import MAX_CATALOG_BYTES, PLATFORMS, validate_catalog, version_tupl
 ROOT = Path(__file__).resolve().parents[1]
 START = "<!-- EIDORA DOWNLOADS START -->"
 END = "<!-- EIDORA DOWNLOADS END -->"
+COMING_SOON = '<div class="release-coming-soon"><h2>Coming soon</h2><p>EIDORA 0.3.0 will be our first official release. Downloads are paused while we prepare it.</p></div>'
 PROTOTYPE_NOTICE = "Experimental, untested prototype software. Builds may crash, lose data, or change without notice. Use only copies of your data and projects; do not rely on these builds for production work."
 PLATFORM_REQUIREMENTS = {
     "macos-arm64": "macOS 15 or later",
@@ -336,7 +337,10 @@ def render_landing_downloads(index, catalog, experimental_catalog=None):
         downloads = landing_cards(experimental_catalog)
     else:
         downloads = landing_cards(catalog)
-    downloads += '<p class="download-footnote"><a href="/releases/">Release notes, checksums, and installation details</a></p>'
+    if any(catalog["latest"].values()) or (experimental_catalog and any(experimental_catalog["latest"].values())):
+        downloads += '<p class="download-footnote"><a href="/releases/">Release notes, checksums, and installation details</a></p>'
+    else:
+        downloads = COMING_SOON
     return before + START + downloads + END + after
 
 
@@ -383,8 +387,12 @@ def build(source=ROOT):
 <p>Available for macOS, Windows, and Linux. Analysis runs locally; internet access is needed to discover and download models. EIDORA is free under the MIT license; embedding models may have separate licenses.</p>
 <p>This series is prototype software. Stability and backward compatibility are not guaranteed; use copies of your data and projects. Individual releases below document changes, requirements, and validation.</p>
 </section>'''
+    if not any(version.startswith("0.2.") for version in catalog["releases"]):
+        series_overview = ""
     release_content = '<p>Release notes and downloads for published versions, including prototypes and previews labelled by release type. <a href="#installation">Installing and updating</a></p>' + series_overview + history(catalog) + installation
     experimental_content = experimental_downloads(experimental_catalog)
+    if not catalog["releases"]:
+        release_content = experimental_content = COMING_SOON
     for path, title, body in (("releases", "EIDORA releases", release_content), ("experimental", "Experimental builds", experimental_content)):
         directory = output / path
         directory.mkdir()

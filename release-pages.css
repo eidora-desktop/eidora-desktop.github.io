@@ -101,3 +101,7 @@
   .release-grid { grid-template-columns: 1fr; }
   .release-page { padding-block: 2rem; }
 }
+
+.release-coming-soon { padding: 1.75rem; border-radius: 8px; background: var(--sage-mist); }
+.release-coming-soon h2 { font-family: var(--sans); font-size: 1.5rem; font-weight: 600; letter-spacing: -.025em; }
+.release-coming-soon p { margin-top: .6rem; max-width: 42rem; }

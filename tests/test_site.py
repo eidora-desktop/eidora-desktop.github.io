@@ -50,11 +50,10 @@ class SiteTests(unittest.TestCase):
         self.assertIn('&lt;script&gt;', rendered)
         self.assertNotIn('<script>', rendered)
         self.assertNotIn('href="javascript:', rendered)
-        catalog = json.loads((ROOT / 'updates.json').read_text())
         old = 'Plain-text release notes\n\nChanges\n\n- A fix with <escaped> text.'
         from html import escape
         self.assertEqual(release_notes_html(old), f'<p class="release-notes">{escape(old)}</p>')
-        current = release_notes_html(catalog['releases']['0.2.6']['notes'])
+        current = release_notes_html('### Validation\n\n- **Packaged tests** passed.')
         self.assertNotIn('### ', current)
         self.assertNotIn('**', current)
         self.assertIn('<h3>Validation</h3>', current)
@@ -171,7 +170,7 @@ class SiteTests(unittest.TestCase):
             self.assertIn("untested prototype software", experimental)
             self.assertIn('<meta name="robots" content="noindex, nofollow">', experimental)
             self.assertIn('href="/experimental/#v0.2.0"', experimental)
-            self.assertIn('href="/experimental/"', (output / "index.html").read_text())
+            self.assertNotIn('href="/experimental/"', (output / "index.html").read_text())
             self.assertNotIn("scripts", [p.name for p in output.iterdir()])
             for path in output.rglob("*.html"):
                 document = Links()
@@ -242,7 +241,7 @@ class SiteTests(unittest.TestCase):
             (source / "updates.json").write_text(json.dumps(data))
             output = build(source)
             for name in ("index.html",):
-                rendered = (output / name).read_text()
+                rendered = (output / name).read_text().split(START, 1)[1].split(END, 1)[0]
                 self.assertIn("0.1.0", rendered)
                 self.assertNotIn("0.2.0", rendered)
                 self.assertNotIn("0.3.0", rendered)
@@ -262,26 +261,31 @@ class SiteTests(unittest.TestCase):
             self.assertIn("0.3.0", rendered)
             self.assertNotIn("0.1.0", rendered)
 
-    def test_published_feed_recommends_027_for_every_platform(self):
+    def test_distribution_pause_removes_downloads_and_update_recommendations(self):
         catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
-        feed = validate_catalog(update_feed(catalog))
-        self.assertEqual(feed["latest"], dict.fromkeys(PLATFORMS, "0.2.7"))
-        self.assertEqual(set(catalog["releases"]), {"0.2.6", "0.2.7"})
-        self.assertEqual(set(feed["releases"]), {"0.2.7"})
-        self.assertEqual(feed["releases"]["0.2.7"]["channel"], "prototype")
-        self.assertEqual(set(feed["releases"]["0.2.7"]["platforms"]), set(PLATFORMS))
-        self.assertEqual(set(catalog["releases"]["0.2.6"]["platforms"]), set(PLATFORMS))
-
-    def test_website_history_starts_at_026(self):
-        from build_site import history
-        catalog = validate_catalog(json.loads((ROOT / "updates.json").read_text()))
-        for experimental in (False, True):
-            page = history(catalog, experimental=experimental)
-            for version in ("0.2.4", "0.2.5"):
-                self.assertNotIn(f"/download/v{version}/", page)
-                self.assertNotIn(f"EIDORA-{version}-", page)
-                self.assertNotIn(f'id="v{version}"', page)
-        self.assertNotIn("EIDORA-0.2.4-", (ROOT / "index.html").read_text())
+        self.assertEqual(catalog["latest"], dict.fromkeys(PLATFORMS))
+        self.assertEqual(catalog["releases"], {})
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            for name in ("index.html", "styles.css", "release-pages.css", "CNAME", "EIDORA_logo.svg", "updates.json"):
+                shutil.copyfile(ROOT / name, source / name)
+            shutil.copytree(ROOT / "assets", source / "assets")
+            output = build(source)
+            self.assertEqual(json.loads((output / "updates.json").read_text()), catalog)
+            for name in ("index.html", "releases/index.html", "experimental/index.html"):
+                rendered = (output / name).read_text()
+                self.assertIn("Coming soon", rendered)
+                self.assertIn("EIDORA 0.3.0 will be our first official release", rendered)
+                self.assertNotIn('id="v0.2', rendered)
+                self.assertNotIn('id="installation"', rendered)
+                document = Links()
+                document.feed(rendered)
+                for url in document.urls:
+                    self.assertFalse(any(fragment in url for fragment in (
+                        "/releases/download/", "/releases/tag/", "apps.microsoft.com",
+                        "get.microsoft.com", "ms-windows-store:",
+                    )), f"{name}: distribution link remains: {url}")
+            self.assertIn("Coming soon", (ROOT / "index.html").read_text())
 
     def test_empty_experimental_catalog_is_explicit(self):
         from build_site import cards, history
