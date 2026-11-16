@@ -1,101 +1,30 @@
 # EIDORA downloads and releases
 
-[Downloads](https://www.eidora.org/#downloads) lists availability and system
-requirements for each platform. [Release history](https://www.eidora.org/releases/)
-provides notes, checksums, installation instructions, and downloads for all
-published versions, including clearly labelled prototypes and previews. The old
-`/download/` URL redirects to the homepage downloads section.
+## Distribution paused
 
-Early builds also appear at `/experimental/`, reached through the
-“Experimental builds” link in the footer. When no stable installers
-are available, the homepage offers the latest experimental builds labelled
-Prototype on each download card. The `/experimental/` page warns that builds
-are experimental and untested and requests `noindex, nofollow` from search engines.
-It is publicly accessible to anyone with the URL; this is not access control.
-Public GitHub release assets and this repository also remain discoverable.
+EIDORA 0.3.0 will be the first official release. Until it is ready, the homepage,
+`/releases/`, and `/experimental/` show “Coming soon” with no installer or Store
+links. `/download/` redirects to the homepage downloads section.
 
-The website release history starts with **EIDORA 0.2.6**, labelled Prototype.
-An **EIDORA 0.2.x** series overview precedes the individual release notes and
-describes the general functionality of this series. It is editorial context,
-not an installable version or an update-feed record. Future series such as 0.3.x
-should have their own functionality overview alongside their release notes.
-Earlier versions, including 0.2.4 and 0.2.5, are no longer listed in the website
-catalog or offered as website downloads. Historical GitHub releases and their
-files are retained; this changes only the website's release history.
+The catalog is intentionally empty: every `latest` value is `null` and `releases`
+is `{}`. This also withdraws all app-update recommendations without changing the
+feed schema. Previous application GitHub releases are unpublished drafts; their assets and
+version tags are preserved. Starter datasets remain separate. Website changes do not unpublish the
+Microsoft Store listing or prevent Store-managed updates.
 
-Downloads include signed and notarized DMGs for Apple Silicon and Intel Macs,
-AppImage and DEB installers for Linux x64, and Windows x64 through
-[Microsoft Store](https://apps.microsoft.com/detail/9P0WFNT5DZS5) (Store package
-version 1.2.7.0). The experimental page groups downloads under the 0.2 series
-and shows the latest full version for each platform.
-
-EIDORA 0.2.6 is available for Mac, Windows, and Linux. It improves CoreML model
-compatibility, displays Model Zoo download sizes, and makes NVIDIA GPU support
-an optional download. Both signed Mac architectures passed offscreen and native
-Cocoa runtime tests; Intel ran under Rosetta. All four platform packaged tests
-passed, including UMAP, export and video-thumbnail checks. Linux packages were
-built and self-tested on Ubuntu 24.04; broader distribution support is not claimed.
-Manual native installation and NVIDIA hardware checks remain separate.
-
-EIDORA 0.2.7 is available for macOS, Windows, and Linux. It improves Figures legends
-and grid sizing, shows progress while opening a startup project, and fixes
-Discovery Canvas Layers settings. Both signed Mac builds passed offscreen and
-Cocoa self-tests, with Intel tested under Rosetta. The Linux x64 build passed
-its packaged self-test on Ubuntu 24.04.
-
-The maintainer confirmed Windows 0.2.6 / Store package 1.2.6.0 availability on
-2026-11-03.
-
-Mac/Linux downloads include their size and expandable SHA-256 checksum.
-Microsoft Store manages Windows installation and updates; the MSIX is not hosted
-as a direct website download. The Microsoft Store button uses Microsoft’s
-`ms-windows-store` product link to request the native Store app on Windows.
-“open in browser” opens the Store website in a new tab. Store acceptance does not replace separately
-recorded installed-Windows QA or WACK evidence.
-
-“Download installer (.exe)” downloads Microsoft's EIDORA web installer directly from
-`https://get.microsoft.com/installer/download/9P0WFNT5DZS5`. This permanent product
-URL is derived from `store_url` and does not contain a release version. The small
-installer retrieves the current Store version available to the user's device;
-both Windows installation options remain managed and updated through Microsoft Store.
-Do not copy the EXE into this repository or pin its size or checksum in the catalog.
-It is a Microsoft-generated installer, not a separately hosted EIDORA package.
-
-For each Windows update, publish through Microsoft Store and confirm availability,
-then update the website's release record and `latest` recommendation as usual.
-The installer URL stays unchanged. Publishing a GitHub release or changing
-`updates.json` does not publish a Windows update to the Store. Historical release
-pages also download the current Store version, not the historical version.
-The web installer may work when only the Store app is disabled, but still needs
-Microsoft's installation services and remains subject to institutional policies.
-See [Microsoft's web-installer documentation](https://learn.microsoft.com/en-us/windows/apps/distribute-through-store/how-to-use-store-web-installer-for-distribution).
-
-## Download formats
-
-| Platform | Distribution |
-| --- | --- |
-| macOS · Apple Silicon and Intel | DMG installers hosted in the [EIDORA releases](https://github.com/eidora-desktop/EIDORA/releases) |
-| Windows · x64 | Microsoft Store app or direct Microsoft web installer (.exe) |
-| Linux · x64 | AppImage and DEB packages hosted in the [EIDORA releases](https://github.com/eidora-desktop/EIDORA/releases) |
-
-Availability may differ by platform. Microsoft Store links lead to the current
-Store version, rather than historical Windows packages. Mac and Linux downloads
-identify a specific version and include file sizes and SHA-256 checksums.
+Do not restore withdrawn pre-launch releases. To resume distribution, publish and
+verify 0.3.0, then follow the steps below. Catalog entries restore download cards
+and release pages automatically; update the homepage resource card, this status,
+the README, and the publication regression to reflect availability.
 
 ## Update catalog
 
 The public [update catalog](https://www.eidora.org/updates.json) provides
 machine-readable recommendations for the desktop application. Its schema remains
-unchanged; no application code changes are needed. The feed uses the source
-catalog's explicit `latest` entries and includes their referenced release records,
-regardless of whether they are labelled prototype, preview, or stable. The
-feed recommends 0.2.7 for macOS, Windows, and Linux with its Prototype label.
-Adding a release record alone does not offer an update: update `latest` for each intended platform.
-Unrecommended historical records stay in website release history, outside the feed.
-The homepage prefers stable downloads, falling back to experimental builds while
-stable installers are unavailable. This display choice does not control app updates.
-For each channel group, the build uses the recommended version when it belongs
-to that group, or the highest available matching version for that platform.
+unchanged. Adding a release record alone does not recommend an app update:
+set `latest` for each verified platform. The homepage prefers stable releases
+and falls back to experimental builds when available, independently of the feed.
+An empty catalog shows the coming-soon notice on every distribution page.
 
 | Field | Meaning |
 | --- | --- |
@@ -137,16 +66,16 @@ Store before recommending it. Store submission alone is not publication.
 
 ### 2. Import each available Mac/Linux platform
 
-For example, for a future **0.2.5** prototype (substitute the actual version and
+For example, for the first official **0.3.0** release (substitute the actual version and
 verified requirements):
 
 ```sh
-python3 scripts/prepare_release.py --version 0.2.5 --platform macos-arm64 \
-  --requirements "macOS 15 or later" --channel prototype
-python3 scripts/prepare_release.py --version 0.2.5 --platform macos-x86_64 \
-  --requirements "macOS 15 or later" --channel prototype
-python3 scripts/prepare_release.py --version 0.2.5 --platform linux-x86_64 \
-  --requirements "Linux x64 (tested on Ubuntu 24.04)" --channel prototype
+python3 scripts/prepare_release.py --version 0.3.0 --platform macos-arm64 \
+  --requirements "macOS 15 or later" --channel stable
+python3 scripts/prepare_release.py --version 0.3.0 --platform macos-x86_64 \
+  --requirements "macOS 15 or later" --channel stable
+python3 scripts/prepare_release.py --version 0.3.0 --platform linux-x86_64 \
+  --requirements "Linux x64 (tested on Ubuntu 24.04)" --channel stable
 ```
 
 The importer reads the date, release notes, asset URLs, sizes, and SHA-256 digests
@@ -175,9 +104,9 @@ add the verified Windows entry:
 }
 ```
 
-Then set `latest["windows-x86_64"]` to the application version, such as `"0.2.5"`.
+Then set `latest["windows-x86_64"]` to the application version, such as `"0.3.0"`.
 Use the EIDORA application version, not the Store package version (for example,
-0.2.4 rather than 1.2.4.0). Do not add a `downloads` array or an MSIX asset.
+0.3.0 rather than its Store package version). Do not add a `downloads` array or an MSIX asset.
 If Windows ships first, create its release record with `published_at`, `channel`,
 `notes`, and `platforms`; later Mac/Linux imports must agree with that metadata.
 
@@ -193,7 +122,7 @@ channel labels. It does not automatically recommend every new experimental build
 
 When changing a platform recommendation, update the explicit
 publication regression in `tests/test_site.py`
-(`test_published_feed_recommends_027_for_every_platform`), including its name and
+(`test_distribution_pause_removes_downloads_and_update_recommendations`), including its name and
 expected per-platform versions. For staggered releases, assert the intended mixed
 recommendations instead of requiring every platform to have the same version.
 
